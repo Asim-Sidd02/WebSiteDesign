@@ -42,7 +42,8 @@ function NavItem({ children, sectionId }: NavItemProps) {
        onPointerEnterCapture={() => {}}
        onPointerLeaveCapture={() => {}}
         as="button" // Change as="a" to as="button"
-        onClick={() => scrollToSection(sectionId)}
+     onClick={() => scrollToSection(sectionId!)}
+
         variant="paragraph"
         className="flex items-center gap-2 font-medium"
       >
