@@ -11,55 +11,48 @@ import EventContentCard from "@/components/event-content-card";
 
 const EVENT_CONTENT = [
   {
-    title: "AI's Role in Shaping the Future",
-    des: "Discover how AI is revolutionizing industries, creating new possibilities, and addressing global challenges. Gain a deep understanding of the pivotal role AI plays in driving innovation, sustainability, and progress in our rapidly evolving world.",
-    name: "Marcell Glock",
-    position: "Chief Executive, Spotify",
-    panel: "Panel Discussion",
-    img: "/image/avatar1.jpg",
+    title: "Daliy Communication",
+    des: ["SignSense goes beyond just basic translation. Imagine this: you're working on a project with a colleague who speaks a different language. With SignSense, you can chat back and forth in real-time, and see the translations appear instantly. No more waiting for transcripts or awkward pauses while things get translated. SignSense makes everyday communication feel effortless, like you're speaking the same language, regardless of what your native tongues actually are. This can be a huge advantage in business meetings, casual conversations, or even just texting with friends and family overseas.",
+      
+    ],
+    name: "",
+    position: "",
+    panel: "Where languages unite, communication excels",
+    img: "/image/daily.png",
   },
   {
-    title: "Introduction to Machine Learning",
-    des: "Explore the basic principles, algorithms, and applications of Machine Learning. Through hands-on exercises and practical examples, you'll develop a solid understanding of how Machine Learning powers AI-driven solutions.",
-    name: "Marcell Glock",
-    position: "Chief Executive, Spotify",
-    panel: "Workshop",
-    img: "/image/avatar2.jpg",
+    title: "Career Development",
+    des: "SignSense can be a game-changer for your career. By removing language barriers, it opens doors to all sorts of global opportunities you might not have considered before. Imagine being able to attend conferences, collaborate with clients, or even interview for jobs overseas, all without needing to worry about language getting in the way. SignSense empowers you to take your career to the next level by letting you connect and communicate with professionals around the world.",
+    
+    panel: "Your passport to global career advancement, where language is no barrier to opportunity",
+    img: "/image/video.png",
   },
   {
-    title: "AI in Healthcare: Revolutionizing Patient Care",
-    des: "This session is a must-attend for healthcare professionals, AI enthusiasts, and anyone interested in the intersection of technology and well-being. Join us as we discuss how AI is bringing about positive changes in healthcare.",
-    name: "Marcell Glock",
-    position: "Chief Executive, Spotify",
-    panel: "Workshop",
-    img: "/image/avatar3.jpg",
+    title: "Education",
+    des: "SignSense isn't just useful for business, it can revolutionize education too! With SignSense, language barriers disappear, creating a more inclusive learning environment for everyone. Students can participate fully in class discussions and access educational materials in their native language, fostering better understanding and retention of information. Imagine a classroom where everyone can contribute and learn together, regardless of their background. SignSense can empower students to achieve their full potential and create a truly global learning experience.",
+   
+    panel: "More speed. Less spend",
+    img: "/image/class.png",
   },
 ];
 
 export function EventContent() {
   return (
-    <section className="py-8 px-8 lg:py-20">
-      <Tabs value="Day1" className="mb-8">
-        <div className="w-full flex mb-8 flex-col items-center">
-          <TabsHeader className="h-12 w-72 md:w-96">
-            <Tab value="Day1" className="font-medium">
-              Day 1
-            </Tab>
-            <Tab value="Day2" className="font-medium">
-              Day 2
-            </Tab>
-            <Tab value="Day3" className="font-medium">
-              Day 3
-            </Tab>
-          </TabsHeader>
+    <section id="use-case" className="py-8 px-8 lg:py-20">
+    <Tabs value="Day1" className="mb-8">
+      <div className="w-full flex mb-8 flex-col items-center">
+        <div className="text-5xl font-bold leading-tight lg:w-3/4 flex flex-wrap items-center justify-center gap-6 text-blue-gray-700">
+          Use Cases
         </div>
-      </Tabs>
-      <div className="mx-auto container">
-        {EVENT_CONTENT.map((props, idx) => (
-          <EventContentCard key={idx} {...props} />
-        ))}
       </div>
-    </section>
+    </Tabs>
+    <div className="mx-auto container">
+      {EVENT_CONTENT.map((props, idx) => (
+        <EventContentCard key={idx} {...props} />
+      ))}
+    </div>
+  </section>
+  
   );
 }
 

@@ -5,36 +5,42 @@ import AboutCard from "@/components/about-card";
 
 const EVENT_INFO = [
   {
-    title: "Cutting-Edge Insights!",
+    title: "Real-Time Translation!",
     description:
-      "Gain deep insights into the latest AI trends, developments, and applications that are reshaping industries worldwide. ",
-    subTitle: "Presentation",
+      "SignSense is a real-time translation tool that can translate spoken or written content as it occurs. This means that you can have conversations, presentations, or collaborations with people who speak different languages without having to wait for a manual translation or rely on an external translator. SignSense will translate everything immediately and accurately, so you can communicate more efficiently and productively.",
+    subTitle: "",
   },
   {
-    title: "Practical Knowledge!",
+    title: "Two-Way Translation!",
     description:
-      "Attend workshops and hands-on sessions to acquire practical skills that you can apply immediately.",
-    subTitle: "Workshops",
+      "SignSense is also great for two-way conversations! You and someone who speaks a different language can talk naturally, and SignSense will translate between you in real-time. This eliminates the need for an interpreter or struggling with language barriers. So you can have clear and effective conversations, face-to-face, on the phone, or even over video conferencing.",
+    subTitle: "",
   },
 ];
 
 export function AboutEvent() {
   return (
-    <section className="container mx-auto flex flex-col items-center px-4 py-10">
-      <Typography variant="h6" className="text-center mb-2" color="orange">
-        About the event
+    <section id="features" className="container mx-auto flex flex-col items-center px-4 py-10">
+      <Typography variant="h6" className="text-center mb-2" color="orange"
+       placeholder=""
+       onPointerEnterCapture={() => {}}
+       onPointerLeaveCapture={() => {}}>
+        Features
       </Typography>
-      <Typography variant="h3" className="text-center" color="blue-gray">
-        Why Attend?
+      <Typography variant="h3" className="text-center" color="blue-gray"
+       placeholder=""
+       onPointerEnterCapture={() => {}}
+       onPointerLeaveCapture={() => {}}>
+        Why Sign Sense?
       </Typography>
       <Typography
         variant="lead"
         className="mt-2 lg:max-w-4xl mb-8 w-full text-center font-normal !text-gray-500"
+        placeholder=""
+        onPointerEnterCapture={() => {}}
+        onPointerLeaveCapture={() => {}}
       >
-        Welcome to the AI Conference 2023, where the future unfolds! Whether
-        you&apos;re a seasoned AI professional, a curious newcomer, or a
-        business leader looking to harness the power of AI, this conference is
-        designed to inspire, educate, and connect.
+       SignSense translates sign language to spoken language in real-time, enhancing communication accessibility for the deaf and hard of hearing.
       </Typography>
       <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-2 gap-4 ">
         {EVENT_INFO.map((props, idx) => (
@@ -42,9 +48,9 @@ export function AboutEvent() {
         ))}
         <div className="md:col-span-2">
           <AboutCard
-            title="Networking!"
-            subTitle="Community"
-            description="Connect with industry leaders, AI experts, and fellow enthusiasts to build valuable professional relationships."
+            title="Multilingual Support!"
+            subTitle=""
+            description="SignSense is even better because it supports a wide range of languages, from common ones like English, Spanish, and Mandarin to less common languages. This means you can communicate with basically anyone around the world, regardless of their native language. SignSense breaks down those language barriers so you can have inclusive conversations, collaborate globally, and understand each other across cultures."
           />
         </div>
       </div>
