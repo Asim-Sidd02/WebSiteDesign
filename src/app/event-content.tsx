@@ -12,9 +12,7 @@ import EventContentCard from "@/components/event-content-card";
 const EVENT_CONTENT = [
   {
     title: "Daliy Communication",
-    des: ["SignSense goes beyond just basic translation. Imagine this: you're working on a project with a colleague who speaks a different language. With SignSense, you can chat back and forth in real-time, and see the translations appear instantly. No more waiting for transcripts or awkward pauses while things get translated. SignSense makes everyday communication feel effortless, like you're speaking the same language, regardless of what your native tongues actually are. This can be a huge advantage in business meetings, casual conversations, or even just texting with friends and family overseas.",
-      
-    ],
+    des: "SignSense goes beyond just basic translation. Imagine this: you're working on a project with a colleague who speaks a different language. With SignSense, you can chat back and forth in real-time, and see the translations appear instantly. No more waiting for transcripts or awkward pauses while things get translated. SignSense makes everyday communication feel effortless, like you're speaking the same language, regardless of what your native tongues actually are. This can be a huge advantage in business meetings, casual conversations, or even just texting with friends and family overseas.",
     name: "",
     position: "",
     panel: "Where languages unite, communication excels",
