@@ -1,7 +1,6 @@
 "use client";
 
-import { IconButton, Button, Typography } from "@material-tailwind/react";
-import { useRouter } from 'next/navigation';  // Import useRouter from next/navigation
+import { Button, Typography } from "@material-tailwind/react";
 
 <head>
   <title>SignSense</title>
@@ -9,17 +8,19 @@ import { useRouter } from 'next/navigation';  // Import useRouter from next/navi
 </head>
 
 function Hero() {
-  const router = useRouter();  // Initialize useRouter
+  const handleSignToText = () => {
+    window.location.href = 'https://text2signs.netlify.app/'; // Navigate to the link
+  };
 
-  const handleTextToSignClick = () => {
-    window.location.href = 'https://text2signs.netlify.app/';  // Redirect to the URL
+  const handleTextToSign = () => {
+    window.location.href = 'https://text2signs.netlify.app/'; // Navigate to the link
   };
 
   return (
     <div className="relative min-h-screen w-full bg-black">
       <video
         className="absolute inset-0 h-full w-full object-cover"
-        src="/image/video.mp4"  // Make sure to replace this with the correct path to your video file
+        src="/image/video.mp4" // Make sure to replace this with the correct path to your video file
         autoPlay
         loop
         muted
@@ -38,13 +39,17 @@ function Hero() {
             Your Bridge To The World of Silent Communication.
           </Typography>
           <div className="flex items-center gap-4">
-            <Button variant="gradient" color="white">
+            <Button
+              variant="gradient"
+              color="white"
+              onClick={handleSignToText} // Add onClick handler for navigation
+            >
               Sign to Text
             </Button>
-            <Button 
-              variant="gradient" 
+            <Button
+              variant="gradient"
               color="white"
-              onClick={handleTextToSignClick}  // Add onClick handler
+              onClick={handleTextToSign} // Add onClick handler for navigation
             >
               Text to Sign
             </Button>
