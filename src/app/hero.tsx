@@ -1,4 +1,4 @@
-// src/app/hero.tsx
+"use client";// src/app/hero.tsx
 import { IconButton, Button, Typography } from "@material-tailwind/react";
 
 function Hero() {
