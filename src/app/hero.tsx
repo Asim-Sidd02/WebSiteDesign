@@ -1,5 +1,6 @@
-"use client";// src/app/hero.tsx
-import { IconButton, Button, Typography } from "@material-tailwind/react";
+"use client";
+
+import { Button, Typography } from "@material-tailwind/react";
 
 function Hero() {
   const handleTextToSignClick = () => {
@@ -36,18 +37,12 @@ function Hero() {
             <Button
               variant="gradient"
               color="white"
-              placeholder=""
-              onPointerEnterCapture={() => {}}
-              onPointerLeaveCapture={() => {}}
             >
               Sign to Text
             </Button>
             <Button
               variant="gradient"
               color="white"
-              placeholder=""
-              onPointerEnterCapture={() => {}}
-              onPointerLeaveCapture={() => {}}
               onClick={handleTextToSignClick} // Navigate to URL
             >
               Text to Sign
