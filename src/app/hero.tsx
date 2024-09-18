@@ -20,22 +20,18 @@ function Hero() {
       <div className="grid min-h-screen px-8">
         <div className="container relative z-10 my-auto mx-auto grid place-items-center text-center">
           <Typography
+            as="h1"
             variant="h1"
             color="white"
             className="lg:max-w-3xl"
-            // Add any other necessary props here
-            // For example, if `Typography` requires `style`, `title`, or other props, include them with default values
-            style={{}} // Example placeholder, adjust as needed
           >
             Sign Sense
           </Typography>
           <Typography
+            as="p"
             variant="lead"
             color="white"
             className="mt-1 mb-12 w-full md:max-w-full lg:max-w-2xl"
-            // Add any other necessary props here
-            // For example, if `Typography` requires `style`, `title`, or other props, include them with default values
-            style={{}} // Example placeholder, adjust as needed
           >
             Your Bridge To The World of Silent Communication.
           </Typography>
