@@ -43,10 +43,7 @@ export function Footer() {
             ))}
           </ul>
           <p>
-            © {CURRENT_YEAR} SignSense ·{" "}
-            <a href="https://threeui.com" target="_blank" rel="noopener noreferrer" className="link-underline hover:text-white">
-              Effects by ThreeUI
-            </a>
+            © {CURRENT_YEAR} SignSense
           </p>
         </div>
       </div>

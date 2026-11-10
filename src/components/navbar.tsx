@@ -32,7 +32,7 @@ export function Navbar() {
       animate={{ y: hidden ? "-100%" : "0%" }}
       transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        solid ? "border-b border-ink/10 bg-paper/90 text-ink backdrop-blur-md" : "bg-transparent text-white"
+        solid ? "border-b border-ink/10 bg-paper/85 backdrop-blur-md" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
@@ -55,7 +55,7 @@ export function Navbar() {
           href="https://text2signs.netlify.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className={`hidden rounded-full px-5 py-2.5 text-sm font-medium transition-colors hover:bg-brand-500 hover:text-white md:inline-flex ${solid ? "bg-ink text-white" : "bg-white text-ink"}`}
+          className={`hidden rounded-full px-5 py-2.5 text-sm font-medium transition-colors hover:bg-brand-500 hover:text-white md:inline-flex bg-ink text-white`}
         >
           Try it free
         </a>
