@@ -1,42 +1,45 @@
+"use client";
+
 import Image from "next/image";
 
 const CURRENT_YEAR = new Date().getFullYear();
-const LINKS = ["Company", "About Us", "Team", "Services", "Blog"];
-const SOCIALS = ["twitter", "youtube", "instagram"];
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-black px-6 py-10">
-      <div className="container mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="flex items-center gap-3">
-          <Image src="/image/signsense.png" alt="SignSense logo" width={40} height={40} />
-          <span className="font-bold text-white">SignSense</span>
+    <footer className="bg-brand-500 text-white">
+      <div className="mx-auto max-w-7xl px-5 pb-10 pt-28 sm:px-8 sm:pt-36">
+        <h2 className="display max-w-5xl text-6xl sm:text-8xl lg:text-[9rem]">
+          Start the <span className="italic">conversation.</span>
+        </h2>
+        <div className="mt-12 flex flex-wrap gap-3">
+          <a href="#" className="rounded-full bg-white px-6 py-3.5 text-sm font-medium text-brand-500 transition-colors hover:bg-ink hover:text-white">
+            Sign to text
+          </a>
+          <a
+            href="https://text2signs.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/40 px-6 py-3.5 text-sm font-medium transition-colors hover:border-white"
+          >
+            Text to sign ↗
+          </a>
         </div>
-        <ul className="flex flex-wrap justify-center gap-6">
-          {LINKS.map((link) => (
-            <li key={link}>
-              <a href="#" className="text-sm text-white/50 transition-colors hover:text-white">
-                {link}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="flex gap-2">
-          {SOCIALS.map((s) => (
-            <a
-              key={s}
-              href="#"
-              aria-label={s}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-500 hover:bg-brand-500 hover:text-white"
-            >
-              <i className={`fa-brands fa-${s}`} />
-            </a>
-          ))}
+
+        <div className="mt-28 flex flex-col gap-6 border-t border-white/25 pt-8 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2.5 text-white">
+            <Image src="/image/signsense.png" alt="" width={28} height={28} />
+            <span className="font-semibold">SignSense</span>
+          </div>
+          <ul className="flex flex-wrap gap-6">
+            {["About", "Team", "Blog", "Contact"].map((l) => (
+              <li key={l}>
+                <a href="#" className="link-underline hover:text-white">{l}</a>
+              </li>
+            ))}
+          </ul>
+          <p>© {CURRENT_YEAR} SignSense</p>
         </div>
       </div>
-      <p className="mt-8 text-center text-xs text-white/40">
-        © {CURRENT_YEAR} SignSense. All rights reserved.
-      </p>
     </footer>
   );
 }

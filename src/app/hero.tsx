@@ -1,83 +1,77 @@
 "use client";
 
-import { ArrowRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
 
-const STATS = [
-  ["Real-time", "Translation"],
-  ["2-way", "Conversations"],
-  ["Multi", "Language"],
-];
+const SignField = dynamic(() => import("@/components/sign-field"), { ssr: false });
+
+const ease = [0.2, 0.7, 0.2, 1] as const;
 
 function Hero() {
   return (
-    <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-black">
-      <video
-        className="absolute inset-0 h-full w-full object-cover opacity-30"
-        src="/image/video.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black" />
-      <div className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-      <div className="pointer-events-none absolute -left-40 top-1/4 h-[30rem] w-[30rem] animate-glow rounded-full bg-brand-500/30 blur-[120px]" />
-      <div className="pointer-events-none absolute -right-40 bottom-0 h-[34rem] w-[34rem] animate-glow rounded-full bg-brand-700/40 blur-[140px] [animation-delay:3s]" />
+    <section className="relative min-h-[100svh] overflow-hidden pt-28">
+      <div className="absolute inset-x-0 bottom-0 top-[30%] sm:top-[20%]">
+        <SignField />
+      </div>
+      {/* fade the field into the page */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-paper via-paper/40 to-paper" />
 
-      <div className="container relative z-10 mx-auto px-6 pt-24 text-center">
-        <div className="animate-fade-up">
-          <span className="eyebrow eyebrow-dark">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#6b6bff]" />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, ease }}
+          className="label"
+        >
+          Sign language ⇄ text, in real time
+        </motion.p>
+
+        <h1 className="display mt-6 max-w-5xl text-[13vw] sm:text-[9vw] lg:text-[8.5rem]">
+          {["Talk with your hands.", "Be heard anyway."].map((line, i) => (
+            <span key={line} className="block overflow-hidden pb-2">
+              <motion.span
+                className={`block ${i === 1 ? "italic text-brand-500" : ""}`}
+                initial={{ y: "105%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, delay: 0.15 + i * 0.12, ease }}
+              >
+                {line}
+              </motion.span>
             </span>
-            Real-time sign language AI
-          </span>
-        </div>
-
-        <h1 className="mx-auto mt-8 max-w-4xl animate-fade-up text-5xl font-extrabold leading-[1.05] tracking-tight text-white [animation-delay:150ms] sm:text-6xl lg:text-7xl">
-          Your bridge to the world of{" "}
-          <span className="text-gradient-light animate-shimmer">silent communication</span>
+          ))}
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl animate-fade-up text-lg leading-relaxed text-white/60 [animation-delay:300ms]">
-          SignSense translates sign language to text and text to sign: instantly,
-          accurately, and accessibly for everyone.
-        </p>
-
-        <div className="mt-10 flex animate-fade-up flex-col items-center justify-center gap-4 [animation-delay:450ms] sm:flex-row">
-          <a href="#" className="btn-primary group">
-            Sign to Text
-            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </a>
-          <a
-            href="https://text2signs.netlify.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-ghost group"
-          >
-            Text to Sign
-            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </a>
-        </div>
-
-        <div className="mx-auto mt-20 grid max-w-3xl animate-fade-up grid-cols-3 gap-3 [animation-delay:600ms] sm:gap-4">
-          {STATS.map(([a, b]) => (
-            <div key={b} className="glass rounded-2xl px-3 py-5">
-              <div className="text-lg font-bold text-white sm:text-2xl">{a}</div>
-              <div className="mt-1 text-[10px] uppercase tracking-widest text-white/50 sm:text-xs">{b}</div>
-            </div>
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.5, ease }}
+          className="mt-10 flex max-w-xl flex-col gap-8"
+        >
+          <p className="text-lg leading-relaxed text-ink/70">
+            SignSense watches your signing through the camera and turns it into text the other
+            person can read. They type back, and it signs for you. No interpreter booking, no
+            waiting.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href="#"
+              className="rounded-full bg-ink px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-brand-500"
+            >
+              Sign to text
+            </a>
+            <a
+              href="https://text2signs.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-ink/20 px-6 py-3.5 text-sm font-medium transition-colors hover:border-ink"
+            >
+              Text to sign ↗
+            </a>
+          </div>
+        </motion.div>
       </div>
 
-      <a
-        href="#features"
-        aria-label="Scroll down"
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce text-white/50 hover:text-white"
-      >
-        <ChevronDownIcon className="h-6 w-6" />
-      </a>
+      <p className="label absolute bottom-6 right-5 hidden sm:right-8 sm:block">Move your cursor ↘</p>
     </section>
   );
 }
