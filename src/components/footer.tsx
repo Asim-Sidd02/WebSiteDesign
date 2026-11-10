@@ -1,22 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import dynamic from "next/dynamic";
-
-const LiquidFormBackground = dynamic(
-  () => import("@designcodeio/threeui/components/LiquidFormBackground").then((m) => m.LiquidFormBackground),
-  { ssr: false }
-);
 
 const CURRENT_YEAR = new Date().getFullYear();
 
 export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[#030304] text-white">
-      <div className="absolute inset-0 lg:left-1/3">
-        <LiquidFormBackground tintHue={238} tintAmount={0.55} mouseAmount={0.25} speed={0.8} className="h-full w-full" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#030304] via-[#030304]/70 to-transparent" />
+      <div className="pointer-events-none absolute -right-40 top-0 h-[36rem] w-[36rem] rounded-full bg-brand-500/25 blur-[140px]" />
 
       <div className="relative mx-auto max-w-7xl px-5 pb-10 pt-28 sm:px-8 sm:pt-40">
         <h2 className="display max-w-4xl text-6xl sm:text-8xl lg:text-[8.5rem]">
@@ -52,10 +43,7 @@ export function Footer() {
             ))}
           </ul>
           <p>
-            © {CURRENT_YEAR} SignSense ·{" "}
-            <a href="https://threeui.com" target="_blank" rel="noopener noreferrer" className="link-underline hover:text-white">
-              Effects by ThreeUI
-            </a>
+            © {CURRENT_YEAR} SignSense
           </p>
         </div>
       </div>

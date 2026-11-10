@@ -32,7 +32,7 @@ export function Navbar() {
       animate={{ y: hidden ? "-100%" : "0%" }}
       transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        solid ? "border-b border-ink/10 bg-paper/90 backdrop-blur-md" : "bg-transparent"
+        solid ? "border-b border-ink/10 bg-paper/85 backdrop-blur-md" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
@@ -44,7 +44,7 @@ export function Navbar() {
         <ul className="hidden items-center gap-8 md:flex">
           {NAV.map((n) => (
             <li key={n.id}>
-              <button onClick={() => go(n.id)} className="link-underline text-sm text-ink/70 hover:text-ink">
+              <button onClick={() => go(n.id)} className="link-underline text-sm opacity-70 hover:opacity-100">
                 {n.name}
               </button>
             </li>
@@ -55,7 +55,7 @@ export function Navbar() {
           href="https://text2signs.netlify.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-500 md:inline-flex"
+          className={`hidden rounded-full px-5 py-2.5 text-sm font-medium transition-colors hover:bg-brand-500 hover:text-white md:inline-flex bg-ink text-white`}
         >
           Try it free
         </a>
@@ -70,7 +70,7 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-ink/10 bg-paper px-5 pb-6 md:hidden">
+        <div className="border-t border-ink/10 bg-paper px-5 pb-6 text-ink md:hidden">
           <ul className="flex flex-col">
             {NAV.map((n) => (
               <li key={n.id}>
