@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fbfbf8">
+<title>SignSense Free ISL Demo</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+    "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@2.1.0/lib/three-vrm.module.min.js",
+    "@mediapipe/tasks-vision": "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs"
+  }
+}
+</script>
+</head>
+<body>
+<header class="demo-header">
+  <div>
+    <p class="eyebrow">SignSense · Free demo</p>
+    <h1>Speak and see it signed</h1>
+  </div>
+  <span id="status" class="status">Loading 3D avatar…</span>
+</header>
+<main>
+  <section class="panel demo-panel">
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">Speech to Indian Sign Language</p>
+        <h2>Try the avatar</h2>
+      </div>
+      <div class="panel-actions">
+        <span class="isl-tag">ISL</span>
+        <button id="fullscreenBtn" class="fullscreen-cta" aria-pressed="false">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/><path d="M9 9 3 3m12 6 6-6M9 15l-6 6m12-6 6 6"/></svg>
+          <span>Full-screen avatar</span>
+        </button>
+      </div>
+    </div>
+    <div class="demo-grid">
+      <div class="stage avatar-stage">
+        <canvas id="avatar" aria-label="Animated SignSense avatar"></canvas>
+        <div id="avatarLoading" class="avatar-loading">Loading your avatar…</div>
+        <div id="caption" class="caption" aria-live="polite"></div>
+        <div class="fullscreen-controls">
+          <button id="fullscreenMicBtn" class="fullscreen-mic" aria-pressed="false">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0m-7 7v5m-4 0h8"/></svg>
+            <span>Turn on microphone</span>
+          </button>
+          <button id="exitFullscreenBtn" class="fullscreen-exit">Exit full screen</button>
+        </div>
+      </div>
+      <div class="demo-controls">
+        <label for="textInput">Speak or type a short phrase</label>
+        <input id="textInput" placeholder="For example: hello, thank you" autocomplete="off">
+        <div class="row voice-row">
+          <label class="language-label" for="speechLang">Speech language</label>
+          <select id="speechLang">
+            <option value="en-IN">English (India)</option>
+            <option value="en-US">English (United States)</option>
+          </select>
+        </div>
+        <div class="row action-row">
+          <button id="listenBtn" class="primary">Start speaking</button>
+          <button id="stopListenBtn" disabled>Stop listening</button>
+        </div>
+        <div class="row action-row">
+          <button id="playBtn" class="secondary">Sign typed text</button>
+          <button id="haltBtn">Stop avatar</button>
+        </div>
+        <div id="sequence" class="sequence" aria-live="polite"></div>
+        <div class="demo-note">
+          <span class="note-icon" aria-hidden="true">i</span>
+          <p>On-device speech recognition is used when your browser supports it; otherwise speech may be processed by the browser’s online speech service. Included signs load automatically: loud, quiet, happy, sad, beautiful, ugly, deaf and blind. Have signs reviewed by a fluent ISL signer before public use.</p>
+        </div>
+      </div>
+    </div>
+    <div class="avatar-tools">
+      <label class="range">Avatar speed <input type="range" id="speed" min="0.25" max="2" step="0.05" value="1"><span id="speedVal">1.00×</span></label>
+      <label class="check"><input type="checkbox" id="loopChk"> Loop signs</label>
+      <button id="resetViewBtn" class="text-button">Reset avatar view</button>
+      <input type="file" id="modelInput" accept=".vrm" hidden>
+    </div>
+  </section>
+
+  <details id="recordingSetup" class="setup-details">
+    <summary>Set up or import ISL sign clips</summary>
+    <p class="setup-intro">Eight ISL sample motions are included and load automatically. You can record or import more sign clips. The avatar file alone does not contain sign vocabulary.</p>
+    <section class="panel setup-panel">
+      <h2>Record an ISL sign</h2>
+      <div class="stage">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <div id="countdown" class="countdown"></div>
+        <div id="recBadge" class="rec-badge">● REC</div>
+        <div id="trackInfo" class="track-info"></div>
+      </div>
+      <div class="row">
+        <button id="camBtn" disabled>Start camera</button>
+        <input id="wordInput" placeholder="Sign name (e.g. hello, thank you)">
+      </div>
+      <div class="row">
+        <button id="recBtn" class="primary" disabled>Record sign</button>
+        <button id="stopBtn" class="danger" disabled>Stop &amp; save</button>
+        <label class="check"><input type="checkbox" id="liveChk" checked> Mirror signing</label>
+      </div>
+      <p class="hint">Record signs with the signer’s consent, face and hands in frame, and good light. For public demos, use an ISL-reviewed vocabulary.</p>
+    </section>
+
+    <section class="panel setup-panel">
+      <div class="lib-head">
+        <h2>Demo sign library</h2>
+        <div class="row">
+          <button id="exportBtn">Export library</button>
+          <label class="file-btn">Import library<input type="file" id="importInput" accept="application/json"></label>
+        </div>
+      </div>
+      <div class="lib-body">
+        <ul id="library" class="library"></ul>
+        <video id="preview" class="preview" controls playsinline></video>
+      </div>
+    </section>
+  </details>
+</main>
+<script type="module" src="app.js"></script>
+<script>
+  const reportDemoHeight = () => {
+    if (!document.fullscreenElement) parent.postMessage({ type: "signsense-demo-height", height: document.documentElement.scrollHeight }, location.origin);
+  };
+  new ResizeObserver(reportDemoHeight).observe(document.body);
+  window.addEventListener("load", reportDemoHeight);
+  document.addEventListener("fullscreenchange", reportDemoHeight);
+</script>
+</body>
+</html>

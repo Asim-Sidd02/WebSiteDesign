@@ -24,6 +24,10 @@ export function Navbar() {
 
   const go = (id: string) => {
     setOpen(false);
+    if (window.location.pathname !== "/") {
+      window.location.assign(`/#${id}`);
+      return;
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -36,7 +40,7 @@ export function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:px-8 sm:py-4">
-        <a href="#" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           <Image src="/image/signsense-mark.png" alt="" width={50} height={50} className="h-10 w-10 object-contain sm:h-12 sm:w-12" />
           <span className="text-[15px] font-semibold tracking-tight sm:text-lg">SignSense</span>
         </a>
@@ -52,10 +56,10 @@ export function Navbar() {
         </ul>
 
         <a
-          href="#features"
-          className={`hidden rounded-full bg-ink px-5 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-brand-500 hover:text-white md:inline-flex`}
+          href="/demo"
+          className="inline-flex rounded-full bg-ink px-3.5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-brand-500 hover:text-white sm:px-5 sm:py-3 sm:text-[15px]"
         >
-          Platform overview
+          Free demo
         </a>
 
         <button
@@ -89,12 +93,6 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <a
-            href="#features"
-            className="mt-6 inline-flex rounded-full bg-ink px-5 py-3 text-sm font-medium text-white"
-          >
-            Platform overview
-          </a>
         </div>
       )}
     </motion.header>

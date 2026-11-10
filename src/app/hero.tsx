@@ -41,10 +41,10 @@ function Hero() {
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <a
-                href="#how"
+                href="/demo"
                 className="group inline-flex items-center gap-2 rounded-lg bg-ink px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-ink/10 transition hover:-translate-y-0.5 hover:bg-brand-500"
               >
-                See how it works <span aria-hidden="true">→</span>
+                Try the free demo <span aria-hidden="true">→</span>
               </a>
               <a
                 href="#use-case"

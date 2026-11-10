@@ -5,6 +5,10 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const FAQS = [
   {
+    q: "What can I try in the free demo?",
+    a: "The eight included sample signs load automatically. Speak or type a matching word to play its animation. You can record or import additional ISL clips in the demo setup.",
+  },
+  {
     q: "How does a two-way conversation work?",
     a: "The platform is designed to translate Indian Sign Language into text, and to convert typed text or spoken audio into ISL output through a 3D avatar.",
   },
