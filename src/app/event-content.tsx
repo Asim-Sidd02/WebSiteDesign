@@ -28,13 +28,13 @@ export function EventContent() {
   return (
     <section
       id="use-case"
-      className="relative overflow-hidden bg-gradient-to-b from-brand-950 via-brand-800/40 to-brand-950 px-6 py-28"
+      className="relative overflow-hidden bg-gradient-to-b from-white via-[#f4f5ff] to-white px-6 py-28"
     >
-      <div className="grid-bg pointer-events-none absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" />
+      <div className="grid-bg pointer-events-none absolute inset-0 opacity-60 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" />
       <div className="container relative mx-auto">
         <Reveal className="mx-auto max-w-3xl text-center">
           <span className="eyebrow">Use Cases</span>
-          <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Built for every <span className="text-gradient">conversation</span>
           </h2>
         </Reveal>

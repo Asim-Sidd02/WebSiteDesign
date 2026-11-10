@@ -27,14 +27,14 @@ export function Faq() {
   const [open, setOpen] = React.useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative bg-brand-950 px-6 py-28">
+    <section id="faq" className="relative bg-white px-6 py-28">
       <div className="container mx-auto">
         <Reveal className="mx-auto max-w-3xl text-center">
           <span className="eyebrow">FAQ</span>
-          <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Frequently asked questions
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-white/60">
+          <p className="mt-5 text-lg leading-relaxed text-gray-600">
             Everything you need to know to unlock seamless communication with SignSense.
           </p>
         </Reveal>
@@ -45,10 +45,10 @@ export function Faq() {
             return (
               <Reveal key={i} delay={i * 80}>
                 <div
-                  className={`glass overflow-hidden rounded-2xl transition-all duration-300 ${
+                  className={`overflow-hidden rounded-2xl border bg-white transition-all duration-300 ${
                     isOpen
-                      ? "!border-brand-500/50 shadow-[0_10px_40px_-15px_rgba(47,47,228,0.7)]"
-                      : "hover:!border-white/20"
+                      ? "border-brand-500/40 shadow-[0_16px_40px_-20px_rgba(47,47,228,0.45)]"
+                      : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
                   <button
@@ -56,13 +56,13 @@ export function Faq() {
                     className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
                     aria-expanded={isOpen}
                   >
-                    <span className="font-semibold text-white">{title}</span>
+                    <span className="font-semibold text-gray-900">{title}</span>
                     <span
                       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
-                        isOpen ? "rotate-45 border-brand-500 bg-brand-500" : "border-white/15"
+                        isOpen ? "rotate-45 border-brand-500 bg-brand-500" : "border-gray-300 text-gray-700"
                       }`}
                     >
-                      <PlusIcon className="h-4 w-4 text-white" />
+                      <PlusIcon className={`h-4 w-4 ${isOpen ? "text-white" : "text-gray-700"}`} />
                     </span>
                   </button>
                   <div
@@ -71,7 +71,7 @@ export function Faq() {
                     }`}
                   >
                     <div className="min-h-0">
-                      <p className="px-6 pb-6 leading-relaxed text-white/60">{desc}</p>
+                      <p className="px-6 pb-6 leading-relaxed text-gray-600">{desc}</p>
                     </div>
                   </div>
                 </div>
