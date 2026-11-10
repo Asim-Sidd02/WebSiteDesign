@@ -1,56 +1,52 @@
 "use client";
 
-import {
-  Tab,
-  Tabs,
-  TabsHeader,
-} from "@material-tailwind/react";
-
 import EventContentCard from "@/components/event-content-card";
-
+import { Reveal } from "@/components/reveal";
 
 const EVENT_CONTENT = [
   {
-    title: "Daliy Communication",
-    des: "SignSense goes beyond just basic translation. Imagine this: you're working on a project with a colleague who speaks a different language. With SignSense, you can chat back and forth in real-time, and see the translations appear instantly. No more waiting for transcripts or awkward pauses while things get translated. SignSense makes everyday communication feel effortless, like you're speaking the same language, regardless of what your native tongues actually are. This can be a huge advantage in business meetings, casual conversations, or even just texting with friends and family overseas.",
-    name: "",
-    position: "",
-    panel: "Where languages unite, communication excels",
+    title: "Daily Communication",
+    des: "Working with a colleague who communicates differently? Chat back and forth in real-time and see translations appear instantly, with no transcripts and no awkward pauses. SignSense makes everyday communication feel effortless, whether in meetings, casual conversations, or messaging friends and family.",
+    panel: "Where languages unite",
     img: "/image/daily.png",
   },
   {
     title: "Career Development",
-    des: "SignSense can be a game-changer for your career. By removing language barriers, it opens doors to all sorts of global opportunities you might not have considered before. Imagine being able to attend conferences, collaborate with clients, or even interview for jobs overseas, all without needing to worry about language getting in the way. SignSense empowers you to take your career to the next level by letting you connect and communicate with professionals around the world.",
-    
-    panel: "Your passport to global career advancement, where language is no barrier to opportunity",
+    des: "By removing language barriers, SignSense opens doors to global opportunities. Attend conferences, collaborate with clients, or interview for jobs overseas without language getting in the way, and take your career to the next level.",
+    panel: "Your passport to opportunity",
     img: "/image/video.png",
   },
   {
     title: "Education",
-    des: "SignSense isn't just useful for business, it can revolutionize education too! With SignSense, language barriers disappear, creating a more inclusive learning environment for everyone. Students can participate fully in class discussions and access educational materials in their native language, fostering better understanding and retention of information. Imagine a classroom where everyone can contribute and learn together, regardless of their background. SignSense can empower students to achieve their full potential and create a truly global learning experience.",
-   
-    panel: "More speed. Less spend",
+    des: "SignSense creates a more inclusive learning environment. Students participate fully in discussions and access materials in their own language, fostering better understanding and retention: a classroom where everyone contributes and learns together.",
+    panel: "Learning without limits",
     img: "/image/class.png",
   },
 ];
 
 export function EventContent() {
   return (
-    <section id="use-case" className="py-8 px-8 lg:py-20">
-    <Tabs value="Day1" className="mb-8">
-      <div className="w-full flex mb-8 flex-col items-center">
-        <div className="text-5xl font-bold leading-tight lg:w-3/4 flex flex-wrap items-center justify-center gap-6 text-blue-gray-700">
-          Use Cases
+    <section
+      id="use-case"
+      className="relative overflow-hidden bg-gradient-to-b from-brand-950 via-brand-800/40 to-brand-950 px-6 py-28"
+    >
+      <div className="grid-bg pointer-events-none absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" />
+      <div className="container relative mx-auto">
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <span className="eyebrow">Use Cases</span>
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            Built for every <span className="text-gradient">conversation</span>
+          </h2>
+        </Reveal>
+        <div className="mt-20 flex flex-col gap-24">
+          {EVENT_CONTENT.map((props, idx) => (
+            <Reveal key={idx}>
+              <EventContentCard {...props} index={idx} reverse={idx % 2 === 1} />
+            </Reveal>
+          ))}
         </div>
       </div>
-    </Tabs>
-    <div className="mx-auto container">
-      {EVENT_CONTENT.map((props, idx) => (
-        <EventContentCard key={idx} {...props} />
-      ))}
-    </div>
-  </section>
-  
+    </section>
   );
 }
 

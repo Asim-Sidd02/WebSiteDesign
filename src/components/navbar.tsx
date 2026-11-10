@@ -1,188 +1,107 @@
+"use client";
 import React from "react";
-import {
-  Navbar as MTNavbar,
-  Collapse,
-  Button,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
-import {
-  RectangleStackIcon,
-  UserCircleIcon,
-  CommandLineIcon,
-  Squares2X2Icon,
-  XMarkIcon,
-  Bars3Icon,
-  CogIcon,
-  BriefcaseIcon,
-  HomeIcon
-  
-} from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { EventContent } from "@/app";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-
-interface NavItemProps {
-  children: React.ReactNode;
-  sectionId?: string; // Change href to sectionId
-}
-
-function NavItem({ children, sectionId }: NavItemProps) {
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  return (
-    <li>
-      <Typography
-       placeholder=""
-       onPointerEnterCapture={() => {}}
-       onPointerLeaveCapture={() => {}}
-        as="button" // Change as="a" to as="button"
-     onClick={() => scrollToSection(sectionId!)}
-
-        variant="paragraph"
-        className="flex items-center gap-2 font-medium"
-      >
-        {children}
-      </Typography>
-    </li>
-  );
-}
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 
 const NAV_MENU = [
-  {
-    name: "Features",
-    icon: BriefcaseIcon,
-    sectionId: "features", // Add sectionId for scrolling
-  },
-  {
-    name: "Use Cases",
-    icon: Squares2X2Icon,
-    sectionId: "use-case", // Add sectionId for scrolling
-  },
-  {
-    name: "Docs",
-    icon: CommandLineIcon,
-    sectionId: "#", // Add sectionId for scrolling
-  },
-  {
-    name: "FAQs",
-    icon: QuestionMarkCircleIcon,
-    sectionId: "faq", // Add sectionId for scrolling
-  },
+  { name: "Features", sectionId: "features" },
+  { name: "Use Cases", sectionId: "use-case" },
+  { name: "FAQs", sectionId: "faq" },
 ];
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
-  const [isScrolling, setIsScrolling] = React.useState(false);
-
-  const handleOpen = () => setOpen((cur) => !cur);
+  const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpen(false)
-    );
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onResize = () => window.innerWidth >= 960 && setOpen(false);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
-  React.useEffect(() => {
-    function handleScroll() {
-      if (window.scrollY > 0) {
-        setIsScrolling(true);
-      } else {
-        setIsScrolling(false);
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const go = (id: string) => {
+    setOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <MTNavbar
-    placeholder=""
-    onPointerEnterCapture={() => {}}
-    onPointerLeaveCapture={() => {}}
-      shadow={false}
-      fullWidth
-      blurred={false}
-      color={isScrolling ? "white" : "transparent"}
-      className="fixed top-0 z-50 border-0"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "border-b border-white/10 bg-brand-950/70 py-2 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent py-4"
+      }`}
     >
-      <div className="container mx-auto flex items-center justify-between">
-        <Image src="/image/signsense.png" alt="Logo" width={60} height={60} />
-        <ul
-          className={`ml-10 hidden items-center gap-6 lg:flex ${
-            isScrolling ? "text-gray-900" : "text-white"
-          }`}
-        >
-          {NAV_MENU.map(({ name, icon: Icon, sectionId }) => (
-            <NavItem key={name} sectionId={sectionId}>
-              <Icon className="h-5 w-5" />
-              <span>{name}</span>
-            </NavItem>
+      <nav className="container mx-auto flex items-center justify-between px-6">
+        <a href="#" className="flex items-center gap-3">
+          <Image src="/image/signsense.png" alt="SignSense logo" width={44} height={44} />
+          <span className="text-lg font-bold tracking-tight text-white">SignSense</span>
+        </a>
+
+        <ul className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur lg:flex">
+          {NAV_MENU.map(({ name, sectionId }) => (
+            <li key={name}>
+              <button
+                onClick={() => go(sectionId)}
+                className="rounded-full px-5 py-2 text-sm font-medium text-white/70 transition-colors duration-300 hover:bg-white/10 hover:text-white"
+              >
+                {name}
+              </button>
+            </li>
           ))}
         </ul>
-        <div className="hidden items-center gap-4 lg:flex">
-          <Button color={isScrolling ? "gray" : "white"} variant="text"
-           placeholder=""
-           onPointerEnterCapture={() => {}}
-           onPointerLeaveCapture={() => {}}>
+
+        <div className="hidden items-center gap-3 lg:flex">
+          <a href="#" className="px-4 text-sm font-medium text-white/70 transition-colors hover:text-white">
             Log in
-          </Button>
-          <a href="#" target="_blank">
-            <Button color={isScrolling ? "gray" : "white"}
-             placeholder=""
-             onPointerEnterCapture={() => {}}
-             onPointerLeaveCapture={() => {}}>Register</Button>
+          </a>
+          <a href="#" className="btn-primary !px-5 !py-2.5">
+            Get Started
           </a>
         </div>
-        <IconButton
-          variant="text"
-          color={isScrolling ? "gray" : "white"}
-          onClick={handleOpen}
-          className="ml-auto inline-block lg:hidden"
-          placeholder=""
-          onPointerEnterCapture={() => {}}
-          onPointerLeaveCapture={() => {}}
+
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="rounded-lg p-2 text-white lg:hidden"
+          aria-label="Toggle menu"
         >
-          {open ? (
-            <XMarkIcon strokeWidth={2} className="h-6 w-6" />
-          ) : (
-            <Bars3Icon strokeWidth={2} className="h-6 w-6" />
-          )}
-        </IconButton>
-      </div>
-      <Collapse open={open}>
-        <div className="container mx-auto mt-4 rounded-lg bg-white px-6 py-5">
-          <ul className="flex flex-col gap-4 text-gray-900">
-            {NAV_MENU.map(({ name, icon: Icon, sectionId }) => (
-              <NavItem key={name} sectionId={sectionId}>
-                <Icon className="h-5 w-5" />
-                {name}
-              </NavItem>
-            ))}
-          </ul>
-          <div className="mt-6 flex items-center gap-4">
-            <Button variant="text"
-             placeholder=""
-             onPointerEnterCapture={() => {}}
-             onPointerLeaveCapture={() => {}}>Log in</Button>
-            <a href="#" target="_blank">
-              <Button color="gray"
-               placeholder=""
-               onPointerEnterCapture={() => {}}
-               onPointerLeaveCapture={() => {}}>Register</Button>
-            </a>
+          {open ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+        </button>
+      </nav>
+
+      <div
+        className={`grid overflow-hidden px-6 transition-all duration-500 lg:hidden ${
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0">
+          <div className="glass mt-4 rounded-2xl p-5">
+            <ul className="flex flex-col gap-1">
+              {NAV_MENU.map(({ name, sectionId }) => (
+                <li key={name}>
+                  <button
+                    onClick={() => go(sectionId)}
+                    className="w-full rounded-lg px-3 py-2.5 text-left text-white/80 hover:bg-white/5 hover:text-white"
+                  >
+                    {name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 flex gap-3">
+              <a href="#" className="btn-ghost !py-2.5">Log in</a>
+              <a href="#" className="btn-primary !py-2.5">Get Started</a>
+            </div>
           </div>
         </div>
-      </Collapse>
-    </MTNavbar>
+      </div>
+    </header>
   );
 }
 

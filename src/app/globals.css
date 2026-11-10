@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { background: #080616; color: #e6e8ff; }
+
+::selection { background: #2F2FE4; color: #fff; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #080616; }
+::-webkit-scrollbar-thumb { background: #1A1953; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #162E93; }
+
+@layer components {
+  .text-gradient {
+    background: linear-gradient(90deg, #ffffff, #8f8ff7, #2F2FE4, #8f8ff7, #ffffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .glass {
+    background: linear-gradient(180deg, rgba(26,25,83,0.55), rgba(8,6,22,0.6));
+    border: 1px solid rgba(110,110,255,0.14);
+    backdrop-filter: blur(14px);
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(47,47,228,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(47,47,228,0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#a5a5ff];
+  }
+  .btn-primary {
+    @apply relative inline-flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-10px_rgba(47,47,228,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4343ff] hover:shadow-[0_18px_50px_-10px_rgba(47,47,228,1)];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-white/40 hover:bg-white/10;
+  }
+}
+
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
