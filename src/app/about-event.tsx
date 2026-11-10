@@ -1,53 +1,57 @@
 "use client";
 
-import { BoltIcon, ArrowsRightLeftIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
-import AboutCard from "@/components/about-card";
-import { Reveal } from "@/components/reveal";
+import { motion } from "framer-motion";
 
 const FEATURES = [
   {
-    icon: BoltIcon,
-    title: "Real-Time Translation",
-    description:
-      "Translate content as it happens. Hold conversations, presentations and collaborations without waiting on manual translation or an external interpreter. SignSense works instantly and accurately.",
+    title: "Real-time translation",
+    body: "Text shows up while you're still signing. Conversations keep their rhythm instead of stopping for every sentence.",
   },
   {
-    icon: ArrowsRightLeftIcon,
-    title: "Two-Way Translation",
-    description:
-      "Talk naturally in both directions. SignSense translates between you in real-time, face-to-face, on the phone, or over video calls, removing the need for an interpreter.",
+    title: "Works both ways",
+    body: "Signing becomes text, text becomes signing. Face to face, on a call, or over video, both people use the language they're comfortable in.",
   },
   {
-    icon: GlobeAltIcon,
-    title: "Multilingual Support",
-    description:
-      "From English, Spanish and Mandarin to less common languages, SignSense breaks down barriers so you can collaborate globally and understand each other across cultures.",
+    title: "Many languages",
+    body: "Translate into English, Spanish, Mandarin and a growing list of others, so the person you're talking to doesn't need to share your language either.",
   },
 ];
 
 export function AboutEvent() {
   return (
-    <section id="features" className="relative overflow-hidden bg-white px-6 py-28">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-brand-500/60 to-transparent" />
-      <div className="container mx-auto">
-        <Reveal className="mx-auto max-w-3xl text-center">
-          <span className="eyebrow">Features</span>
-          <h2 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Why <span className="text-gradient">SignSense</span>?
+    <section id="features" className="mx-auto max-w-7xl px-5 py-28 sm:px-8 sm:py-36">
+      <div className="grid gap-16 lg:grid-cols-[1fr_1.4fr]">
+        <div className="lg:sticky lg:top-32 lg:self-start">
+          <p className="label">What you get</p>
+          <h2 className="display mt-6 text-5xl sm:text-7xl">
+            Small tool,
+            <br />
+            <span className="italic text-brand-500">big difference.</span>
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-gray-600">
-            SignSense translates sign language to spoken language in real-time, enhancing
-            communication accessibility for the deaf and hard of hearing.
-          </p>
-        </Reveal>
-
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {FEATURES.map((f, i) => (
-            <Reveal key={f.title} delay={i * 120} className="h-full">
-              <AboutCard {...f} />
-            </Reveal>
-          ))}
         </div>
+
+        <ul>
+          {FEATURES.map((f, i) => (
+            <motion.li
+              key={f.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, ease: [0.2, 0.7, 0.2, 1] }}
+              className="group grid grid-cols-[auto_1fr] gap-6 border-t border-ink/15 py-10 last:border-b sm:gap-10"
+            >
+              <span className="font-mono text-sm text-ink/40 transition-colors group-hover:text-brand-500">
+                0{i + 1}
+              </span>
+              <div>
+                <h3 className="text-2xl font-medium tracking-tight transition-transform duration-500 group-hover:translate-x-2 sm:text-3xl">
+                  {f.title}
+                </h3>
+                <p className="mt-3 max-w-lg leading-relaxed text-ink/60">{f.body}</p>
+              </div>
+            </motion.li>
+          ))}
+        </ul>
       </div>
     </section>
   );
