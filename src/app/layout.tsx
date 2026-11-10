@@ -8,17 +8,53 @@ const sans = Inter({ subsets: ["latin"], display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "SignSense | Indian Sign Language, understood",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://signsense.app"),
+  title: "AI for Indian Sign Language | SignSense",
   description:
-    "An Indian Sign Language platform for ISL-to-text, text and speech-to-sign with a 3D avatar, and live meeting support.",
+    "SignSense is building an AI platform for Indian Sign Language: ISL to text and audio, speech and text to signed avatar output, and accessible meetings and seminars.",
+  keywords: [
+    "Indian Sign Language",
+    "ISL translation",
+    "ISL to text",
+    "text to Indian Sign Language",
+    "speech to sign language",
+    "3D sign language avatar",
+    "SignSense",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "AI for Indian Sign Language | SignSense",
+    description:
+      "An AI platform for Indian Sign Language, with ISL-to-text and audio, signed avatar output, and accessible meetings and seminars.",
+    siteName: "SignSense",
+    type: "website",
+    images: [
+      {
+        url: "/opengraph-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "SignSense — AI-powered communication for Indian Sign Language",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI for Indian Sign Language | SignSense",
+    description:
+      "An AI platform for Indian Sign Language, with ISL-to-text and audio, signed avatar output, and accessible meetings and seminars.",
+    images: ["/opengraph-image.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
-      </head>
       <body className={`${sans.className} ${mono.variable} bg-paper text-ink`}>
         <SmoothScroll />
         <Layout>{children}</Layout>
