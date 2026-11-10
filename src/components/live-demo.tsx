@@ -85,9 +85,9 @@ export default function LiveDemo() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
             </span>
-            Live session
+            Product preview
           </span>
-          <span className="font-mono text-[11px] text-ink/40">ASL → EN</span>
+          <span className="font-mono text-[11px] text-ink/40">ISL → Text</span>
         </div>
 
         <div className="grid sm:grid-cols-[1fr_1.1fr]">
@@ -99,7 +99,7 @@ export default function LiveDemo() {
               <Hand />
             </div>
             <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between font-mono text-[10px] text-white/50">
-              <span>21 points tracked</span>
+              <span>ISL translation concept</span>
               <span>{signing ? "signing…" : "watching"}</span>
             </div>
           </div>
@@ -122,7 +122,7 @@ export default function LiveDemo() {
                   }`}
                 >
                   <span className={`mb-0.5 block text-[10px] font-medium uppercase tracking-wider ${m.who === "you" ? "text-white/60" : "text-ink/40"}`}>
-                    {m.who === "you" ? "Signed" : "Typed · shown in sign"}
+                    {m.who === "you" ? "ISL · translated to text" : "Text · ready for sign output"}
                   </span>
                   {m.text}
                 </motion.div>

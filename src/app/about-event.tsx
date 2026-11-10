@@ -4,16 +4,16 @@ import { motion } from "framer-motion";
 
 const FEATURES = [
   {
-    title: "Real-time translation",
-    body: "Text shows up while you're still signing. Conversations keep their rhythm instead of stopping for every sentence.",
+    title: "Indian Sign Language to text",
+    body: "Camera-based ISL recognition is designed to turn signing into readable text and audio for the people around you.",
   },
   {
-    title: "Works both ways",
-    body: "Signing becomes text, text becomes signing. Face to face, on a call, or over video, both people use the language they're comfortable in.",
+    title: "Text and speech to ISL",
+    body: "Typed text and spoken audio can be converted into Indian Sign Language, presented by a 3D avatar. ISL output can also be shared as text or audio.",
   },
   {
-    title: "Many languages",
-    body: "Translate into English, Spanish, Mandarin and a growing list of others, so the person you're talking to doesn't need to share your language either.",
+    title: "An assistant for meetings",
+    body: "A meeting bot is planned to join online calls, recognize ISL signing and share live text so participants can follow along.",
   },
 ];
 
@@ -22,11 +22,11 @@ export function AboutEvent() {
     <section id="features" className="mx-auto max-w-7xl px-5 py-28 sm:px-8 sm:py-36">
       <div className="grid gap-16 lg:grid-cols-[1fr_1.4fr]">
         <div className="lg:sticky lg:top-32 lg:self-start">
-          <p className="label">What you get</p>
+          <p className="label">The platform</p>
           <h2 className="display mt-6 text-5xl sm:text-7xl">
-            Small tool,
+            Designed around
             <br />
-            <span className="italic text-brand-500">big difference.</span>
+            <span className="text-brand-500">Indian Sign Language.</span>
           </h2>
         </div>
 

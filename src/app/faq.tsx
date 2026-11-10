@@ -6,19 +6,19 @@ import { AnimatePresence, motion } from "framer-motion";
 const FAQS = [
   {
     q: "How does a two-way conversation work?",
-    a: "You sign, the other person reads the text. They type or speak, and you see it signed back. Both of you stay in your own language the whole time.",
+    a: "The platform is designed to translate Indian Sign Language into text, and to convert typed text or spoken audio into ISL output through a 3D avatar.",
   },
   {
     q: "Can I use it on video calls?",
-    a: "Yes. Run SignSense alongside your call and the translation keeps up with the conversation, even with several people talking.",
+    a: "A meeting assistant is part of the platform vision. It is intended to join calls and provide live text from ISL signing; availability will depend on product rollout.",
   },
   {
     q: "Will it help at work?",
-    a: "That's one of the main reasons people use it: joining meetings live, talking with clients directly, and going to interviews without arranging an interpreter first.",
+    a: "SignSense is being designed to support meeting participation with an ISL assistant that can share live text from signing.",
   },
   {
-    q: "Which languages are supported?",
-    a: "Text translation works with English, Spanish, Mandarin and a growing list of other languages.",
+    q: "Which sign language does SignSense support?",
+    a: "SignSense is focused solely on Indian Sign Language (ISL). It is not a general-purpose translator for other sign languages.",
   },
 ];
 
