@@ -27,7 +27,7 @@ export default function SpeechDemo() {
               Speak a phrase. See the avatar sign.
             </h2>
             <p className="mt-4 max-w-2xl leading-7 text-ink/60">
-              Eight sample sign animations are included automatically. Speak or type a matching word to animate the avatar.
+              Fifty-seven sample vocabulary motions load automatically. Try phrases such as “hello”, “good morning”, “thank you” or “help”.
             </p>
           </div>
           <a href="/#how" className="text-sm font-semibold text-brand-600 underline decoration-brand-500/30 underline-offset-4 hover:decoration-brand-500">

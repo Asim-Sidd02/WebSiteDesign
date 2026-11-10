@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const FAQS = [
   {
     q: "What can I try in the free demo?",
-    a: "The eight included sample signs load automatically. Speak or type a matching word to play its animation. You can record or import additional ISL clips in the demo setup.",
+    a: "Fifty-seven sample vocabulary motions load automatically, including short phrases such as “good morning” and “thank you”. The demo plays exact included words and phrases; it does not yet translate unrestricted ISL sentences. You can record or import additional clips in the demo setup.",
   },
   {
     q: "How does a two-way conversation work?",

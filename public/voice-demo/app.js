@@ -10,7 +10,6 @@ const MODELS = {
   face: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
 };
 const DEFAULT_AVATAR = "models/avatar.vrm";
-const BUNDLED_WORDS = ["loud", "quiet", "happy", "sad", "beautiful", "ugly", "deaf", "blind"];
 const FORMAT = 3;
 const FACE_KEYS = ["jawOpen", "mouthSmileLeft", "mouthSmileRight", "mouthPucker", "mouthFunnel", "mouthStretchLeft", "mouthStretchRight", "browInnerUp", "browDownLeft", "browDownRight", "eyeBlinkLeft", "eyeBlinkRight", "eyeWideLeft", "eyeWideRight", "cheekPuff"];
 const FINGERS = [
@@ -115,19 +114,17 @@ const dbDelete = word => tx("readwrite", s => s.delete(word));
 
 const loadLibrary = async () => {
   let all = await dbAll();
-  const known = new Set(all.filter(s => s.v === FORMAT).map(s => s.word));
-  if (BUNDLED_WORDS.some(word => !known.has(word))) {
-    try {
-      const response = await fetch("/voice-demo/sign-library.json", { cache: "force-cache" });
-      if (!response.ok) throw new Error("The included ISL motion library could not be loaded.");
-      const bundled = await response.json();
-      const signs = bundled.version === FORMAT ? bundled.signs ?? [] : [];
-      await Promise.all(signs.filter(sign => sign.word && sign.frames?.length > 1 && !known.has(sign.word)).map(sign => dbPut({ ...sign, v: FORMAT, video: null })));
-      all = await dbAll();
-    } catch (error) {
-      console.error(error);
-      setStatus("The included signs could not be loaded. Try refreshing the demo.", "err");
-    }
+  try {
+    const response = await fetch("/voice-demo/sign-library.json", { cache: "force-cache" });
+    if (!response.ok) throw new Error("The included ISL motion library could not be loaded.");
+    const bundled = await response.json();
+    const signs = bundled.version === FORMAT ? bundled.signs ?? [] : [];
+    const known = new Set(all.filter(s => s.v === FORMAT).map(s => s.word));
+    await Promise.all(signs.filter(sign => sign.word && sign.frames?.length > 1 && !known.has(sign.word)).map(sign => dbPut({ ...sign, v: FORMAT, video: null })));
+    all = await dbAll();
+  } catch (error) {
+    console.error(error);
+    setStatus("The included signs could not be loaded. Try refreshing the demo.", "err");
   }
   state.library = new Map(all.filter(s => s.v === FORMAT).map(s => [s.word, s]));
   renderLibrary();
