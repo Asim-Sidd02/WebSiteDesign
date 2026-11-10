@@ -27,15 +27,15 @@ const FEATURES = [
 
 export function AboutEvent() {
   return (
-    <section id="features" className="relative overflow-hidden bg-brand-950 px-6 py-28">
+    <section id="features" className="relative overflow-hidden bg-white px-6 py-28">
       <div className="pointer-events-none absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-brand-500/60 to-transparent" />
       <div className="container mx-auto">
         <Reveal className="mx-auto max-w-3xl text-center">
           <span className="eyebrow">Features</span>
-          <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
             Why <span className="text-gradient">SignSense</span>?
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-white/60">
+          <p className="mt-5 text-lg leading-relaxed text-gray-600">
             SignSense translates sign language to spoken language in real-time, enhancing
             communication accessibility for the deaf and hard of hearing.
           </p>

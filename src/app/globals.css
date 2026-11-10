@@ -3,26 +3,32 @@
 @tailwind utilities;
 
 html { scroll-behavior: smooth; }
-body { background: #080616; color: #e6e8ff; }
+body { background: #ffffff; color: #0b0b14; }
 
 ::selection { background: #2F2FE4; color: #fff; }
 
 ::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #080616; }
-::-webkit-scrollbar-thumb { background: #1A1953; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #162E93; }
+::-webkit-scrollbar-track { background: #f4f5f9; }
+::-webkit-scrollbar-thumb { background: #c7c9d9; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #2F2FE4; }
 
 @layer components {
   .text-gradient {
-    background: linear-gradient(90deg, #ffffff, #8f8ff7, #2F2FE4, #8f8ff7, #ffffff);
+    background: linear-gradient(90deg, #2F2FE4, #162E93);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-light {
+    background: linear-gradient(90deg, #ffffff, #9a9aff, #2F2FE4, #9a9aff, #ffffff);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .glass {
-    background: linear-gradient(180deg, rgba(26,25,83,0.55), rgba(8,6,22,0.6));
-    border: 1px solid rgba(110,110,255,0.14);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
     backdrop-filter: blur(14px);
   }
   .grid-bg {
@@ -32,7 +38,10 @@ body { background: #080616; color: #e6e8ff; }
     background-size: 56px 56px;
   }
   .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#a5a5ff];
+    @apply inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500;
+  }
+  .eyebrow-dark {
+    @apply border-white/15 bg-white/5 text-white/80;
   }
   .btn-primary {
     @apply relative inline-flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-10px_rgba(47,47,228,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4343ff] hover:shadow-[0_18px_50px_-10px_rgba(47,47,228,1)];

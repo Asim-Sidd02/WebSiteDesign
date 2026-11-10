@@ -10,7 +10,7 @@ const STATS = [
 
 function Hero() {
   return (
-    <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-brand-950">
+    <section className="relative flex min-h-screen w-full items-center overflow-hidden bg-black">
       <video
         className="absolute inset-0 h-full w-full object-cover opacity-30"
         src="/image/video.mp4"
@@ -19,14 +19,14 @@ function Hero() {
         muted
         playsInline
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-950/70 via-brand-800/40 to-brand-950" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black" />
       <div className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-      <div className="pointer-events-none absolute -left-40 top-1/4 h-[30rem] w-[30rem] animate-glow rounded-full bg-brand-500/40 blur-[120px]" />
-      <div className="pointer-events-none absolute -right-40 bottom-0 h-[34rem] w-[34rem] animate-glow rounded-full bg-brand-700/50 blur-[140px] [animation-delay:3s]" />
+      <div className="pointer-events-none absolute -left-40 top-1/4 h-[30rem] w-[30rem] animate-glow rounded-full bg-brand-500/30 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-40 bottom-0 h-[34rem] w-[34rem] animate-glow rounded-full bg-brand-700/40 blur-[140px] [animation-delay:3s]" />
 
       <div className="container relative z-10 mx-auto px-6 pt-24 text-center">
         <div className="animate-fade-up">
-          <span className="eyebrow">
+          <span className="eyebrow eyebrow-dark">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-500 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#6b6bff]" />
@@ -37,7 +37,7 @@ function Hero() {
 
         <h1 className="mx-auto mt-8 max-w-4xl animate-fade-up text-5xl font-extrabold leading-[1.05] tracking-tight text-white [animation-delay:150ms] sm:text-6xl lg:text-7xl">
           Your bridge to the world of{" "}
-          <span className="text-gradient animate-shimmer">silent communication</span>
+          <span className="text-gradient-light animate-shimmer">silent communication</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl animate-fade-up text-lg leading-relaxed text-white/60 [animation-delay:300ms]">
