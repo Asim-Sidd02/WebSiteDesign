@@ -1,3 +1,4 @@
+import "@designcodeio/threeui/style.css";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
