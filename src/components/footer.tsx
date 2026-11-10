@@ -1,61 +1,42 @@
-import { Typography, Button, IconButton } from "@material-tailwind/react";
 import Image from "next/image";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const CURRENT_YEAR = new Date().getFullYear();
 const LINKS = ["Company", "About Us", "Team", "Services", "Blog"];
+const SOCIALS = ["twitter", "youtube", "instagram"];
 
 export function Footer() {
   return (
-    <footer className="pb-5 p-10 md:pt-10">
-      <div className="container flex flex-col mx-auto">
-        
-        <div className="flex flex-col md:flex-row items-center !justify-between">
-        <Image src="/image/signsense.png" alt="Logo" width={60} height={60} />
-         
-          <ul className="flex justify-center my-4 md:my-0 w-max mx-auto items-center gap-4">
-            {LINKS.map((link, index) => (
-              <li key={index}>
-                <Typography
-                 placeholder=""
-                 onPointerEnterCapture={() => {}}
-                 onPointerLeaveCapture={() => {}}
-                  as="a"
-                  href="#"
-                  variant="small"
-                  color="white"
-                  className="font-normal !text-gray-700 hover:!text-gray-900 transition-colors"
-                >
-                  {link}
-                </Typography>
-              </li>
-            ))}
-          </ul>
-          <div className="flex w-fit justify-center gap-2">
-            <IconButton size="sm" color="gray" variant="text"
-             placeholder=""
-             onPointerEnterCapture={() => {}}
-             onPointerLeaveCapture={() => {}}>
-              <i className="fa-brands fa-twitter text-lg" />
-            </IconButton>
-            <IconButton size="sm" color="gray" variant="text"
-             placeholder=""
-             onPointerEnterCapture={() => {}}
-             onPointerLeaveCapture={() => {}}>
-              <i className="fa-brands fa-youtube text-lg" />
-            </IconButton>
-            <IconButton size="sm" color="gray" variant="text"
-             placeholder=""
-             onPointerEnterCapture={() => {}}
-             onPointerLeaveCapture={() => {}}>
-              <i className="fa-brands fa-instagram text-lg" />
-            </IconButton>
-         
-          </div>
+    <footer className="border-t border-white/10 bg-brand-950 px-6 py-10">
+      <div className="container mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
+        <div className="flex items-center gap-3">
+          <Image src="/image/signsense.png" alt="SignSense logo" width={40} height={40} />
+          <span className="font-bold text-white">SignSense</span>
         </div>
-      
+        <ul className="flex flex-wrap justify-center gap-6">
+          {LINKS.map((link) => (
+            <li key={link}>
+              <a href="#" className="text-sm text-white/50 transition-colors hover:text-white">
+                {link}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="flex gap-2">
+          {SOCIALS.map((s) => (
+            <a
+              key={s}
+              href="#"
+              aria-label={s}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/60 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-500 hover:bg-brand-500 hover:text-white"
+            >
+              <i className={`fa-brands fa-${s}`} />
+            </a>
+          ))}
+        </div>
       </div>
+      <p className="mt-8 text-center text-xs text-white/40">
+        © {CURRENT_YEAR} SignSense. All rights reserved.
+      </p>
     </footer>
   );
 }

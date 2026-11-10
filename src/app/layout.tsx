@@ -1,18 +1,18 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Layout, FixedPlugin } from "@/components";
 
-const roboto = Roboto({
+const roboto = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "900"],
+
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "NextJS Tailwind Event Landing Page",
+  title: "SignSense | Real-time Sign Language Translation",
   description:
-    "Introducing Tailwind Event Landing Page, a dynamic and visually appealing landing page template designed using Tailwind CSS and Material Tailwind.",
+    "SignSense translates sign language to text and text to sign in real-time.",
 };
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
         ></script>
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
       </head>
-      <body className={roboto.className}>
+      <body className={roboto.className + " bg-brand-950 antialiased"}>
         <Layout>
           {children}
           <FixedPlugin />

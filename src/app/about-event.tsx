@@ -1,57 +1,52 @@
 "use client";
 
-import { Typography } from "@material-tailwind/react";
+import { BoltIcon, ArrowsRightLeftIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
 import AboutCard from "@/components/about-card";
+import { Reveal } from "@/components/reveal";
 
-const EVENT_INFO = [
+const FEATURES = [
   {
-    title: "Real-Time Translation!",
+    icon: BoltIcon,
+    title: "Real-Time Translation",
     description:
-      "SignSense is a real-time translation tool that can translate spoken or written content as it occurs. This means that you can have conversations, presentations, or collaborations with people who speak different languages without having to wait for a manual translation or rely on an external translator. SignSense will translate everything immediately and accurately, so you can communicate more efficiently and productively.",
-    subTitle: "",
+      "Translate content as it happens. Hold conversations, presentations and collaborations without waiting on manual translation or an external interpreter. SignSense works instantly and accurately.",
   },
   {
-    title: "Two-Way Translation!",
+    icon: ArrowsRightLeftIcon,
+    title: "Two-Way Translation",
     description:
-      "SignSense is also great for two-way conversations! You and someone who speaks a different language can talk naturally, and SignSense will translate between you in real-time. This eliminates the need for an interpreter or struggling with language barriers. So you can have clear and effective conversations, face-to-face, on the phone, or even over video conferencing.",
-    subTitle: "",
+      "Talk naturally in both directions. SignSense translates between you in real-time, face-to-face, on the phone, or over video calls, removing the need for an interpreter.",
+  },
+  {
+    icon: GlobeAltIcon,
+    title: "Multilingual Support",
+    description:
+      "From English, Spanish and Mandarin to less common languages, SignSense breaks down barriers so you can collaborate globally and understand each other across cultures.",
   },
 ];
 
 export function AboutEvent() {
   return (
-    <section id="features" className="container mx-auto flex flex-col items-center px-4 py-10">
-      <Typography variant="h6" className="text-center mb-2" color="orange"
-       placeholder=""
-       onPointerEnterCapture={() => {}}
-       onPointerLeaveCapture={() => {}}>
-        Features
-      </Typography>
-      <Typography variant="h3" className="text-center" color="blue-gray"
-       placeholder=""
-       onPointerEnterCapture={() => {}}
-       onPointerLeaveCapture={() => {}}>
-        Why Sign Sense?
-      </Typography>
-      <Typography
-        variant="lead"
-        className="mt-2 lg:max-w-4xl mb-8 w-full text-center font-normal !text-gray-500"
-        placeholder=""
-        onPointerEnterCapture={() => {}}
-        onPointerLeaveCapture={() => {}}
-      >
-       SignSense translates sign language to spoken language in real-time, enhancing communication accessibility for the deaf and hard of hearing.
-      </Typography>
-      <div className="mt-8 w-full grid grid-cols-1 md:grid-cols-2 gap-4 ">
-        {EVENT_INFO.map((props, idx) => (
-          <AboutCard key={idx} {...props} />
-        ))}
-        <div className="md:col-span-2">
-          <AboutCard
-            title="Multilingual Support!"
-            subTitle=""
-            description="SignSense is even better because it supports a wide range of languages, from common ones like English, Spanish, and Mandarin to less common languages. This means you can communicate with basically anyone around the world, regardless of their native language. SignSense breaks down those language barriers so you can have inclusive conversations, collaborate globally, and understand each other across cultures."
-          />
+    <section id="features" className="relative overflow-hidden bg-brand-950 px-6 py-28">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-gradient-to-r from-transparent via-brand-500/60 to-transparent" />
+      <div className="container mx-auto">
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <span className="eyebrow">Features</span>
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            Why <span className="text-gradient">SignSense</span>?
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-white/60">
+            SignSense translates sign language to spoken language in real-time, enhancing
+            communication accessibility for the deaf and hard of hearing.
+          </p>
+        </Reveal>
+
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {FEATURES.map((f, i) => (
+            <Reveal key={f.title} delay={i * 120} className="h-full">
+              <AboutCard {...f} />
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

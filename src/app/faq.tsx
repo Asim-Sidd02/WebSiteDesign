@@ -1,87 +1,118 @@
 "use client";
 
 import React from "react";
-import { Typography, Accordion, AccordionHeader, AccordionBody } from "@material-tailwind/react";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import { Reveal } from "@/components/reveal";
 
 const FAQS = [
   {
-    title: "1. How do I use SignSense for two-way conversations?",
-    desc: "SignSense allows both parties to speak naturally in their respective languages. The app will translate the conversation in real-time, ensuring clear communication.",
+    title: "How do I use SignSense for two-way conversations?",
+    desc: "SignSense allows both parties to communicate naturally in their respective languages. The app translates the conversation in real-time, ensuring clear communication.",
   },
   {
-    title: "2. Can I use SignSense with video conferencing?",
-    desc: "Yes! SignSense can be used to facilitate seamless communication during video conferences, even when participants speak different languages.",
+    title: "Can I use SignSense with video conferencing?",
+    desc: "Yes! SignSense facilitates seamless communication during video conferences, even when participants communicate in different languages.",
   },
   {
-    title: "3.How can SignSense help me with my career?",
+    title: "How can SignSense help me with my career?",
     desc: "By breaking down language barriers, SignSense opens doors to global opportunities. You can attend conferences, collaborate with international clients, or even interview for jobs overseas.",
   },
   {
-    title: "4. What languages does SignSense support?",
-    desc: "SignSense offers comprehensive multilingual support, translating content to and from a wide range of languages, including common ones like English, Spanish, and Mandarin, as well as less common languages.",
+    title: "What languages does SignSense support?",
+    desc: "SignSense offers comprehensive multilingual support, translating to and from a wide range of languages, including English, Spanish and Mandarin, as well as less common languages.",
   },
- 
 ];
 
 export function Faq() {
-  const [open, setOpen] = React.useState(0);
-  const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
+  const [open, setOpen] = React.useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-8 px-8 lg:py-20">
+    <section id="faq" className="relative bg-brand-950 px-6 py-28">
       <div className="container mx-auto">
-        <div className="text-center">
-          <Typography variant="h1" color="blue-gray" className="mb-4"
-           placeholder=""
-           onPointerEnterCapture={() => {}}
-           onPointerLeaveCapture={() => {}}>
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <span className="eyebrow">FAQ</span>
+          <h2 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
             Frequently asked questions
-          </Typography>
-          <Typography
-            variant="lead"
-            className="mx-auto mb-24 lg:w-3/5 !text-gray-500"
-            placeholder=""
-            onPointerEnterCapture={() => {}}
-            onPointerLeaveCapture={() => {}}
-          >
-          Welcome to the SignSense FAQ!  We are here to address your most common queries and equip you with the information you need to unlock the power of seamless communication.  SignSense empowers you to bridge language barriers and connect with the world around you.
-          </Typography>
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-white/60">
+            Everything you need to know to unlock seamless communication with SignSense.
+          </p>
+        </Reveal>
+
+        <div className="mx-auto mt-16 flex max-w-3xl flex-col gap-4">
+          {FAQS.map(({ title, desc }, i) => {
+            const isOpen = open === i;
+            return (
+              <Reveal key={i} delay={i * 80}>
+                <div
+                  className={`glass overflow-hidden rounded-2xl transition-all duration-300 ${
+                    isOpen
+                      ? "!border-brand-500/50 shadow-[0_10px_40px_-15px_rgba(47,47,228,0.7)]"
+                      : "hover:!border-white/20"
+                  }`}
+                >
+                  <button
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="font-semibold text-white">{title}</span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                        isOpen ? "rotate-45 border-brand-500 bg-brand-500" : "border-white/15"
+                      }`}
+                    >
+                      <PlusIcon className="h-4 w-4 text-white" />
+                    </span>
+                  </button>
+                  <div
+                    className={`grid transition-all duration-500 ease-out ${
+                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="min-h-0">
+                      <p className="px-6 pb-6 leading-relaxed text-white/60">{desc}</p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
 
-        <div className="mx-auto lg:max-w-screen-lg lg:px-20">
-          {FAQS.map(({ title, desc }, key) => (
-            <Accordion
-            placeholder=""
-            onPointerEnterCapture={() => {}}
-            onPointerLeaveCapture={() => {}}
-              key={key}
-              open={open === key + 1}
-              onClick={() => handleOpen(key + 1)}
-            >
-              <AccordionHeader className="text-left text-gray-900"
-               placeholder=""
-               onPointerEnterCapture={() => {}}
-               onPointerLeaveCapture={() => {}}>
-                {title}
-              </AccordionHeader>
-              <AccordionBody>
-                <Typography
-                  color="blue-gray"
-                  className="font-normal text-gray-500"
-                  placeholder=""
-                  onPointerEnterCapture={() => {}}
-                  onPointerLeaveCapture={() => {}}
+        <Reveal className="mx-auto mt-28 max-w-5xl">
+          <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-500 via-brand-700 to-brand-800 p-10 text-center sm:p-16">
+            <div className="grid-bg absolute inset-0 opacity-40" />
+            <div className="absolute -right-20 -top-20 h-64 w-64 animate-float rounded-full bg-white/10 blur-2xl" />
+            <div className="relative">
+              <h3 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Start communicating without barriers
+              </h3>
+              <p className="mx-auto mt-4 max-w-xl text-white/75">
+                Try SignSense today and experience real-time sign language translation.
+              </p>
+              <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-brand-800 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
                 >
-                  {desc}
-                </Typography>
-              </AccordionBody>
-            </Accordion>
-          ))}
-        </div>
+                  Sign to Text
+                </a>
+                <a
+                  href="https://text2signs.netlify.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost justify-center"
+                >
+                  Text to Sign
+                </a>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
-
 
 export default Faq;
