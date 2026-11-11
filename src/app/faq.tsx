@@ -30,11 +30,11 @@ export function Faq() {
   const [open, setOpen] = React.useState<number | null>(0);
 
   return (
-    <section id="faq" className="mx-auto max-w-7xl px-5 py-28 sm:px-8 sm:py-36">
-      <div className="grid gap-16 lg:grid-cols-[1fr_1.4fr]">
+    <section id="faq" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-36">
+      <div className="grid gap-10 sm:gap-16 lg:grid-cols-[1fr_1.4fr]">
         <div>
           <p className="label">Questions</p>
-          <h2 className="display mt-6 text-5xl sm:text-7xl">
+          <h2 className="display mt-5 text-[2.6rem] sm:mt-6 sm:text-7xl">
             Good <span className="italic text-brand-500">questions.</span>
           </h2>
           <p className="mt-6 max-w-sm text-ink/60">
@@ -54,13 +54,13 @@ export function Faq() {
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-6 py-7 text-left"
+                  className="flex w-full items-center justify-between gap-5 py-5 text-left sm:gap-6 sm:py-7"
                 >
-                  <span className="text-xl font-medium tracking-tight sm:text-2xl">{q}</span>
+                  <span className="text-lg font-medium leading-snug tracking-tight sm:text-2xl">{q}</span>
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-2xl font-light text-brand-500"
+                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-brand-500/20 text-xl font-light text-brand-500"
                   >
                     +
                   </motion.span>
@@ -74,7 +74,7 @@ export function Faq() {
                       transition={{ duration: 0.4, ease: [0.2, 0.7, 0.2, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="max-w-xl pb-8 leading-relaxed text-ink/60">{a}</p>
+                      <p className="max-w-xl pb-6 text-[15px] leading-relaxed text-ink/60 sm:pb-8 sm:text-base">{a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

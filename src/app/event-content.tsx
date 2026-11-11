@@ -33,11 +33,11 @@ const USE_CASES = [
 export function EventContent() {
   return (
     <section id="use-case" className="border-y border-ink/10 bg-white">
-      <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-32">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="label">Where SignSense fits</p>
-            <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.045em] sm:text-6xl">
+            <h2 className="mt-5 max-w-3xl text-[2.25rem] font-semibold sm:text-4xl leading-tight tracking-[-0.045em] sm:text-6xl">
               Communication that moves with <span className="text-brand-500">you.</span>
             </h2>
           </div>
@@ -46,15 +46,17 @@ export function EventContent() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-2">
-          {USE_CASES.map((item, i) => (
-            <motion.article
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-70px" }}
+          transition={{ duration: 0.65 }}
+          className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:mt-14 sm:grid sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-2"
+        >
+          {USE_CASES.map((item) => (
+            <article
               key={item.tag}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-70px" }}
-              transition={{ duration: 0.65, delay: i * 0.1 }}
-              className={`overflow-hidden rounded-2xl border border-ink/10 bg-paper ${item.wide ? "lg:col-span-2 lg:grid lg:grid-cols-2" : ""}`}
+              className={`w-[86%] shrink-0 snap-start overflow-hidden rounded-2xl border border-ink/10 bg-paper sm:w-auto ${item.wide ? "lg:col-span-2 lg:grid lg:grid-cols-2" : ""}`}
             >
               <div className={`relative aspect-[16/9] overflow-hidden bg-[#e8e5df] ${item.wide ? "lg:aspect-auto lg:min-h-[340px]" : ""}`}>
                 <Image
@@ -65,16 +67,19 @@ export function EventContent() {
                   className="object-cover transition-transform duration-700 hover:scale-[1.02]"
                 />
               </div>
-              <div className={`p-7 sm:p-9 ${item.wide ? "lg:flex lg:flex-col lg:justify-center lg:p-12" : ""}`}>
+              <div className={`p-6 sm:p-9 ${item.wide ? "lg:flex lg:flex-col lg:justify-center lg:p-12" : ""}`}>
                 <p className="label">{item.tag}</p>
-                <h3 className="mt-3 max-w-xl text-2xl font-semibold leading-tight tracking-[-0.03em] sm:text-3xl">
+                <h3 className="mt-3 max-w-xl text-xl font-semibold sm:text-2xl leading-tight tracking-[-0.03em] sm:text-3xl">
                   {item.title}
                 </h3>
-                <p className="mt-3 max-w-xl leading-7 text-ink/60">{item.body}</p>
+                <p className="mt-3 max-w-xl text-[15px] leading-7 text-ink/60 sm:text-base">{item.body}</p>
               </div>
-            </motion.article>
+            </article>
           ))}
-        </div>
+        </motion.div>
+        <p className="mt-4 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-ink/40 sm:hidden" aria-hidden="true">
+          Swipe for more →
+        </p>
       </div>
     </section>
   );

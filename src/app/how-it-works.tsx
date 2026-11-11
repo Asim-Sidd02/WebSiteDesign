@@ -24,7 +24,7 @@ export default function HowItWorks() {
   return (
     <section id="how" className="relative overflow-hidden bg-ink text-white">
       <div className="pointer-events-none absolute -left-40 top-0 h-[30rem] w-[30rem] rounded-full bg-brand-500/20 blur-[140px]" />
-      <div className="relative mx-auto max-w-7xl px-5 py-28 sm:px-8 sm:py-36">
+      <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-36">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <h2 className="display text-5xl sm:text-7xl">
             How it <span className="text-[#8c8cff]">works</span>
@@ -34,7 +34,7 @@ export default function HowItWorks() {
           </p>
         </div>
 
-        <div className="mt-20 grid gap-px overflow-hidden rounded-2xl bg-white/10 md:grid-cols-3">
+        <div className="mt-10 grid gap-px sm:mt-20 overflow-hidden rounded-2xl bg-white/10 md:grid-cols-3">
           {STEPS.map((s, i) => (
             <motion.div
               key={s.n}
@@ -42,10 +42,10 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.8, delay: i * 0.1, ease: [0.2, 0.7, 0.2, 1] }}
-              className="group bg-ink p-8 transition-colors duration-500 hover:bg-brand-800 sm:p-10"
+              className="group bg-ink p-7 transition-colors duration-500 hover:bg-brand-800 sm:p-10"
             >
               <span className="font-mono text-sm text-white/40">{s.n}</span>
-              <h3 className="display mt-16 text-4xl">{s.title}</h3>
+              <h3 className="display mt-6 text-3xl sm:mt-16 sm:text-4xl">{s.title}</h3>
               <p className="mt-4 leading-relaxed text-white/60">{s.body}</p>
             </motion.div>
           ))}

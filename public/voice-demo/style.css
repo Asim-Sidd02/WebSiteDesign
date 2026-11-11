@@ -125,15 +125,15 @@ button.danger { border-color: var(--danger); background: var(--danger); color: #
   .text-button { margin-left: 0; }
 }
 @media (max-width: 420px) {
-  .panel-heading { gap: 8px; }
-  .panel-actions { flex-direction: column-reverse; align-items: flex-end; }
-  .fullscreen-cta { max-width: 100%; white-space: normal; }
+  .panel-heading { gap: 10px; }
+  .panel-heading h2 { font-size: 1.05rem; }
+  .isl-tag { display: none; }
   .avatar-stage:fullscreen .fullscreen-controls { top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); left: max(12px, env(safe-area-inset-left)); flex-wrap: wrap; justify-content: flex-end; }
 }
 @media (max-width: 420px) {
   .voice-row { align-items: flex-start; flex-direction: column; }
   .voice-row select { width: 100%; }
-  .action-row button { flex: 1 1 100%; }
+  .action-row button { flex: 1 1 0; min-height: 46px; padding-inline: 10px; }
 }
 
 /* Embed mode (?embed=1): only the avatar, driven by the parent page (e.g. the sign dictionary). */
@@ -144,3 +144,21 @@ html.embed, html.embed body { height: 100%; overflow: hidden; padding: 0; backgr
 .embed .demo-grid { display: block; height: 100%; }
 .embed .avatar-stage { width: 100%; height: 100%; max-height: none; aspect-ratio: auto; border: 0; border-radius: 0; }
 .embed .avatar-stage .caption { font-size: clamp(1rem, 4vw, 1.6rem); }
+
+/* Framed mode (?framed=1): the website supplies the card and heading, so drop the duplicates. */
+html.framed body { padding-bottom: 0; background: #fff; }
+.framed .demo-header { padding: 12px clamp(16px, 3vw, 30px); border-bottom: 1px solid var(--line); background: #fafaf8; }
+.framed .demo-header > div { display: none; }
+.framed .status { display: inline-flex; align-items: center; gap: 8px; font-size: .8rem; font-weight: 500; }
+.framed .status::before { content: ""; width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: currentColor; opacity: .8; }
+.framed main { padding: 0; }
+.framed .demo-panel { border: 0; border-radius: 0; box-shadow: none; }
+.framed .setup-details { margin: 0; padding: 0 clamp(18px, 3vw, 30px) 22px; }
+@media (max-width: 760px) {
+  .framed .demo-panel { padding: 16px; }
+  .framed .demo-controls { padding-top: 2px; }
+  .framed .demo-controls input:not([type]) { font-size: 16px; }  /* 16px stops iOS zooming into the field */
+  .framed .avatar-tools { gap: 12px 16px; }
+  .framed .avatar-tools .range { flex: 1 1 100%; }
+  .framed .avatar-tools .range input { flex: 1; width: auto; }
+}

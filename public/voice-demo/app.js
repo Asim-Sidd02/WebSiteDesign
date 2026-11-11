@@ -1113,7 +1113,7 @@ el.fullscreenBtn.addEventListener("click", async () => {
 document.addEventListener("fullscreenchange", () => {
   const isFullscreen = document.fullscreenElement === avatarStage;
   el.fullscreenBtn.setAttribute("aria-pressed", String(isFullscreen));
-  el.fullscreenBtn.querySelector("span").textContent = isFullscreen ? "Exit full screen" : "Full-screen avatar";
+  el.fullscreenBtn.querySelector("span").textContent = isFullscreen ? "Exit full screen" : "Full screen";
   resizeAvatar();
   resetView();
 });

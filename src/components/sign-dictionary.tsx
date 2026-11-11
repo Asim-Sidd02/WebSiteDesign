@@ -201,38 +201,38 @@ export default function SignDictionary() {
 
   return (
     <section className="bg-paper">
-      <div className="mx-auto max-w-7xl px-5 pb-20 pt-10 sm:px-8 sm:pb-28 sm:pt-16">
-        <header className="grid gap-8 border-b border-ink/10 pb-10 md:grid-cols-[1fr_auto] md:items-end">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-8 sm:pb-28 sm:pt-16">
+        <header className="grid gap-7 border-b border-ink/10 px-1 pb-8 sm:gap-8 sm:px-0 sm:pb-10 md:grid-cols-[1fr_auto] md:items-end">
           <div>
             <p className="label">Indian Sign Language dictionary</p>
-            <h1 className="display mt-5 max-w-3xl text-5xl sm:text-7xl">
+            <h1 className="display mt-4 max-w-3xl text-[2.6rem] sm:mt-5 sm:text-7xl">
               Every sign, <span className="italic text-brand-500">on demand.</span>
             </h1>
-            <p className="mt-6 max-w-2xl leading-7 text-ink/60">
+            <p className="mt-4 max-w-2xl text-[15px] leading-7 text-ink/60 sm:mt-6 sm:text-base">
               Search the SignSense vocabulary and watch the 3D avatar sign each word. Every motion comes from Deaf signers recorded for open
               research datasets. Each word has its own link, so you can share it.
             </p>
           </div>
-          <dl className="grid grid-cols-3 gap-6 text-left md:text-right">
+          <dl className="grid grid-cols-3 divide-x divide-ink/10 rounded-2xl border border-ink/10 bg-white text-center md:divide-x-0 md:border-0 md:bg-transparent md:text-right md:gap-8">
             {[
               [signs ? String(signs.length) : "–", "signs"],
               [signs ? String(topics.length) : "–", "topics"],
-              ["2", "open datasets"],
+              ["2", "datasets"],
             ].map(([value, label]) => (
-              <div key={label}>
+              <div key={label} className="px-3 py-4 md:p-0">
                 <dt className="label">{label}</dt>
-                <dd className="mt-2 text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">{value}</dd>
+                <dd className="mt-1.5 text-2xl font-semibold tracking-[-0.04em] sm:mt-2 sm:text-4xl">{value}</dd>
               </div>
             ))}
           </dl>
         </header>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px]">
+        <div className="mt-6 grid gap-8 sm:mt-10 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_420px] xl:grid-cols-[minmax(0,1fr)_460px]">
           {/* Player first in the DOM so it sits on top on phones */}
           <aside ref={playerRef} className="scroll-mt-24 lg:order-2">
             <div className="lg:sticky lg:top-24">
               <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-[0_24px_70px_-45px_rgba(13,13,18,0.35)]">
-                <div className="relative aspect-square max-h-[60vh] w-full bg-[radial-gradient(ellipse_at_50%_32%,#e9e8ff,#d8d6f4_75%)] lg:max-h-none">
+                <div className="relative aspect-[5/4] w-full bg-[radial-gradient(ellipse_at_50%_32%,#e9e8ff,#d8d6f4_75%)] sm:aspect-square">
                   <iframe
                     ref={frameRef}
                     src="/voice-demo/index.html?embed=1"
@@ -250,12 +250,12 @@ export default function SignDictionary() {
                   </span>
                 </div>
 
-                <div className="p-6 sm:p-7">
+                <div className="p-5 sm:p-7">
                   {current ? (
                     <>
                       <p className="label">{current.topic}</p>
-                      <h2 className="mt-2 text-4xl font-semibold tracking-[-0.045em]">{display(current.word)}</h2>
-                      <dl className="mt-5 grid grid-cols-2 gap-4 border-y border-ink/10 py-4 text-sm">
+                      <h2 className="mt-2 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">{display(current.word)}</h2>
+                      <dl className="mt-4 grid grid-cols-2 gap-4 border-y border-ink/10 py-4 text-sm sm:mt-5">
                         <div>
                           <dt className="text-ink/45">Duration</dt>
                           <dd className="mt-1 font-medium">{seconds(current.duration)}</dd>
@@ -269,11 +269,11 @@ export default function SignDictionary() {
                           </dd>
                         </div>
                       </dl>
-                      <div className="mt-5 flex flex-wrap gap-2.5">
+                      <div className="mt-5 grid grid-cols-3 gap-2">
                         <button
                           onClick={() => play(current.word)}
                           disabled={!ready}
-                          className="inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-500 disabled:opacity-40"
+                          className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-ink px-2 py-3 text-[13px] font-semibold text-white sm:text-sm transition-colors hover:bg-brand-500 disabled:opacity-40"
                         >
                           <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
@@ -284,15 +284,16 @@ export default function SignDictionary() {
                         <button
                           onClick={toggleSlow}
                           aria-pressed={slow}
+                          aria-label="Slow motion, half speed"
                           disabled={!ready}
-                          className={`rounded-lg border px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-40 ${
+                          className={`rounded-lg border px-2 py-3 text-[13px] font-semibold transition-colors disabled:opacity-40 sm:text-sm ${
                             slow ? "border-brand-500 bg-brand-500/10 text-brand-700" : "border-ink/15 hover:border-ink/40"
                           }`}
                         >
-                          {slow ? "Slow motion · 0.5×" : "Slow motion"}
+                          {slow ? "0.5× ✓" : "Slow 0.5×"}
                         </button>
-                        <button onClick={copyLink} className="rounded-lg border border-ink/15 px-4 py-2.5 text-sm font-semibold transition-colors hover:border-ink/40">
-                          <span aria-live="polite">{copied ? "Link copied ✓" : "Copy link"}</span>
+                        <button onClick={copyLink} className="rounded-lg border border-ink/15 px-2 py-3 text-[13px] font-semibold sm:text-sm transition-colors hover:border-ink/40">
+                          <span aria-live="polite">{copied ? "Copied ✓" : "Copy link"}</span>
                         </button>
                       </div>
                       <a href="/demo" className="mt-5 inline-block text-sm font-semibold text-brand-600 underline decoration-brand-500/30 underline-offset-4 hover:decoration-brand-500">
@@ -304,7 +305,7 @@ export default function SignDictionary() {
                   )}
                 </div>
               </div>
-              <p className="mt-4 text-xs leading-5 text-ink/45">
+              <p className="mt-4 px-1 text-xs leading-5 text-ink/45 sm:px-0">
                 These are prototype motions retargeted from video, not yet reviewed by Deaf ISL experts. ISL varies by region; some signs may differ
                 where you live. <a href="/voice-demo/SOURCES.md" className="underline underline-offset-2 hover:text-ink">Sources and licences</a>.
               </p>
@@ -323,20 +324,20 @@ export default function SignDictionary() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && results[0] && select(results[0].word)}
-                placeholder="Search a word, e.g. friend, today, thank you"
+                placeholder="Search a word, e.g. friend"
                 aria-label="Search signs"
-                className="w-full rounded-xl border border-ink/15 bg-white py-4 pl-12 pr-14 text-base outline-none transition placeholder:text-ink/35 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+                className="w-full rounded-xl border border-ink/15 bg-white py-3.5 pl-12 pr-4 text-base sm:py-4 sm:pr-14 outline-none transition placeholder:text-ink/35 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
               />
               <kbd className={`pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 ${query ? "hidden" : "hidden sm:block"} rounded-md border border-ink/15 px-2 py-0.5 font-mono text-xs text-ink/40`}>/</kbd>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filter by topic">
+            <div className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" aria-label="Filter by topic">
               {[["All", signs?.length ?? 0] as [string, number], ...topics].map(([name, count]) => (
                 <button
                   key={name}
                   onClick={() => setTopic(name)}
                   aria-pressed={topic === name}
-                  className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
+                  className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-2 text-sm transition-colors sm:py-1.5 ${
                     topic === name ? "border-ink bg-ink text-white" : "border-ink/10 bg-white text-ink/70 hover:border-ink/35 hover:text-ink"
                   }`}
                 >
@@ -346,16 +347,16 @@ export default function SignDictionary() {
             </div>
 
             {!q && groups.length > 6 && (
-              <nav aria-label="Jump to letter" className="mt-6 flex flex-wrap gap-1 font-mono text-xs">
+              <nav aria-label="Jump to letter" className="no-scrollbar -mx-4 mt-5 flex gap-1 overflow-x-auto px-4 font-mono text-xs sm:mx-0 sm:mt-6 sm:flex-wrap sm:px-0">
                 {groups.map(([letter]) => (
-                  <a key={letter} href={`#letter-${letter}`} className="grid h-7 w-7 place-items-center rounded-md text-ink/55 hover:bg-ink hover:text-white">
+                  <a key={letter} href={`#letter-${letter}`} className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-ink/55 hover:bg-ink hover:text-white sm:h-7 sm:w-7 sm:rounded-md">
                     {letter}
                   </a>
                 ))}
               </nav>
             )}
 
-            <div className="mt-8" aria-live="polite">
+            <div className="mt-6 sm:mt-8" aria-live="polite">
               {signs && results.length === 0 && (
                 <div className="rounded-2xl border border-dashed border-ink/15 bg-white px-6 py-12 text-center">
                   <p className="text-lg font-medium">No sign for “{query.trim()}” yet</p>
