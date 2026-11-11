@@ -1,0 +1,480 @@
+{
+ "version": 3,
+ "sources": [
+  {
+   "name": "Amrita SLR- Real Time ISL Dataset",
+   "doi": "10.17632/dtg9s785v8.1",
+   "authors": "Renjith Sasidharan, Manazhy Rashmi, Krishnaraj S Nair, Heera Krishna N S, Karunya Muraleedharan, Nachiketh Gupta Bellamkonda, Suraneni Manideep Rao, Sohit Avvari, Poojari Bhanu Prakash, and Davala Tejeswara Rao",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "changes": "Selected signer videos were converted to pose and hand landmark motion tracks, smoothed by MediaPipe, and retargeted to the SignSense VRM avatar. Source videos are not redistributed here."
+  },
+  {
+   "name": "INCLUDE: A Large Scale Dataset for Indian Sign Language Recognition",
+   "authors": "Advaith Sridhar, Rohith Gandhi Ganesan, Pratyush Kumar, and Mitesh Khapra (AI4Bharat)",
+   "doi": "10.1145/3394171.3413528",
+   "url": "https://zenodo.org/records/4010759",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "changes": "Selected recordings were converted to pose and hand landmark motion tracks with MediaPipe and retargeted to the SignSense VRM avatar. Source videos are not redistributed here."
+  }
+ ],
+ "signs": [
+  {
+   "word": "afternoon",
+   "file": "afternoon.json",
+   "duration": 2133,
+   "frames": 65,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Days and time"
+  },
+  {
+   "word": "angry",
+   "file": "angry.json",
+   "duration": 1600,
+   "frames": 49,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "bad",
+   "file": "bad.json",
+   "duration": 1567,
+   "frames": 48,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "beautiful",
+   "file": "beautiful.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "bird",
+   "file": "bird.json",
+   "duration": 1867,
+   "frames": 57,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Animals"
+  },
+  {
+   "word": "black",
+   "file": "black.json",
+   "duration": 1833,
+   "frames": 56,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Colours"
+  },
+  {
+   "word": "blind",
+   "file": "blind.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "boy",
+   "file": "boy.json",
+   "duration": 2067,
+   "frames": 63,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "brother",
+   "file": "brother.json",
+   "duration": 3800,
+   "frames": 115,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "cat",
+   "file": "cat.json",
+   "duration": 2300,
+   "frames": 70,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Animals"
+  },
+  {
+   "word": "cow",
+   "file": "cow.json",
+   "duration": 2300,
+   "frames": 70,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Animals"
+  },
+  {
+   "word": "deaf",
+   "file": "deaf.json",
+   "duration": 2400,
+   "frames": 61,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "dog",
+   "file": "dog.json",
+   "duration": 2600,
+   "frames": 79,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Animals"
+  },
+  {
+   "word": "drink",
+   "file": "drink.json",
+   "duration": 2400,
+   "frames": 73,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "eat",
+   "file": "eat.json",
+   "duration": 2667,
+   "frames": 81,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "evening",
+   "file": "evening.json",
+   "duration": 2333,
+   "frames": 71,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Days and time"
+  },
+  {
+   "word": "father",
+   "file": "father.json",
+   "duration": 2633,
+   "frames": 80,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "fish",
+   "file": "fish.json",
+   "duration": 2867,
+   "frames": 87,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Animals"
+  },
+  {
+   "word": "friend",
+   "file": "friend.json",
+   "duration": 1867,
+   "frames": 57,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "girl",
+   "file": "girl.json",
+   "duration": 2067,
+   "frames": 63,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "good",
+   "file": "good.json",
+   "duration": 1900,
+   "frames": 58,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "good morning",
+   "file": "good-morning.json",
+   "duration": 1600,
+   "frames": 49,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Greetings"
+  },
+  {
+   "word": "grey",
+   "file": "grey.json",
+   "duration": 2167,
+   "frames": 66,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Colours"
+  },
+  {
+   "word": "hand",
+   "file": "hand.json",
+   "duration": 1267,
+   "frames": 39,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Body"
+  },
+  {
+   "word": "happy",
+   "file": "happy.json",
+   "duration": 2800,
+   "frames": 71,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "hello",
+   "file": "hello.json",
+   "duration": 1933,
+   "frames": 59,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Greetings"
+  },
+  {
+   "word": "help",
+   "file": "help.json",
+   "duration": 2467,
+   "frames": 75,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "loud",
+   "file": "loud.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "monsoon",
+   "file": "monsoon.json",
+   "duration": 2300,
+   "frames": 70,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Seasons"
+  },
+  {
+   "word": "mother",
+   "file": "mother.json",
+   "duration": 2633,
+   "frames": 80,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "music",
+   "file": "music.json",
+   "duration": 6467,
+   "frames": 195,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Everyday"
+  },
+  {
+   "word": "name",
+   "file": "name.json",
+   "duration": 1533,
+   "frames": 47,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Everyday"
+  },
+  {
+   "word": "night",
+   "file": "night.json",
+   "duration": 2733,
+   "frames": 83,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Days and time"
+  },
+  {
+   "word": "nose",
+   "file": "nose.json",
+   "duration": 1700,
+   "frames": 52,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Body"
+  },
+  {
+   "word": "power",
+   "file": "power.json",
+   "duration": 2053,
+   "frames": 62,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Everyday"
+  },
+  {
+   "word": "quiet",
+   "file": "quiet.json",
+   "duration": 2680,
+   "frames": 68,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "ring",
+   "file": "ring.json",
+   "duration": 2600,
+   "frames": 79,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Everyday"
+  },
+  {
+   "word": "sad",
+   "file": "sad.json",
+   "duration": 2480,
+   "frames": 63,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "sit",
+   "file": "sit.json",
+   "duration": 1300,
+   "frames": 40,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "sleep",
+   "file": "sleep.json",
+   "duration": 2333,
+   "frames": 71,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "sorry",
+   "file": "sorry.json",
+   "duration": 2033,
+   "frames": 62,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Greetings"
+  },
+  {
+   "word": "stand",
+   "file": "stand.json",
+   "duration": 2367,
+   "frames": 72,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "stop",
+   "file": "stop.json",
+   "duration": 1767,
+   "frames": 54,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "student",
+   "file": "student.json",
+   "duration": 4067,
+   "frames": 123,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "study",
+   "file": "study.json",
+   "duration": 2200,
+   "frames": 67,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "teacher",
+   "file": "teacher.json",
+   "duration": 2333,
+   "frames": 71,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "People"
+  },
+  {
+   "word": "teeth",
+   "file": "teeth.json",
+   "duration": 2133,
+   "frames": 65,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Body"
+  },
+  {
+   "word": "thank you",
+   "file": "thank-you.json",
+   "duration": 1867,
+   "frames": 57,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Greetings"
+  },
+  {
+   "word": "today",
+   "file": "today.json",
+   "duration": 1367,
+   "frames": 42,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Days and time"
+  },
+  {
+   "word": "tomorrow",
+   "file": "tomorrow.json",
+   "duration": 1767,
+   "frames": 54,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Days and time"
+  },
+  {
+   "word": "ugly",
+   "file": "ugly.json",
+   "duration": 3040,
+   "frames": 77,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives"
+  },
+  {
+   "word": "umbrella",
+   "file": "umbrella.json",
+   "duration": 2874,
+   "frames": 88,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Everyday"
+  },
+  {
+   "word": "welcome",
+   "file": "welcome.json",
+   "duration": 1967,
+   "frames": 60,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Greetings"
+  },
+  {
+   "word": "work",
+   "file": "work.json",
+   "duration": 2467,
+   "frames": 75,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "write",
+   "file": "write.json",
+   "duration": 2167,
+   "frames": 66,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Actions"
+  },
+  {
+   "word": "yesterday",
+   "file": "yesterday.json",
+   "duration": 1967,
+   "frames": 60,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Days and time"
+  },
+  {
+   "word": "you are perfect",
+   "file": "you-are-perfect.json",
+   "duration": 2000,
+   "frames": 61,
+   "source": "Amrita SLR dataset, CC BY 4.0",
+   "topic": "Greetings"
+  }
+ ]
+}

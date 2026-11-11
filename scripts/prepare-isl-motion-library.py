@@ -158,7 +158,7 @@ def natural_key(value):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("source_zip", type=Path, help="Path to the nested Amrita SLR Dataset.zip")
-    parser.add_argument("--output", type=Path, default=Path("public/voice-demo/sign-library.json"))
+    parser.add_argument("--output", type=Path, default=Path("scripts/data/base-sign-library.json"))
     parser.add_argument("--only", nargs="*", help="Process only these output labels")
     parser.add_argument("--samples-manifest", type=Path, help="Use exact source clip paths from a JSON label-to-path map")
     args = parser.parse_args()

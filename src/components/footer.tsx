@@ -36,6 +36,7 @@ export function Footer() {
             <a href="/#features" className="link-underline hover:text-white">Platform</a>
             <a href="/#how" className="link-underline hover:text-white">How it works</a>
             <a href="/#use-case" className="link-underline hover:text-white">Use cases</a>
+            <a href="/signs" className="link-underline hover:text-white">Sign dictionary</a>
             <a href="mailto:hello@signsense.app" className="link-underline hover:text-white">Contact</a>
           </nav>
           <p>© {CURRENT_YEAR} SignSense</p>

@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#fbfbf8">
 <title>SignSense Free ISL Demo</title>
 <link rel="stylesheet" href="style.css">
+<script>new URLSearchParams(location.search).has("embed") && document.documentElement.classList.add("embed");</script>
 <script type="importmap">
 {
   "imports": {
@@ -74,7 +75,7 @@
         <div id="sequence" class="sequence" aria-live="polite"></div>
         <div class="demo-note">
           <span class="note-icon" aria-hidden="true">i</span>
-          <p>Try “hello”, “good morning”, “thank you”, “help”, “sorry”, “today” or “tomorrow”. This demo animates 57 included vocabulary items and exact phrases; it is not a full sentence translator. On-device speech recognition is used when supported; otherwise speech may be processed by your browser’s online service.</p>
+          <p>Try “hello”, “good morning”, “thank you”, “help”, “sorry”, “today” or “tomorrow”. The avatar signs <span data-sign-count>the included</span> vocabulary items in ISL word order; words without a sign yet appear as captions. It is not a full sentence translator. On-device speech recognition is used when supported; otherwise speech may be processed by your browser’s online service.</p>
         </div>
       </div>
     </div>
@@ -88,7 +89,7 @@
 
   <details id="recordingSetup" class="setup-details">
     <summary>Set up or import ISL sign clips</summary>
-    <p class="setup-intro">Fifty-seven sample motions are included and load automatically: eight SignSense clips plus 49 labeled Amrita SLR dataset classes. You can record or import more sign clips. The avatar file alone does not contain sign vocabulary.</p>
+    <p class="setup-intro"><span data-sign-count>The included</span> sample motions are available automatically, prepared from the Amrita SLR and INCLUDE ISL datasets plus SignSense clips (see SOURCES.md). You can record or import more sign clips. The avatar file alone does not contain sign vocabulary.</p>
     <section class="panel setup-panel">
       <h2>Record an ISL sign</h2>
       <div class="stage">
@@ -128,7 +129,7 @@
 <script type="module" src="app.js"></script>
 <script>
   const reportDemoHeight = () => {
-    if (!document.fullscreenElement) parent.postMessage({ type: "signsense-demo-height", height: document.documentElement.scrollHeight }, location.origin);
+    if (!document.fullscreenElement && !document.documentElement.classList.contains("embed")) parent.postMessage({ type: "signsense-demo-height", height: document.documentElement.scrollHeight }, location.origin);
   };
   new ResizeObserver(reportDemoHeight).observe(document.body);
   window.addEventListener("load", reportDemoHeight);

@@ -3,10 +3,11 @@ import React from "react";
 import Image from "next/image";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 
-const NAV = [
+const NAV: { name: string; id: string; href?: string }[] = [
   { name: "How it works", id: "how" },
   { name: "Features", id: "features" },
   { name: "Use cases", id: "use-case" },
+  { name: "Sign dictionary", id: "signs", href: "/signs" },
   { name: "FAQ", id: "faq" },
 ];
 
@@ -22,8 +23,12 @@ export function Navbar() {
     setSolid(y > 24);
   });
 
-  const go = (id: string) => {
+  const go = (id: string, href?: string) => {
     setOpen(false);
+    if (href) {
+      window.location.assign(href);
+      return;
+    }
     if (window.location.pathname !== "/") {
       window.location.assign(`/#${id}`);
       return;
@@ -45,10 +50,10 @@ export function Navbar() {
           <span className="text-[15px] font-semibold tracking-tight sm:text-lg">SignSense</span>
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-8 lg:flex">
           {NAV.map((n) => (
             <li key={n.id}>
-              <button onClick={() => go(n.id)} className="link-underline text-[15px] opacity-75 hover:opacity-100 lg:text-base">
+              <button onClick={() => go(n.id, n.href)} className="link-underline whitespace-nowrap text-[15px] opacity-75 hover:opacity-100 lg:text-base">
                 {n.name}
               </button>
             </li>
@@ -64,7 +69,7 @@ export function Navbar() {
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-ink/10 bg-white/70 text-ink transition hover:border-ink/25 md:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-ink/10 bg-white/70 text-ink transition hover:border-ink/25 lg:hidden"
           aria-label={open ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={open}
         >
@@ -83,11 +88,11 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div id="mobile-navigation" className="border-t border-ink/10 bg-paper px-5 pb-6 text-ink md:hidden">
+        <div id="mobile-navigation" className="border-t border-ink/10 bg-paper px-5 pb-6 text-ink lg:hidden">
           <ul className="flex flex-col">
             {NAV.map((n) => (
               <li key={n.id}>
-                <button onClick={() => go(n.id)} className="w-full border-b border-ink/10 py-4 text-left text-[17px] font-medium tracking-tight">
+                <button onClick={() => go(n.id, n.href)} className="w-full border-b border-ink/10 py-4 text-left text-[17px] font-medium tracking-tight">
                   {n.name}
                 </button>
               </li>

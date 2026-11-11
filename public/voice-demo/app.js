@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
+import { planSentence } from "./isl-planner.js";
 
 const WASM = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm";
 const MODELS = {
@@ -26,10 +27,29 @@ const SIDES = {
 const HAND_LINKS = [[0, 1], [1, 2], [2, 3], [3, 4], [0, 5], [5, 6], [6, 7], [7, 8], [5, 9], [9, 10], [10, 11], [11, 12], [9, 13], [13, 14], [14, 15], [15, 16], [13, 17], [0, 17], [17, 18], [18, 19], [19, 20]];
 const POSE_LINKS = [[11, 12], [11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 24], [7, 8]];
 const GAP_MS = 320;
+const TEXT_MS = 650;         // caption time for a word that has no sign yet
 const HOLD_FRAMES = 8;
-const LIVE_LERP = 0.55;
-const PLAY_LERP = 0.8;
+// Time constants (seconds) for frame-rate independent smoothing toward the solved pose.
+const LIVE_TAU = 0.06;
+const PLAY_TAU = 0.035;
+const FACE_TAU = 0.12;
 const VIS_MIN = 0.35;
+// Motion clean-up applied to every sign before playback.
+const ARM_RAMP = 6;          // frames used to ease in/out of occluded (untracked) arm sections
+const HAND_GAP_MAX = 10;     // interior hand-tracking gaps up to this many frames are bridged
+const ACTIVE_EPS = 0.04;     // wrist travel (m) that counts as the sign having started
+const TRIM_MARGIN = 4;       // frames of rest kept before/after the active part of a sign
+const WRIST_MAX = THREE.MathUtils.degToRad(95);
+const SHOULDER_SHARE = 0.1;  // fraction of arm swing carried by the clavicle
+// Natural relaxed finger curl (radians) for Thumb, Index, Middle, Ring, Little when no hand data.
+const RELAXED_CURL = [[0.12, 0.18, 0.12], [0.22, 0.3, 0.2], [0.28, 0.36, 0.24], [0.34, 0.42, 0.28], [0.4, 0.48, 0.32]];
+// Approximate facial expressions for emotion signs. Not validated by an ISL reviewer.
+const SIGN_EXPRESSIONS = {
+  happy: { happy: 0.45 }, sad: { sad: 0.55 }, angry: { angry: 0.5 }, sorry: { sad: 0.35 },
+  beautiful: { happy: 0.3 }, ugly: { angry: 0.25 }, bad: { angry: 0.15, sad: 0.15 }, good: { happy: 0.2 },
+  hello: { happy: 0.2 }, welcome: { happy: 0.25 }, "thank you": { happy: 0.25 }, "good morning": { happy: 0.25 },
+  "you are perfect": { happy: 0.35 }, loud: { surprised: 0.25 }
+};
 
 const $ = id => document.getElementById(id);
 const el = {
@@ -48,8 +68,10 @@ const octx = el.overlay.getContext("2d");
 const state = {
   models: null, stream: null, lastVT: -1, lastTs: 0, liveFrame: null, miss: { left: 0, right: 0 }, filters: {},
   recording: false, rec: [], recStart: 0, recWord: "", recorder: null, chunks: [],
-  playing: false, timeline: null, playT: 0, lastNow: 0, activeSeg: -1, library: new Map(), vrm: null, rest: null, view: null
+  playing: false, timeline: null, playT: 0, lastNow: 0, activeSeg: -1, library: new Map(), vrm: null, rest: null, view: null,
+  expr: null
 };
+const life = { time: 0, nextBlink: 1.2, blinkT: -1, doubleBlink: false };
 
 const setStatus = (msg, kind = "") => {
   el.status.textContent = msg;
@@ -73,7 +95,133 @@ const IDLE_BODY = (() => {
   const re = add(rs, [-0.04, -0.27, -0.01]);
   return { ls, rs, le, re, lw: add(le, [0.01, -0.25, 0.04]), rw: add(re, [-0.01, -0.25, 0.04]), lh: [0.1, 0, 0], rh: [-0.1, 0, 0] };
 })();
-const IDLE = { t: 0, body: IDLE_BODY, left: null, right: null, head: [0, 0, 0, 1], face: Object.fromEntries(FACE_KEYS.map(k => [k, 0])) };
+const IDLE = { t: 0, body: IDLE_BODY, left: null, right: null, hw: { left: 0, right: 0 }, head: [0, 0, 0, 1], face: Object.fromEntries(FACE_KEYS.map(k => [k, 0])) };
+
+/* ---------- Motion clean-up ----------
+ * The bundled tracks come from MediaPipe on ordinary video. They contain hand-tracking
+ * dropouts, synthetic "arm hanging down" frames wherever the elbow/wrist was occluded,
+ * single-frame hand flips and landmark jitter. Played raw, those show up as fingers
+ * snapping open/closed and arms teleporting. prepareSign() repairs each track once:
+ * occluded arm sections are bridged (or eased from rest at the clip edges), short hand
+ * gaps are interpolated with a smooth presence weight, spikes are removed, everything is
+ * smoothed with a zero-phase Gaussian, and idle lead-in/out is trimmed. */
+const sub3 = (a, b) => a.map((v, i) => v - b[i]);
+const add3 = (a, b) => a.map((v, i) => v + b[i]);
+const chunk3 = row => Array.from({ length: row.length / 3 }, (_, i) => row.slice(i * 3, i * 3 + 3));
+const smooth01 = x => { const k = clamp01(x); return k * k * (3 - 2 * k); };
+const ARM_IDLE = Object.fromEntries(Object.entries(SIDES).map(([side, c]) => [side, [...sub3(IDLE_BODY[c.e], IDLE_BODY[c.s]), ...sub3(IDLE_BODY[c.w], IDLE_BODY[c.s])]]));
+const armOffsets = (b, c) => [...sub3(b[c.e], b[c.s]), ...sub3(b[c.w], b[c.s])];
+// buildFrame() substitutes ARM_IDLE when the elbow/wrist is not visible; treat those frames as missing.
+const isFallbackArm = (b, side) => armOffsets(b, SIDES[side]).every((v, i) => Math.abs(v - ARM_IDLE[side][i]) < 0.002);
+
+const smoothRows = (rows, sigma) => {
+  const r = Math.ceil(sigma * 2.5);
+  const kernel = Array.from({ length: r * 2 + 1 }, (_, i) => Math.exp(-((i - r) ** 2) / (2 * sigma * sigma)));
+  const total = kernel.reduce((a, b) => a + b, 0);
+  const n = rows.length;
+  return rows.map((row, i) => {
+    const out = new Array(row.length).fill(0);
+    kernel.forEach((w, j) => {
+      const src = rows[Math.min(n - 1, Math.max(0, i + j - r))];
+      for (let c = 0; c < out.length; c++) out[c] += src[c] * w / total;
+    });
+    return out;
+  });
+};
+
+// Fill null rows: interior gaps are interpolated, edges come from edgeFn. Returns null if nothing is present.
+const fillRows = (rows, edgeFn, maxBridge = Infinity) => {
+  const present = rows.map((r, i) => (r ? i : -1)).filter(i => i >= 0);
+  if (!present.length) return null;
+  const out = rows.slice();
+  const weight = rows.map(r => (r ? 1 : 0));
+  present.slice(0, -1).forEach((a, k) => {
+    const b = present[k + 1];
+    for (let i = a + 1; i < b; i++) {
+      const t = (i - a) / (b - a);
+      out[i] = rows[a].map((v, c) => v + (rows[b][c] - v) * t);
+      weight[i] = b - a - 1 <= maxBridge ? 1 : 0;
+    }
+  });
+  const first = present[0];
+  const last = present.at(-1);
+  for (let i = 0; i < first; i++) out[i] = edgeFn(i, first, rows[first]);
+  for (let i = last + 1; i < rows.length; i++) out[i] = edgeFn(i, last, rows[last]);
+  return { rows: out, weight };
+};
+
+// Drop single-frame hand flips (a hand whose direction disagrees with both agreeing neighbours).
+const handDir = row => V(row.slice(27, 30)).sub(V(row.slice(0, 3))).normalize();
+const despikeHands = rows => rows.map((row, i) => {
+  const prev = rows[i - 1];
+  const next = rows[i + 1];
+  if (!row || !prev || !next) return row;
+  const d = handDir(row);
+  const dp = handDir(prev);
+  const dn = handDir(next);
+  return dp.angleTo(dn) < 0.45 && d.angleTo(dp) > 0.9 && d.angleTo(dn) > 0.9 ? null : row;
+});
+
+const prepared = new WeakMap();
+const prepareSign = sign => {
+  if (prepared.has(sign)) return prepared.get(sign);
+  const src = sign.frames;
+  const core = smoothRows(src.map(f => [...f.body.ls, ...f.body.rs, ...f.body.lh, ...f.body.rh]), 1.2);
+  const arms = Object.fromEntries(Object.keys(SIDES).map(side => {
+    const idle = ARM_IDLE[side];
+    const rows = src.map(f => (isFallbackArm(f.body, side) ? null : armOffsets(f.body, SIDES[side])));
+    const easeFromRest = (i, anchor, val) => {
+      const s = smooth01(1 - Math.abs(i - anchor) / ARM_RAMP);
+      return idle.map((v, k) => v + (val[k] - v) * s);
+    };
+    const filled = fillRows(rows, easeFromRest);
+    return [side, smoothRows(filled ? filled.rows : rows.map(() => idle), 1.2)];
+  }));
+  const hands = Object.fromEntries(Object.keys(SIDES).map(side => {
+    const rows = despikeHands(src.map(f => (f[side] ? f[side].flat() : null)));
+    const filled = fillRows(rows, (i, anchor, val) => val, HAND_GAP_MAX);
+    return [side, filled && {
+      rows: smoothRows(filled.rows, 1.0),
+      w: smoothRows(filled.weight.map(v => [v]), 2).map(r => clamp01(r[0]))
+    }];
+  }));
+  const face = smoothRows(src.map(f => FACE_KEYS.map(k => f.face?.[k] ?? 0)), 1.0);
+  const headRows = src.map(f => f.head ?? [0, 0, 0, 1]);
+  headRows.forEach((q, i) => { if (i && q.reduce((s, v, j) => s + v * headRows[i - 1][j], 0) < 0) headRows[i] = q.map(v => -v); });
+  const head = smoothRows(headRows, 1.5);
+
+  // Trim the resting lead-in/out so consecutive signs flow instead of pausing at rest.
+  const wristTravel = (i, ref) => Math.max(...Object.keys(SIDES).map(s => Math.hypot(...sub3(arms[s][i].slice(3), arms[s][ref].slice(3)))));
+  const n = src.length;
+  const firstActive = src.findIndex((_, i) => wristTravel(i, 0) > ACTIVE_EPS);
+  const lastActive = n - 1 - [...src].reverse().findIndex((_, j) => wristTravel(n - 1 - j, n - 1) > ACTIVE_EPS);
+  let start = firstActive < 0 ? 0 : Math.max(0, firstActive - TRIM_MARGIN);
+  let end = firstActive < 0 ? n - 1 : Math.min(n - 1, lastActive + TRIM_MARGIN);
+  if (end - start < 8) { start = 0; end = n - 1; }
+
+  const frames = [];
+  for (let i = start; i <= end; i++) {
+    const [ls, rs, lh, rh] = [0, 3, 6, 9].map(o => core[i].slice(o, o + 3));
+    const body = { ls, rs, lh, rh };
+    Object.entries(SIDES).forEach(([side, c]) => {
+      const s = body[c.s];
+      body[c.e] = add3(s, arms[side][i].slice(0, 3));
+      body[c.w] = add3(s, arms[side][i].slice(3, 6));
+    });
+    const len = Math.hypot(...head[i]) || 1;
+    frames.push({
+      t: src[i].t - src[start].t,
+      body,
+      left: hands.left ? chunk3(hands.left.rows[i]) : null,
+      right: hands.right ? chunk3(hands.right.rows[i]) : null,
+      hw: { left: hands.left?.w[i] ?? 0, right: hands.right?.w[i] ?? 0 },
+      head: head[i].map(v => v / len),
+      face: Object.fromEntries(FACE_KEYS.map((k, j) => [k, face[i][j]]))
+    });
+  }
+  prepared.set(sign, frames);
+  return frames;
+};
 
 const oneEuro = (minCutoff, beta) => {
   const s = { x: null, dx: 0, t: 0 };
@@ -112,33 +260,46 @@ const dbPut = sign => tx("readwrite", s => s.put(sign));
 const dbAll = () => tx("readonly", s => s.getAll());
 const dbDelete = word => tx("readwrite", s => s.delete(word));
 
+/* Bundled signs come from a small index (sign-index.json); each sign's motion lives in its own
+ * file under signs/ and is fetched only when it is first played. IndexedDB holds only the
+ * signs the user recorded or imported (created > 0), which override bundled ones. */
 const loadLibrary = async () => {
-  let all = await dbAll();
+  const all = await dbAll();
+  // Earlier versions copied every bundled sign into IndexedDB; remove those copies.
+  await Promise.all(all.filter(s => !s.created).map(s => dbDelete(s.word)));
+  const library = new Map();
   try {
-    const response = await fetch("/voice-demo/sign-library.json", { cache: "force-cache" });
-    if (!response.ok) throw new Error("The included ISL motion library could not be loaded.");
-    const bundled = await response.json();
-    const signs = bundled.version === FORMAT ? bundled.signs ?? [] : [];
-    const known = new Set(all.filter(s => s.v === FORMAT).map(s => s.word));
-    await Promise.all(signs.filter(sign => sign.word && sign.frames?.length > 1 && !known.has(sign.word)).map(sign => dbPut({ ...sign, v: FORMAT, video: null })));
-    all = await dbAll();
+    const response = await fetch("/voice-demo/sign-index.json", { cache: "no-cache" });
+    if (!response.ok) throw new Error("The included ISL sign index could not be loaded.");
+    const index = await response.json();
+    (index.version === FORMAT ? index.signs ?? [] : []).forEach(e => library.set(e.word, {
+      v: FORMAT, word: e.word, file: e.file, duration: e.duration, frameCount: e.frames, bundled: true
+    }));
   } catch (error) {
     console.error(error);
     setStatus("The included signs could not be loaded. Try refreshing the demo.", "err");
   }
-  state.library = new Map(all.filter(s => s.v === FORMAT).map(s => [s.word, s]));
+  all.filter(s => s.created && s.v === FORMAT).forEach(s => library.set(s.word, s));
+  state.library = library;
+  document.querySelectorAll("[data-sign-count]").forEach(n => { n.textContent = String(library.size); });
   renderLibrary();
 };
+
+const ensureFrames = signs => Promise.all(signs.filter(s => !s.frames && s.file).map(async s => {
+  const response = await fetch(`/voice-demo/signs/${encodeURIComponent(s.file)}`);
+  if (!response.ok) throw new Error(`The sign "${s.word}" could not be loaded.`);
+  s.frames = (await response.json()).frames;
+}));
 
 const renderLibrary = () => {
   const items = [...state.library.values()].sort((a, b) => (a.word.length === 1) - (b.word.length === 1) || a.word.localeCompare(b.word));
   el.library.innerHTML = items.length
     ? items.map(s => `<li>
         <span class="word">${esc(s.word)}</span>
-        <span class="meta">${s.word.length === 1 ? "letter" : "sign"} · ${(s.duration / 1000).toFixed(1)}s · ${s.frames.length}f</span>
+        <span class="meta">${s.word.length === 1 ? "letter" : s.bundled ? "included sign" : "your sign"} · ${(s.duration / 1000).toFixed(1)}s · ${s.frameCount ?? s.frames?.length ?? 0}f</span>
         <button data-action="play" data-word="${esc(s.word)}">Play</button>
         ${s.video ? `<button data-action="video" data-word="${esc(s.word)}">Video</button>` : ""}
-        <button data-action="delete" data-word="${esc(s.word)}">Delete</button>
+        ${s.bundled ? "" : `<button data-action="delete" data-word="${esc(s.word)}">Delete</button>`}
       </li>`).join("")
     : `<li class="empty">No signs yet. Start the camera, type a word and press "Record sign".</li>`;
 };
@@ -152,8 +313,7 @@ const libraryActions = {
   },
   delete: async word => {
     await dbDelete(word);
-    state.library.delete(word);
-    renderLibrary();
+    await loadLibrary();  // an included sign with the same word becomes available again
     setStatus(`Deleted "${word}"`);
   }
 };
@@ -188,6 +348,8 @@ const resizeAvatar = () => {
   camera.updateProjectionMatrix();
 };
 window.addEventListener("resize", resizeAvatar);
+// The canvas also resizes with its container (iframe layout, full screen); avoid a stretched render.
+new ResizeObserver(resizeAvatar).observe(el.avatar);
 resizeAvatar();
 
 const node = name => state.vrm?.humanoid.getNormalizedBoneNode(name) ?? null;
@@ -207,13 +369,22 @@ const captureRest = () => {
       const d1 = restDir(names[1], names[2]);
       return { names, dirs: [d0, d1, d1] };
     });
-    const span = (worldPos(`${s}IndexProximal`) ?? new THREE.Vector3(0, 0, 0.02)).sub(worldPos(`${s}LittleProximal`) ?? new THREE.Vector3());
+    const handS = (worldPos(`${s}IndexProximal`) ?? new THREE.Vector3(0, 0, 0.02)).sub(worldPos(`${s}LittleProximal`) ?? new THREE.Vector3()).normalize();
+    const handF = restDir(`${s}Hand`, `${s}MiddleProximal`);
+    // Curl axis: the knuckle line, signed so a positive rotation bends the fingers toward the palm (palms face down in the rest T-pose).
+    const curlAxis = handS.clone();
+    handF.clone().applyAxisAngle(curlAxis, 0.3).y > handF.y && curlAxis.negate();
     return {
       upper: restDir(`${s}UpperArm`, `${s}LowerArm`),
       lower: restDir(`${s}LowerArm`, `${s}Hand`),
-      handF: restDir(`${s}Hand`, `${s}MiddleProximal`),
-      handS: span.normalize(),
-      fingers
+      handF,
+      handS,
+      fingers,
+      relaxed: RELAXED_CURL.map(angles => angles.map(a => new THREE.Quaternion().setFromAxisAngle(curlAxis, a))),
+      shoulderPos: worldPos(`${s}UpperArm`),
+      lenUpper: worldPos(`${s}UpperArm`).distanceTo(worldPos(`${s}LowerArm`)),
+      lenFore: worldPos(`${s}LowerArm`).distanceTo(worldPos(`${s}Hand`)),
+      lenHand: worldPos(`${s}Hand`).distanceTo(worldPos(`${s}MiddleDistal`) ?? worldPos(`${s}MiddleProximal`)) + 0.025
     };
   };
   state.rest = {
@@ -228,8 +399,9 @@ const frameCamera = () => {
   const head = worldPos("head");
   const hips = worldPos("hips");
   const torso = head.y - hips.y;
-  const top = head.y + torso * 0.75;
-  const bottom = hips.y - torso * 0.15;
+  // Frame the full signing space: just above the hair down to the lap, where many signs are made.
+  const top = head.y + torso * 0.62;
+  const bottom = hips.y - torso * 0.5;
   const centerY = (top + bottom) / 2;
   const fitH = (top - bottom) / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
   const fitW = fitH / Math.min(camera.aspect, 1);
@@ -258,8 +430,11 @@ const loadAvatar = async url => {
   old && VRMUtils.deepDispose(old.scene);
   scene.add(vrm.scene);
   state.vrm = vrm;
+  // Eyes follow the viewer's camera for natural eye contact.
+  vrm.lookAt && (vrm.lookAt.target = camera);
   vrm.update(0);
   captureRest();
+  state.collider = buildBodyCollider(vrm);
   frameCamera();
   el.avatarLoading.textContent = "";
 };
@@ -270,11 +445,28 @@ const basisQuat = (a, b) => {
   const y = new THREE.Vector3().crossVectors(z, x);
   return new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(x, y, z));
 };
+// Orient a bone so restA -> a, using b to fix the twist. When a and b become nearly parallel
+// (e.g. a straight elbow) the twist reference is ill-defined, so fade continuously to a pure
+// swing instead of switching abruptly (the old hard switch made the upper arm spin/pop).
 const alignFrame = (restA, restB, a, b) => {
-  const ok = new THREE.Vector3().crossVectors(a.clone().normalize(), b.clone().normalize()).length() > 0.08;
-  return ok
-    ? basisQuat(a, b).multiply(basisQuat(restA, restB).invert())
-    : new THREE.Quaternion().setFromUnitVectors(restA, a.clone().normalize());
+  const an = a.clone().normalize();
+  const swing = new THREE.Quaternion().setFromUnitVectors(restA, an);
+  const w = smooth01((new THREE.Vector3().crossVectors(an, b.clone().normalize()).length() - 0.06) / 0.24);
+  return w > 0 ? swing.slerp(basisQuat(a, b).multiply(basisQuat(restA, restB).invert()), w) : swing;
+};
+const clampAngle = (q, max) => {
+  const c = q.w < 0 ? new THREE.Quaternion(-q.x, -q.y, -q.z, -q.w) : q.clone();
+  const angle = 2 * Math.acos(Math.min(1, c.w));
+  return angle > max ? I().slerp(c, max / angle) : c;
+};
+const AXIS_X = new THREE.Vector3(1, 0, 0);
+const idleHead = () => {
+  const t = life.time;
+  return new THREE.Quaternion().setFromEuler(new THREE.Euler(
+    0.016 * Math.sin(t * 0.53) + 0.008 * Math.sin(t * 1.31),
+    0.026 * Math.sin(t * 0.37) + 0.01 * Math.sin(t * 0.91),
+    0.01 * Math.sin(t * 0.29)
+  ));
 };
 const swingTo = (parent, rest, target) => new THREE.Quaternion()
   .setFromUnitVectors(rest.clone().applyQuaternion(parent).normalize(), target.clone().normalize())
@@ -285,33 +477,161 @@ const twistAbout = (q, axis) => {
   return new THREE.Quaternion(p.x, p.y, p.z, q.w).normalize();
 };
 
+/* ---------- Body collision ----------
+ * The motion comes from real signers with different proportions (often seated), so on this
+ * avatar the raw arm directions can put hands inside the hips, thighs, chest or face.
+ * buildBodyCollider() measures the avatar's actual torso/hips/thighs/head surface from its
+ * skinned mesh as a stack of elliptical cross-sections; solveArm() then pushes the elbow,
+ * forearm, wrist, palm and fingertips out of it every frame. */
+const TORSO_GROUPS = new Set(["hips", "spine", "chest", "upperChest", "neck", "head", "leftUpperLeg", "rightUpperLeg"]);
+const HUMAN_BONES = ["hips", "spine", "chest", "upperChest", "neck", "head", "jaw", "leftEye", "rightEye",
+  ...["Shoulder", "UpperArm", "LowerArm", "Hand", "UpperLeg", "LowerLeg", "Foot", "Toes"].flatMap(b => [`left${b}`, `right${b}`])];
+const SLICE = 0.015;
+const buildBodyCollider = vrm => {
+  vrm.scene.updateMatrixWorld(true);
+  const rawToHuman = new Map(HUMAN_BONES.map(n => [vrm.humanoid.getRawBoneNode(n), n]).filter(([nodeObj]) => nodeObj));
+  const groupOf = new Map();
+  const group = bone => {
+    if (!groupOf.has(bone)) {
+      let n = bone;
+      while (n && !rawToHuman.has(n)) n = n.parent;
+      groupOf.set(bone, n ? rawToHuman.get(n) : null);
+    }
+    return groupOf.get(bone);
+  };
+  // Skin plus clothing is the solid surface (VRoid deletes skin hidden under clothes). Hair and
+  // facial detail meshes are excluded; sleeves drop out because they are weighted to arm bones.
+  const meshes = [];
+  const materialName = o => [o.material].flat()[0]?.name ?? "";  // MToon meshes carry [material, outline]
+  vrm.scene.traverse(o => o.isSkinnedMesh && !/hair|eye|brow|mouth/i.test(materialName(o)) && meshes.push(o));
+  const pts = [];
+  const v = new THREE.Vector3();
+  meshes.forEach(o => {
+    const { position, skinIndex, skinWeight } = o.geometry.attributes;
+    if (!skinIndex || !skinWeight) return;
+    for (let i = 0; i < position.count; i++) {
+      let best = 0;
+      for (let k = 1; k < 4; k++) skinWeight.getComponent(i, k) > skinWeight.getComponent(i, best) && (best = k);
+      if (!TORSO_GROUPS.has(group(o.skeleton.bones[skinIndex.getComponent(i, best)]))) continue;
+      o.getVertexPosition(i, v);
+      pts.push(v.clone().applyMatrix4(o.matrixWorld));
+    }
+  });
+  if (!pts.length) return null;
+  const y0 = Math.min(...pts.map(p => p.y));
+  const raw = [];
+  pts.forEach(p => {
+    const i = Math.floor((p.y - y0) / SLICE);
+    const s = (raw[i] = raw[i] ?? { x0: Infinity, x1: -Infinity, z0: Infinity, z1: -Infinity });
+    s.x0 = Math.min(s.x0, p.x); s.x1 = Math.max(s.x1, p.x); s.z0 = Math.min(s.z0, p.z); s.z1 = Math.max(s.z1, p.z);
+  });
+  // Conservative: each slice covers its neighbours so there are no thin gaps between slices.
+  const slices = Array.from(raw, (_, i) => {
+    const near = [raw[i - 1], raw[i], raw[i + 1]].filter(Boolean);
+    if (!raw[i] || !near.length) return null;
+    const x0 = Math.min(...near.map(s => s.x0)), x1 = Math.max(...near.map(s => s.x1));
+    const z0 = Math.min(...near.map(s => s.z0)), z1 = Math.max(...near.map(s => s.z1));
+    return { cx: (x0 + x1) / 2, cz: (z0 + z1) / 2, ax: (x1 - x0) / 2, az: (z1 - z0) / 2 };
+  });
+  return { y0, slices, pivot: worldPos("spine") ?? worldPos("hips") };
+};
+
+// Vector that moves point p (radius r) out of the body, or null if it is clear.
+const bodyPush = (p, r, torsoQ) => {
+  const C = state.collider;
+  if (!C) return null;
+  const upper = p.y > C.pivot.y;
+  const inv = upper ? torsoQ.clone().invert() : null;
+  const local = upper ? p.clone().sub(C.pivot).applyQuaternion(inv).add(C.pivot) : p.clone();
+  const s = C.slices[Math.floor((local.y - C.y0) / SLICE)];
+  if (!s) return null;
+  const dx = local.x - s.cx;
+  const dz = local.z - s.cz;
+  const k = Math.hypot(dx / (s.ax + r), dz / (s.az + r));
+  if (k >= 1) return null;
+  // Radial projection to the (inflated) surface; a point at the very centre goes forward.
+  const out = k < 1e-4
+    ? new THREE.Vector3(s.cx, local.y, s.cz + s.az + r)
+    : new THREE.Vector3(s.cx + dx / k, local.y, s.cz + dz / k);
+  const push = out.sub(local);
+  return upper ? push.applyQuaternion(torsoQ) : push;
+};
+const largestPush = (checks, torsoQ) => checks.reduce((best, [p, r]) => {
+  const push = bodyPush(p, r, torsoQ);
+  return push && (!best || push.lengthSq() > best.lengthSq()) ? push : best;
+}, null);
+
+// Keep the arm chain outside the body while preserving the intended direction as closely as possible.
+const resolveArmCollision = (rest, chestQ, upperDir, foreDir, handDir) => {
+  const C = state.collider;
+  if (!C) return;
+  const S = rest.shoulderPos.clone().sub(C.pivot).applyQuaternion(chestQ).add(C.pivot);
+  const W = S.clone().addScaledVector(upperDir, rest.lenUpper).addScaledVector(foreDir, rest.lenFore);
+  for (let it = 0; it < 4; it++) {
+    const E = S.clone().addScaledVector(upperDir, rest.lenUpper);
+    const push = bodyPush(E, 0.04, chestQ);
+    if (!push) break;
+    upperDir.copy(E.add(push.multiplyScalar(1.1)).sub(S).normalize());
+  }
+  const E = S.clone().addScaledVector(upperDir, rest.lenUpper);
+  for (let it = 0; it < 6; it++) {
+    foreDir.copy(W.clone().sub(E).normalize());
+    W.copy(E).addScaledVector(foreDir, rest.lenFore);
+    const push = largestPush([
+      [W, 0.04],
+      [E.clone().lerp(W, 0.5), 0.04],
+      [W.clone().addScaledVector(handDir, rest.lenHand * 0.45), 0.04],
+      [W.clone().addScaledVector(handDir, rest.lenHand), 0.015]
+    ], chestQ);
+    if (!push) break;
+    W.add(push.multiplyScalar(1.15));
+  }
+  foreDir.copy(W.sub(E).normalize());
+};
+
 const solveArm = (out, side, frame, chestQ) => {
   const cfg = SIDES[side];
   const rest = state.rest[side];
   const b = frame.body;
-  const upperDir = V(b[cfg.e]).sub(V(b[cfg.s]));
-  const foreDir = V(b[cfg.w]).sub(V(b[cfg.e]));
+  const upperDir = V(b[cfg.e]).sub(V(b[cfg.s])).normalize();
+  const foreDir = V(b[cfg.w]).sub(V(b[cfg.e])).normalize();
+  {
+    const h = frame[cfg.hand];
+    const w = h ? clamp01(frame.hw?.[cfg.hand] ?? 1) : 0;
+    const handDir = w > 0.001 ? foreDir.clone().lerp(V(h[9]).sub(V(h[0])).normalize(), w).normalize() : foreDir.clone();
+    resolveArmCollision(rest, chestQ, upperDir, foreDir, handDir);
+  }
+  // Clavicle follows a small share of the arm swing, so shoulders lift/drop naturally.
+  const inChest = upperDir.clone().applyQuaternion(chestQ.clone().invert());
+  const shoulderLocal = I().slerp(new THREE.Quaternion().setFromUnitVectors(rest.upper, inChest), SHOULDER_SHARE);
+  const shoulderQ = chestQ.clone().multiply(shoulderLocal);
   const upperQ = alignFrame(rest.upper, new THREE.Vector3(0, 0, 1), upperDir, foreDir);
   const lowerQ = swingTo(upperQ, rest.lower, foreDir);
   const hand = frame[cfg.hand];
-  const handQ = hand
+  // Hand-tracking confidence: 1 = use tracked hand, 0 = relaxed hand following the forearm.
+  const hw = hand ? clamp01(frame.hw?.[cfg.hand] ?? 1) : 0;
+  const tracked = hw > 0.001
     ? alignFrame(rest.handF, rest.handS, V(hand[9]).sub(V(hand[0])), V(hand[5]).sub(V(hand[17])))
-    : lowerQ.clone();
-  const handRel = relative(lowerQ, handQ);
+    : null;
+  const handRel = clampAngle(relative(lowerQ, tracked ? lowerQ.clone().slerp(tracked, hw) : lowerQ), WRIST_MAX);
+  const handQ = lowerQ.clone().multiply(handRel);
   const halfTwist = I().slerp(twistAbout(handRel, rest.lower), 0.5);
   const lowerFinal = lowerQ.clone().multiply(halfTwist);
-  out[`${side}UpperArm`] = relative(chestQ, upperQ);
+  out[`${side}Shoulder`] = shoulderLocal;
+  out[`${side}UpperArm`] = relative(shoulderQ, upperQ);
   out[`${side}LowerArm`] = relative(upperQ, lowerFinal);
   out[`${side}Hand`] = relative(lowerFinal, handQ);
   rest.fingers.forEach((finger, fi) => {
     const idx = FINGERS[fi][2];
-    const chain = { parent: handQ };
+    let parent = handQ;
     finger.names.forEach((name, si) => {
-      const segQ = hand && finger.dirs[si]
-        ? swingTo(chain.parent, finger.dirs[si], V(hand[idx[si + 1]]).sub(V(hand[idx[si]])))
-        : chain.parent.clone();
-      out[name] = relative(chain.parent, segQ);
-      chain.parent = segQ;
+      let local = rest.relaxed[fi][si];
+      if (tracked && finger.dirs[si]) {
+        const segQ = swingTo(parent, finger.dirs[si], V(hand[idx[si + 1]]).sub(V(hand[idx[si]])));
+        local = local.clone().slerp(relative(parent, segQ), hw);
+      }
+      out[name] = local;
+      parent = parent.clone().multiply(local);
     });
   });
 };
@@ -322,8 +642,9 @@ const solvePose = frame => {
   const up = V(b.ls).add(V(b.rs)).multiplyScalar(0.5).sub(V(b.lh).add(V(b.rh)).multiplyScalar(0.5));
   const torso = I().slerp(alignFrame(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), across, up), 0.85);
   const spineQ = state.rest.hasChest ? I().slerp(torso, 0.5) : torso.clone();
-  const chestQ = torso;
-  const headQ = new THREE.Quaternion(...frame.head).normalize();
+  // Subtle breathing on the chest; arms are solved relative to it so hand positions stay exact.
+  const chestQ = torso.clone().multiply(new THREE.Quaternion().setFromAxisAngle(AXIS_X, Math.sin(life.time * Math.PI * 2 / 4.2) * 0.012));
+  const headQ = idleHead().multiply(new THREE.Quaternion(...frame.head).normalize());
   const neckQ = chestQ.clone().slerp(headQ, 0.4);
   const out = {
     hips: I(),
@@ -331,48 +652,67 @@ const solvePose = frame => {
     chest: relative(spineQ, chestQ),
     upperChest: I(),
     neck: relative(chestQ, neckQ),
-    head: relative(neckQ, headQ),
-    leftShoulder: I(),
-    rightShoulder: I()
+    head: relative(neckQ, headQ)
   };
   solveArm(out, "left", frame, chestQ);
   solveArm(out, "right", frame, chestQ);
   return out;
 };
 
-const applyPose = (frame, lerp) => {
+const applyPose = (frame, alpha) => {
   const rel = solvePose(frame);
   const S = state.rest.sceneQ;
   const Si = S.clone().invert();
   Object.entries(rel).forEach(([name, q]) => {
     const n = node(name);
-    n && n.quaternion.slerp(Si.clone().multiply(q).multiply(S), lerp);
+    n && n.quaternion.slerp(Si.clone().multiply(q).multiply(S), alpha);
   });
 };
 
-const applyFace = (face, lerp) => {
+// Natural blinking every 2–6 s (occasionally a double blink); the motion data has no eye data.
+const proceduralBlink = dt => {
+  if (life.blinkT < 0 && life.time >= life.nextBlink) life.blinkT = 0;
+  if (life.blinkT < 0) return 0;
+  life.blinkT += dt;
+  const close = 0.06;
+  const open = 0.11;
+  const v = life.blinkT < close ? life.blinkT / close : 1 - (life.blinkT - close) / open;
+  if (life.blinkT >= close + open) {
+    life.blinkT = -1;
+    life.doubleBlink = !life.doubleBlink && Math.random() < 0.15;
+    life.nextBlink = life.time + (life.doubleBlink ? 0.12 : 2 + Math.random() * 4);
+  }
+  return clamp01(v);
+};
+
+const applyFace = (face, dt) => {
   const em = state.vrm?.expressionManager;
+  if (!em) return;
+  const alpha = 1 - Math.exp(-dt / FACE_TAU);
+  const emo = (state.playing && state.expr) || {};
   const avg = (a, b) => ((face[a] ?? 0) + (face[b] ?? 0)) / 2;
   const target = {
     aa: clamp01((face.jawOpen ?? 0) * 1.7),
     oh: clamp01((face.mouthFunnel ?? 0) * 1.6),
     ou: clamp01((face.mouthPucker ?? 0) * 1.4),
     ee: clamp01(avg("mouthStretchLeft", "mouthStretchRight") * 2.2),
-    happy: clamp01(avg("mouthSmileLeft", "mouthSmileRight") * 1.2),
-    surprised: clamp01((face.browInnerUp ?? 0) * 0.9 + avg("eyeWideLeft", "eyeWideRight") * 0.8),
-    angry: clamp01(avg("browDownLeft", "browDownRight") * 1.6),
-    blinkLeft: clamp01((face.eyeBlinkRight ?? 0) * 1.35 - 0.1),
-    blinkRight: clamp01((face.eyeBlinkLeft ?? 0) * 1.35 - 0.1)
+    happy: clamp01(avg("mouthSmileLeft", "mouthSmileRight") * 1.2 + (emo.happy ?? 0)),
+    sad: clamp01(emo.sad ?? 0),
+    surprised: clamp01((face.browInnerUp ?? 0) * 0.9 + avg("eyeWideLeft", "eyeWideRight") * 0.8 + (emo.surprised ?? 0)),
+    angry: clamp01(avg("browDownLeft", "browDownRight") * 1.6 + (emo.angry ?? 0))
   };
-  em && Object.entries(target).forEach(([name, v]) => {
+  Object.entries(target).forEach(([name, v]) => {
     const cur = em.getValue(name) ?? 0;
-    em.getExpression(name) && em.setValue(name, cur + (v - cur) * lerp);
+    em.getExpression(name) && em.setValue(name, cur + (v - cur) * alpha);
   });
+  const blink = proceduralBlink(dt);
+  em.getExpression("blinkLeft") && em.setValue("blinkLeft", Math.max(blink, clamp01((face.eyeBlinkRight ?? 0) * 1.35 - 0.1)));
+  em.getExpression("blinkRight") && em.setValue("blinkRight", Math.max(blink, clamp01((face.eyeBlinkLeft ?? 0) * 1.35 - 0.1)));
 };
 
-const applyFrame = (frame, lerp) => {
-  state.rest && applyPose(frame, lerp);
-  applyFace(frame.face ?? IDLE.face, lerp);
+const applyFrame = (frame, dt, tau) => {
+  state.rest && applyPose(frame, 1 - Math.exp(-dt / tau));
+  applyFace(frame.face ?? IDLE.face, dt);
 };
 
 const createModel = (fs, Cls, path, extra) => {
@@ -502,16 +842,34 @@ const detect = now => {
   state.recording && frame && state.rec.push({ ...frame, t: Math.round(now - state.recStart) });
 };
 
-const lerpAny = (a, b, t) => a && b
-  ? (typeof b === "number"
-    ? a + (b - a) * t
-    : Array.isArray(b)
-      ? b.map((v, i) => lerpAny(a[i], v, t))
-      : Object.fromEntries(Object.keys(b).map(k => [k, lerpAny(a[k], b[k], t)])))
-  : (typeof b === "number" ? b : (t < 0.5 ? a : b));
-const lerpFrame = (a, b, t) => {
-  const head = new THREE.Quaternion(...a.head).slerp(new THREE.Quaternion(...b.head), t).toArray();
-  return { ...lerpAny({ body: a.body, left: a.left, right: a.right, face: a.face }, { body: b.body, left: b.left, right: b.right, face: b.face }, t), head };
+// Weighted sum of structurally identical values (numbers, arrays, objects).
+const mixVals = (vals, w) => typeof vals[1] === "number"
+  ? vals.reduce((s, v, i) => s + (v ?? 0) * w[i], 0)
+  : Array.isArray(vals[1])
+    ? vals[1].map((_, i) => mixVals(vals.map(v => v[i]), w))
+    : Object.fromEntries(Object.keys(vals[1]).map(k => [k, mixVals(vals.map(v => v[k]), w)]));
+// Uniform Catmull-Rom basis: C1-continuous motion through the ~30 fps keyframes.
+const catmull = t => {
+  const t2 = t * t;
+  const t3 = t2 * t;
+  return [0.5 * (-t + 2 * t2 - t3), 0.5 * (2 - 5 * t2 + 3 * t3), 0.5 * (t + 4 * t2 - 3 * t3), 0.5 * (t3 - t2)];
+};
+const blendFrames = (fs, w) => {
+  const hand = h => {
+    const fallback = [fs[1][h], fs[2][h], fs[0][h], fs[3][h]].find(Boolean);
+    return fallback ? mixVals(fs.map(f => f[h] ?? fallback), w) : null;
+  };
+  const hw = mixVals(fs.map(f => f.hw ?? { left: f.left ? 1 : 0, right: f.right ? 1 : 0 }), w);
+  const head = mixVals(fs.map(f => f.head), w);
+  const len = Math.hypot(...head) || 1;
+  return {
+    body: mixVals(fs.map(f => f.body), w),
+    left: hand("left"),
+    right: hand("right"),
+    hw: { left: clamp01(hw.left), right: clamp01(hw.right) },
+    head: head.map(v => v / len),
+    face: mixVals(fs.map(f => f.face ?? IDLE.face), w)
+  };
 };
 
 const findIndex = (frames, t) => {
@@ -525,56 +883,83 @@ const findIndex = (frames, t) => {
 };
 
 const sampleTimeline = (tl, t) => {
-  const i = findIndex(tl.frames, t);
-  const a = tl.frames[i];
-  const b = tl.frames[Math.min(i + 1, tl.frames.length - 1)];
+  const F = tl.frames;
+  const i = findIndex(F, t);
+  const a = F[i];
+  const b = F[Math.min(i + 1, F.length - 1)];
   const span = b.t - a.t;
   const k = span > 0 ? clamp01((t - a.t) / span) : 0;
-  return lerpFrame(a, b, span > GAP_MS * 0.5 ? k * k * (3 - 2 * k) : k);
+  if (a === b || a.seg !== b.seg) {
+    // Transition between signs (or to/from rest): smootherstep ease, zero velocity at both ends.
+    const s = k * k * k * (k * (k * 6 - 15) + 10);
+    return blendFrames([a, a, b, b], [0, 1 - s, s, 0]);
+  }
+  const p0 = i > 0 && F[i - 1].seg === a.seg ? F[i - 1] : a;
+  const p3 = i + 2 < F.length && F[i + 2].seg === b.seg ? F[i + 2] : b;
+  return blendFrames([p0, a, b, p3], catmull(k));
 };
 
 const buildTimeline = items => {
-  const frames = [{ ...IDLE, t: 0 }];
+  const frames = [{ ...IDLE, t: 0, seg: -1 }];
   const segments = [];
   let offset = GAP_MS;
-  items.forEach(item => {
-    const src = item.sign.frames;
-    const t0 = src[0].t;
-    const dur = src.at(-1).t - t0;
-    src.forEach(f => frames.push({ ...f, t: offset + f.t - t0 }));
-    segments.push({ start: offset, end: offset + dur, label: item.label });
+  items.forEach((item, si) => {
+    if (item.text) {
+      // Word without a sign: hold a neutral pose while its caption is shown, keeping sentence order.
+      frames.push({ ...IDLE, t: offset, seg: si }, { ...IDLE, t: offset + TEXT_MS, seg: si });
+      segments.push({ start: offset, end: offset + TEXT_MS, label: item.label, text: true, expr: null });
+      offset += TEXT_MS + GAP_MS;
+      return;
+    }
+    const src = prepareSign(item.sign);
+    const dur = src.at(-1).t;
+    src.forEach(f => frames.push({ ...f, t: offset + f.t, seg: si }));
+    segments.push({ start: offset, end: offset + dur, label: item.label, expr: SIGN_EXPRESSIONS[item.sign.word] ?? null });
     offset += dur + GAP_MS;
   });
-  frames.push({ ...IDLE, t: offset });
+  frames.push({ ...IDLE, t: offset, seg: -2 });
   return { frames, segments, duration: offset };
 };
 
-const renderSequence = (items, missing) => {
-  el.sequence.innerHTML = items.map((it, i) => `<span class="chip ${it.spelled ? "spelled" : ""}" data-seg="${i}">${esc(it.label)}</span>`).join("")
-    + missing.map(w => `<span class="chip missing" title="Not in library">${esc(w)}</span>`).join("");
+const renderSequence = items => {
+  el.sequence.innerHTML = items.map((it, i) => it.text
+    ? `<span class="chip missing" data-seg="${i}" title="No sign in the library yet; shown as a caption">${esc(it.label)}</span>`
+    : `<span class="chip ${it.spelled ? "spelled" : ""}" data-seg="${i}">${esc(it.chip ?? it.label)}</span>`).join("");
 };
 
 const highlightSegment = idx => {
   state.activeSeg = idx;
   [...el.sequence.querySelectorAll("[data-seg]")].forEach(c => c.classList.toggle("active", Number(c.dataset.seg) === idx));
-  el.caption.textContent = state.timeline?.segments[idx]?.label ?? "";
+  const seg = state.timeline?.segments[idx];
+  el.caption.textContent = seg?.label ?? "";
+  el.caption.classList.toggle("unsigned", !!seg?.text);
 };
 
-const playItems = items => {
-  const valid = items.filter(i => i.sign?.frames?.length > 1);
-  return valid.length ? beginPlayback(valid) : setStatus("Nothing to play. Record signs first.", "err");
+const playItems = async items => {
+  const signs = [...new Set(items.filter(i => i.sign).map(i => i.sign))];
+  if (!signs.length) return setStatus("Nothing to play. Record signs first.", "err");
+  try {
+    signs.some(s => !s.frames) && setStatus("Loading signs…");
+    await ensureFrames(signs);
+  } catch (error) {
+    return setStatus(error.message, "err");
+  }
+  const valid = items.filter(i => i.text || i.sign?.frames?.length > 1);
+  valid.some(i => i.sign) ? beginPlayback(valid) : setStatus("Nothing to play. Record signs first.", "err");
 };
 
 const beginPlayback = items => {
+  notifyParent({ type: "playing", words: items.filter(i => i.sign).map(i => i.sign.word) });
   state.timeline = buildTimeline(items);
   state.playT = 0;
   state.lastNow = performance.now();
   state.playing = true;
   state.activeSeg = -1;
-  setStatus(`Signing ${items.length} item(s)…`, "ok");
+  setStatus(`Signing ${items.filter(i => i.sign).length} sign(s)…`, "ok");
 };
 
 const stopPlayback = () => {
+  state.playing && notifyParent({ type: "ended" });
   state.playing = false;
   highlightSegment(-1);
 };
@@ -587,35 +972,31 @@ const playbackFrame = now => {
   const t = Math.min(state.playT, tl.duration);
   const seg = tl.segments.findIndex(s => t >= s.start && t <= s.end);
   seg !== state.activeSeg && seg >= 0 && highlightSegment(seg);
+  state.expr = seg >= 0 ? tl.segments[seg].expr : null;
   const frame = sampleTimeline(tl, t);
   state.playT >= tl.duration && (el.loopChk.checked ? (state.playT = 0) : stopPlayback());
   return frame;
 };
 
 const planText = text => {
-  const tokens = normalizeKey(text).split(" ").filter(Boolean);
-  const items = [];
-  const missing = [];
-  let i = 0;
-  while (i < tokens.length) {
-    const n = [4, 3, 2, 1].find(k => i + k <= tokens.length && state.library.has(tokens.slice(i, i + k).join(" ")));
-    const key = tokens.slice(i, i + (n ?? 1)).join(" ");
-    const canSpell = /^[a-z0-9']+$/i.test(key);
-    const letters = canSpell ? [...key.replace(/'/g, "")] : [];
-    const spelled = letters.filter(ch => state.library.has(ch)).map(ch => ({ label: ch.toUpperCase(), sign: state.library.get(ch), spelled: true }));
-    const lacking = canSpell ? letters.filter(ch => !state.library.has(ch)) : [key];
-    items.push(...(n ? [{ label: key, sign: state.library.get(key) }] : spelled));
-    missing.push(...(n ? [] : lacking.length ? [`${key} (${[...new Set(lacking)].join(",")})`] : []));
-    i += n ?? 1;
-  }
-  return { items, missing };
+  const plan = planSentence(text, w => state.library.has(w));
+  const items = plan.items.map(it => it.kind === "text"
+    ? { label: it.label, text: true }
+    : { label: it.kind === "spell" ? it.label : it.word, chip: it.label, sign: state.library.get(it.word), spelled: it.kind === "spell" });
+  return { items, unsigned: plan.unsigned, notes: plan.notes };
 };
 
-const translate = () => {
-  const { items, missing } = planText(el.textInput.value);
-  renderSequence(items, missing);
-  playItems(items);
-  missing.length && setStatus(`Missing signs: ${missing.join("; ")}. Record them (or their letters) in the library.`, "err");
+const translate = async () => {
+  const { items, unsigned, notes } = planText(el.textInput.value);
+  renderSequence(items);
+  if (!items.some(i => i.sign)) return setStatus(unsigned.length ? `No signs in the library yet for: ${unsigned.join(", ")}.` : "Type or say a phrase first.", "err");
+  await playItems(items);
+  if (!state.playing) return;
+  const warnings = [
+    unsigned.length && `Shown as captions (no sign yet): ${unsigned.join(", ")}.`,
+    notes.includes("negation") && "This phrase contains a negation that cannot be signed yet; check the meaning."
+  ].filter(Boolean);
+  warnings.length && setStatus(warnings.join(" "), "err");
 };
 
 const countdown = async () => {
@@ -678,7 +1059,8 @@ const saveSign = async (word, frames, video) => {
 };
 
 const exportLibrary = () => {
-  const data = [...state.library.values()].map(({ word, frames, duration, created }) => ({ word, frames, duration, created }));
+  // Included signs are already published; export the user's own recordings and imports.
+  const data = [...state.library.values()].filter(s => !s.bundled && s.frames).map(({ word, frames, duration, created }) => ({ word, frames, duration, created }));
   const blob = new Blob([JSON.stringify({ version: FORMAT, signs: data })], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -690,17 +1072,19 @@ const exportLibrary = () => {
 const importLibrary = async file => {
   const parsed = JSON.parse(await file.text());
   const signs = (parsed.version === FORMAT ? parsed.signs ?? [] : []).filter(s => s.word && s.frames?.length > 1);
-  await Promise.all(signs.map(s => dbPut({ ...s, v: FORMAT, word: normalizeKey(s.word), video: state.library.get(normalizeKey(s.word))?.video ?? null })));
+  await Promise.all(signs.map(s => dbPut({ ...s, v: FORMAT, word: normalizeKey(s.word), created: s.created || Date.now(), video: state.library.get(normalizeKey(s.word))?.video ?? null })));
   await loadLibrary();
   setStatus(`Imported ${signs.length} sign(s).`, signs.length ? "ok" : "err");
 };
 
 const loop = now => {
+  const dt = Math.min(clock.getDelta(), 0.1);
+  life.time += dt;
   const ready = state.models && state.stream && el.video.readyState >= 2 && el.video.currentTime !== state.lastVT;
   ready && detect(now);
   const frame = state.playing ? playbackFrame(now) : (el.liveChk.checked && state.liveFrame) || IDLE;
-  state.vrm && applyFrame(frame, state.playing ? PLAY_LERP : LIVE_LERP);
-  state.vrm?.update(clock.getDelta());
+  state.vrm && applyFrame(frame, dt, state.playing ? PLAY_TAU : LIVE_TAU);
+  state.vrm?.update(dt);
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(loop);
@@ -747,6 +1131,26 @@ el.modelInput.addEventListener("change", e => {
   e.target.value = "";
 });
 
+// Embed API: a same-origin parent page (?embed=1) can ask the avatar to play signs.
+//   parent -> avatar: { type: "signsense-play", text?: "good morning", word?: "hello", speed?: 0.5 } | { type: "signsense-stop" }
+//   avatar -> parent: { source: "signsense-avatar", type: "ready" | "playing" | "ended" | "error", ... }
+function notifyParent(message) {
+  parent !== window && parent.postMessage({ source: "signsense-avatar", ...message }, location.origin);
+}
+window.addEventListener("message", event => {
+  if (event.origin !== location.origin || event.source !== parent) return;
+  const { type, word, text, speed } = event.data ?? {};
+  if (type === "signsense-stop") return stopPlayback();
+  if (type !== "signsense-play") return;
+  if (Number.isFinite(speed)) {
+    el.speed.value = String(Math.min(2, Math.max(0.25, speed)));
+    el.speedVal.textContent = `${Number(el.speed.value).toFixed(2)}×`;
+  }
+  const sign = word && state.library.get(word);
+  const items = sign ? [{ label: word, sign }] : planText(String(text ?? word ?? "")).items;
+  items.some(i => i.sign) ? playItems(items) : notifyParent({ type: "error", message: "No sign for that word yet." });
+});
+
 await loadLibrary();
 requestAnimationFrame(loop);
 loadAvatar(DEFAULT_AVATAR).catch(e => {
@@ -754,6 +1158,7 @@ loadAvatar(DEFAULT_AVATAR).catch(e => {
   setStatus(`Avatar load failed: ${e.message}`, "err");
 }).then(() => {
   if (state.vrm) {
+    notifyParent({ type: "ready", count: state.library.size });
     el.camBtn.disabled = false;
     setStatus(SpeechRecognition ? "Avatar ready. Speak or type a phrase." : "Avatar ready. Speech recognition is unavailable; type a phrase.", "ok");
   }

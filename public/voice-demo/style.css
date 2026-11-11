@@ -86,6 +86,10 @@ button.danger { border-color: var(--danger); background: var(--danger); color: #
 .chip { padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: #f6f6fb; font-size: .77rem; }
 .chip.spelled { border-style: dashed; }
 .chip.missing { border-color: var(--danger); color: var(--danger); }
+.chip.missing.active { background: var(--danger); color: #fff; }
+.avatar-stage .caption.unsigned { font-style: italic; font-weight: 600; opacity: .85; }
+.avatar-stage .caption.unsigned::before { content: "“"; }
+.avatar-stage .caption.unsigned::after { content: "” (no sign yet)"; font-size: .7em; }
 .chip.active { border-color: var(--indigo); background: var(--indigo); color: #fff; }
 .setup-details { margin-top: 16px; }
 .setup-details summary { width: fit-content; color: var(--muted); font-size: .84rem; font-weight: 600; cursor: pointer; }
@@ -131,3 +135,12 @@ button.danger { border-color: var(--danger); background: var(--danger); color: #
   .voice-row select { width: 100%; }
   .action-row button { flex: 1 1 100%; }
 }
+
+/* Embed mode (?embed=1): only the avatar, driven by the parent page (e.g. the sign dictionary). */
+html.embed, html.embed body { height: 100%; overflow: hidden; padding: 0; background: transparent; }
+.embed .demo-header, .embed .panel-heading, .embed .demo-controls, .embed .avatar-tools, .embed .setup-details, .embed .fullscreen-controls { display: none !important; }
+.embed main { width: 100%; height: 100%; padding: 0; }
+.embed .panel { height: 100%; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.embed .demo-grid { display: block; height: 100%; }
+.embed .avatar-stage { width: 100%; height: 100%; max-height: none; aspect-ratio: auto; border: 0; border-radius: 0; }
+.embed .avatar-stage .caption { font-size: clamp(1rem, 4vw, 1.6rem); }

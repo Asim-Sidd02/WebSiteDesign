@@ -27,7 +27,11 @@ export default function SpeechDemo() {
               Speak a phrase. See the avatar sign.
             </h2>
             <p className="mt-4 max-w-2xl leading-7 text-ink/60">
-              Fifty-seven sample vocabulary motions load automatically. Try phrases such as “hello”, “good morning”, “thank you” or “help”.
+              The included ISL vocabulary loads automatically. Try phrases such as “hello”, “good morning”, “thank you” or “help”, or{" "}
+              <a href="/signs" className="font-medium text-ink underline decoration-ink/25 underline-offset-4 hover:decoration-brand-500">
+                browse every sign in the dictionary
+              </a>
+              .
             </p>
           </div>
           <a href="/#how" className="text-sm font-semibold text-brand-600 underline decoration-brand-500/30 underline-offset-4 hover:decoration-brand-500">
