@@ -1,10 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Atkinson_Hyperlegible, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import { Layout } from "@/components";
 import SmoothScroll from "@/components/smooth-scroll";
 
-const sans = Inter({ subsets: ["latin"], display: "swap" });
+// Atkinson Hyperlegible was designed by the Braille Institute for maximum character distinction.
+// Many Deaf readers use English as a second language after ISL, so legibility matters more than style here.
+const sans = Atkinson_Hyperlegible({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-sans", display: "swap" });
+// Bricolage Grotesque: a contemporary grotesque with warm, slightly irregular details, so headlines feel human rather than corporate.
+const serif = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-serif", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
@@ -55,7 +59,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${sans.className} ${mono.variable} bg-paper text-ink`}>
+      <body className={`${sans.variable} ${serif.variable} ${mono.variable} bg-paper font-sans text-ink`}>
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-3 focus:text-white">
+          Skip to content
+        </a>
         <SmoothScroll />
         <Layout>{children}</Layout>
       </body>

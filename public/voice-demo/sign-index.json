@@ -21,12 +21,48 @@
  ],
  "signs": [
   {
+   "word": "actor",
+   "file": "actor.json",
+   "duration": 2840,
+   "frames": 72,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/98. Actor/MVI_5371.MOV"
+  },
+  {
+   "word": "adult",
+   "file": "adult.json",
+   "duration": 2840,
+   "frames": 72,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/80. Adult/MVI_3823.MOV"
+  },
+  {
    "word": "afternoon",
    "file": "afternoon.json",
    "duration": 2133,
    "frames": 65,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Days and time"
+  },
+  {
+   "word": "alive",
+   "file": "alive.json",
+   "duration": 1720,
+   "frames": 44,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/34. alive/MVI_9703.MOV"
+  },
+  {
+   "word": "alright",
+   "file": "alright.json",
+   "duration": 3400,
+   "frames": 86,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Greetings",
+   "sourceVideo": "Greetings/50. Alright/MVI_9964.MOV"
   },
   {
    "word": "angry",
@@ -37,6 +73,51 @@
    "topic": "Adjectives"
   },
   {
+   "word": "animal",
+   "file": "animal.json",
+   "duration": 4280,
+   "frames": 108,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Animals",
+   "sourceVideo": "Animals/8. Animal/MVI_3083.MOV"
+  },
+  {
+   "word": "artist",
+   "file": "artist.json",
+   "duration": 2320,
+   "frames": 59,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/94. Artist/MVI_5354.MOV"
+  },
+  {
+   "word": "attack",
+   "file": "attack.json",
+   "duration": 2880,
+   "frames": 73,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/13. Attack/MVI_4299.MOV"
+  },
+  {
+   "word": "author",
+   "file": "author.json",
+   "duration": 4680,
+   "frames": 118,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/95. Author/MVI_5358.MOV"
+  },
+  {
+   "word": "baby",
+   "file": "baby.json",
+   "duration": 2720,
+   "frames": 69,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/63. Baby/MVI_3919.MOV"
+  },
+  {
    "word": "bad",
    "file": "bad.json",
    "duration": 1567,
@@ -45,12 +126,93 @@
    "topic": "Adjectives"
   },
   {
+   "word": "bag",
+   "file": "bag.json",
+   "duration": 1960,
+   "frames": 50,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/45. Bag/MVI_4432.MOV"
+  },
+  {
+   "word": "ball",
+   "file": "ball.json",
+   "duration": 1960,
+   "frames": 50,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/19. Ball/MVI_4324.MOV"
+  },
+  {
+   "word": "bank",
+   "file": "bank.json",
+   "duration": 2480,
+   "frames": 63,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/35. Bank/Extra/MVI_3339.MOV"
+  },
+  {
+   "word": "bathroom",
+   "file": "bathroom.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/32. Bathroom/MVI_4381.MOV"
+  },
+  {
    "word": "beautiful",
    "file": "beautiful.json",
    "duration": 2560,
    "frames": 65,
    "source": "INCLUDE (AI4Bharat), CC BY 4.0",
    "topic": "Adjectives"
+  },
+  {
+   "word": "bed",
+   "file": "bed.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/26. Bed/MVI_4352.MOV"
+  },
+  {
+   "word": "bedroom",
+   "file": "bedroom.json",
+   "duration": 3440,
+   "frames": 87,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/30. Bedroom/MVI_4373.MOV"
+  },
+  {
+   "word": "bicycle",
+   "file": "bicycle.json",
+   "duration": 3040,
+   "frames": 77,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/13. Bicycle/MVI_3216.MOV"
+  },
+  {
+   "word": "big large",
+   "file": "big-large.json",
+   "duration": 2120,
+   "frames": 54,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/83. big large/MVI_5123.MOV"
+  },
+  {
+   "word": "bill",
+   "file": "bill.json",
+   "duration": 2120,
+   "frames": 54,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/5. Bill/MVI_4267.MOV"
   },
   {
    "word": "bird",
@@ -77,6 +239,42 @@
    "topic": "Adjectives"
   },
   {
+   "word": "blue",
+   "file": "blue.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/49. Blue/MVI_3725.MOV"
+  },
+  {
+   "word": "boat",
+   "file": "boat.json",
+   "duration": 4880,
+   "frames": 123,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/15. Boat/MVI_3221.MOV"
+  },
+  {
+   "word": "book",
+   "file": "book.json",
+   "duration": 2680,
+   "frames": 68,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/37. Book/MVI_8807.MP4"
+  },
+  {
+   "word": "box",
+   "file": "box.json",
+   "duration": 2880,
+   "frames": 73,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/46. Box/MVI_4440.MOV"
+  },
+  {
    "word": "boy",
    "file": "boy.json",
    "duration": 2067,
@@ -93,12 +291,174 @@
    "topic": "People"
   },
   {
+   "word": "brown",
+   "file": "brown.json",
+   "duration": 3160,
+   "frames": 80,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/51. Brown/MVI_3880.MOV"
+  },
+  {
+   "word": "bus",
+   "file": "bus.json",
+   "duration": 2960,
+   "frames": 75,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/14. Bus/MVI_4185.MOV"
+  },
+  {
+   "word": "camera",
+   "file": "camera.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/58. Camera/MVI_5410.MOV"
+  },
+  {
+   "word": "car",
+   "file": "car.json",
+   "duration": 3920,
+   "frames": 99,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/11. Car/MVI_3210.MOV"
+  },
+  {
+   "word": "card",
+   "file": "card.json",
+   "duration": 3280,
+   "frames": 83,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/48. Card/MVI_8854.MP4"
+  },
+  {
    "word": "cat",
    "file": "cat.json",
    "duration": 2300,
    "frames": 70,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Animals"
+  },
+  {
+   "word": "cell phone",
+   "file": "cell-phone.json",
+   "duration": 1880,
+   "frames": 48,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/54. Cell phone/MVI_4537.MOV"
+  },
+  {
+   "word": "chair",
+   "file": "chair.json",
+   "duration": 2040,
+   "frames": 52,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/25. Chair/MVI_4348.MOV"
+  },
+  {
+   "word": "cheap",
+   "file": "cheap.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/16. cheap/MVI_9617.MOV"
+  },
+  {
+   "word": "child",
+   "file": "child.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/79. Child/MVI_3820.MOV"
+  },
+  {
+   "word": "city",
+   "file": "city.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/18. City/MVI_3432.MOV"
+  },
+  {
+   "word": "clean",
+   "file": "clean.json",
+   "duration": 2720,
+   "frames": 69,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/29. clean/MVI_9679.MOV"
+  },
+  {
+   "word": "clock",
+   "file": "clock.json",
+   "duration": 2240,
+   "frames": 57,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/51. Clock/MVI_5379.MOV"
+  },
+  {
+   "word": "clothing",
+   "file": "clothing.json",
+   "duration": 2400,
+   "frames": 61,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/46. Clothing/MVI_3716.MOV"
+  },
+  {
+   "word": "cold",
+   "file": "cold.json",
+   "duration": 1920,
+   "frames": 49,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/88. cold/MVI_9252.MOV"
+  },
+  {
+   "word": "colour",
+   "file": "colour.json",
+   "duration": 2320,
+   "frames": 59,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/57. Colour/MVI_3750.MOV"
+  },
+  {
+   "word": "computer",
+   "file": "computer.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/55. Computer/MVI_5398.MOV"
+  },
+  {
+   "word": "cool",
+   "file": "cool.json",
+   "duration": 2960,
+   "frames": 75,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/90. cool/MVI_5145.MOV"
+  },
+  {
+   "word": "court",
+   "file": "court.json",
+   "duration": 2680,
+   "frames": 68,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/23. Court/MVI_3452.MOV"
   },
   {
    "word": "cow",
@@ -109,12 +469,84 @@
    "topic": "Animals"
   },
   {
+   "word": "crowd",
+   "file": "crowd.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/83. Crowd/MVI_3983.MOV"
+  },
+  {
+   "word": "curved",
+   "file": "curved.json",
+   "duration": 3040,
+   "frames": 77,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/18. curved/MVI_9633.MOV"
+  },
+  {
+   "word": "daughter",
+   "file": "daughter.json",
+   "duration": 2400,
+   "frames": 61,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/59. Daughter/MVI_4934.MOV"
+  },
+  {
+   "word": "dead",
+   "file": "dead.json",
+   "duration": 1920,
+   "frames": 49,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/33. dead/MVI_9699.MOV"
+  },
+  {
    "word": "deaf",
    "file": "deaf.json",
    "duration": 2400,
    "frames": 61,
    "source": "INCLUDE (AI4Bharat), CC BY 4.0",
    "topic": "Adjectives"
+  },
+  {
+   "word": "death",
+   "file": "death.json",
+   "duration": 2320,
+   "frames": 59,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/2. Death/MVI_4258.MOV"
+  },
+  {
+   "word": "deep",
+   "file": "deep.json",
+   "duration": 2840,
+   "frames": 72,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/27. deep/MVI_9672.MOV"
+  },
+  {
+   "word": "dirty",
+   "file": "dirty.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/30. dirty/MVI_9684.MOV"
+  },
+  {
+   "word": "doctor",
+   "file": "doctor.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/87. Doctor/MVI_5325.MOV"
   },
   {
    "word": "dog",
@@ -125,12 +557,48 @@
    "topic": "Animals"
   },
   {
+   "word": "door",
+   "file": "door.json",
+   "duration": 2240,
+   "frames": 57,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/29. Door/MVI_4366.MOV"
+  },
+  {
+   "word": "dream",
+   "file": "dream.json",
+   "duration": 3200,
+   "frames": 81,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/27. Dream/MVI_4361.MOV"
+  },
+  {
+   "word": "dress",
+   "file": "dress.json",
+   "duration": 2320,
+   "frames": 59,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/38. Dress/MVI_3693.MOV"
+  },
+  {
    "word": "drink",
    "file": "drink.json",
    "duration": 2400,
    "frames": 73,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Actions"
+  },
+  {
+   "word": "dry",
+   "file": "dry.json",
+   "duration": 2680,
+   "frames": 68,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/97. dry/MVI_5167.MOV"
   },
   {
    "word": "eat",
@@ -141,12 +609,102 @@
    "topic": "Actions"
   },
   {
+   "word": "election",
+   "file": "election.json",
+   "duration": 2880,
+   "frames": 73,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/14. Election/MVI_4307.MOV"
+  },
+  {
+   "word": "energy",
+   "file": "energy.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/10. Energy/MVI_8696.MP4"
+  },
+  {
    "word": "evening",
    "file": "evening.json",
    "duration": 2333,
    "frames": 71,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Days and time"
+  },
+  {
+   "word": "ex. monsoon",
+   "file": "ex-monsoon.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Seasons",
+   "sourceVideo": "Seasons/Ex. Monsoon/MVI_4671.MOV"
+  },
+  {
+   "word": "exercise",
+   "file": "exercise.json",
+   "duration": 2360,
+   "frames": 60,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/18. Exercise/MVI_4323.MOV"
+  },
+  {
+   "word": "expensive",
+   "file": "expensive.json",
+   "duration": 3000,
+   "frames": 76,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/15. expensive/MVI_9613.MOV"
+  },
+  {
+   "word": "fall",
+   "file": "fall.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Seasons",
+   "sourceVideo": "Seasons/64. Fall/MVI_5433.MOV"
+  },
+  {
+   "word": "family",
+   "file": "family.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/68. Family/MVI_3934.MOV"
+  },
+  {
+   "word": "famous",
+   "file": "famous.json",
+   "duration": 2000,
+   "frames": 51,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/39. famous/MVI_9715.MOV"
+  },
+  {
+   "word": "fan",
+   "file": "fan.json",
+   "duration": 2240,
+   "frames": 57,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/53. Fan/MVI_5390.MOV"
+  },
+  {
+   "word": "fast",
+   "file": "fast.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/86. fast/MVI_5133.MOV"
   },
   {
    "word": "father",
@@ -157,12 +715,39 @@
    "topic": "People"
   },
   {
+   "word": "female",
+   "file": "female.json",
+   "duration": 2240,
+   "frames": 57,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/20. female/MVI_9642.MOV"
+  },
+  {
    "word": "fish",
    "file": "fish.json",
    "duration": 2867,
    "frames": 87,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Animals"
+  },
+  {
+   "word": "flat",
+   "file": "flat.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/17. flat/MVI_9757.MOV"
+  },
+  {
+   "word": "friday",
+   "file": "friday.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/71. Friday/MVI_5462.MOV"
   },
   {
    "word": "friend",
@@ -173,12 +758,30 @@
    "topic": "People"
   },
   {
+   "word": "gift",
+   "file": "gift.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/47. Gift/MVI_4441.MOV"
+  },
+  {
    "word": "girl",
    "file": "girl.json",
    "duration": 2067,
    "frames": 63,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "People"
+  },
+  {
+   "word": "god",
+   "file": "god.json",
+   "duration": 2600,
+   "frames": 66,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/23. God/MVI_4340.MOV"
   },
   {
    "word": "good",
@@ -189,6 +792,24 @@
    "topic": "Adjectives"
   },
   {
+   "word": "good afternoon",
+   "file": "good-afternoon.json",
+   "duration": 3600,
+   "frames": 91,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Greetings",
+   "sourceVideo": "Greetings/52. Good afternoon/MVI_0046.MOV"
+  },
+  {
+   "word": "good evening",
+   "file": "good-evening.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Greetings",
+   "sourceVideo": "Greetings/53. Good evening/MVI_0001.MOV"
+  },
+  {
    "word": "good morning",
    "file": "good-morning.json",
    "duration": 1600,
@@ -197,12 +818,66 @@
    "topic": "Greetings"
   },
   {
+   "word": "good night",
+   "file": "good-night.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Greetings",
+   "sourceVideo": "Greetings/54. Good night/MVI_0002.MOV"
+  },
+  {
+   "word": "grandfather",
+   "file": "grandfather.json",
+   "duration": 3280,
+   "frames": 83,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/69. Grandfather/MVI_4086.MOV"
+  },
+  {
+   "word": "grandmother",
+   "file": "grandmother.json",
+   "duration": 2600,
+   "frames": 66,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/70. Grandmother/MVI_3793.MOV"
+  },
+  {
+   "word": "green",
+   "file": "green.json",
+   "duration": 2080,
+   "frames": 53,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/48. Green/MVI_3722.MOV"
+  },
+  {
    "word": "grey",
    "file": "grey.json",
    "duration": 2167,
    "frames": 66,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Colours"
+  },
+  {
+   "word": "ground",
+   "file": "ground.json",
+   "duration": 2000,
+   "frames": 51,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/34. Ground/MVI_3579.MOV"
+  },
+  {
+   "word": "gun",
+   "file": "gun.json",
+   "duration": 1960,
+   "frames": 50,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/16. Gun/MVI_4312.MOV"
   },
   {
    "word": "hand",
@@ -221,6 +896,51 @@
    "topic": "Adjectives"
   },
   {
+   "word": "hard",
+   "file": "hard.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/26. hard/MVI_9795.MOV"
+  },
+  {
+   "word": "hat",
+   "file": "hat.json",
+   "duration": 2720,
+   "frames": 69,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/37. Hat/MVI_3688.MOV"
+  },
+  {
+   "word": "he",
+   "file": "he.json",
+   "duration": 2960,
+   "frames": 75,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/42. he/MVI_0005.MOV"
+  },
+  {
+   "word": "healthy",
+   "file": "healthy.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/99. healthy/MVI_5256.MOV"
+  },
+  {
+   "word": "heavy",
+   "file": "heavy.json",
+   "duration": 2600,
+   "frames": 66,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/35. heavy/MVI_9831.MOV"
+  },
+  {
    "word": "hello",
    "file": "hello.json",
    "duration": 1933,
@@ -237,12 +957,336 @@
    "topic": "Actions"
   },
   {
+   "word": "high",
+   "file": "high.json",
+   "duration": 2720,
+   "frames": 69,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/23. high/MVI_9654.MOV"
+  },
+  {
+   "word": "horse",
+   "file": "horse.json",
+   "duration": 3160,
+   "frames": 80,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Animals",
+   "sourceVideo": "Animals/7. Horse/MVI_2996.MOV"
+  },
+  {
+   "word": "hospital",
+   "file": "hospital.json",
+   "duration": 3200,
+   "frames": 81,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/30. Hospital/MVI_3315.MOV"
+  },
+  {
+   "word": "hot",
+   "file": "hot.json",
+   "duration": 2800,
+   "frames": 71,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/87. hot/MVI_5136.MOV"
+  },
+  {
+   "word": "hour",
+   "file": "hour.json",
+   "duration": 1760,
+   "frames": 45,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/79. Hour/MVI_5495.MOV"
+  },
+  {
+   "word": "house",
+   "file": "house.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/19. House/MVI_3436.MOV"
+  },
+  {
+   "word": "how are you",
+   "file": "how-are-you.json",
+   "duration": 3400,
+   "frames": 86,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Greetings",
+   "sourceVideo": "Greetings/49. How are you/MVI_9960.MOV"
+  },
+  {
+   "word": "husband",
+   "file": "husband.json",
+   "duration": 2920,
+   "frames": 74,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/71. Husband/MVI_3945.MOV"
+  },
+  {
+   "word": "india",
+   "file": "india.json",
+   "duration": 2120,
+   "frames": 54,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/33. India/Extra/MVI_3655.MOV"
+  },
+  {
+   "word": "it",
+   "file": "it.json",
+   "duration": 2600,
+   "frames": 66,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/44. it/MVI_0013.MOV"
+  },
+  {
+   "word": "job",
+   "file": "job.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/99. Job/MVI_5375.MOV"
+  },
+  {
+   "word": "key",
+   "file": "key.json",
+   "duration": 1960,
+   "frames": 50,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/39. Key/MVI_4408.MOV"
+  },
+  {
+   "word": "king",
+   "file": "king.json",
+   "duration": 2720,
+   "frames": 69,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/73. King/MVI_3802.MOV"
+  },
+  {
+   "word": "kitchen",
+   "file": "kitchen.json",
+   "duration": 2760,
+   "frames": 70,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/31. Kitchen/MVI_4377.MOV"
+  },
+  {
+   "word": "lamp",
+   "file": "lamp.json",
+   "duration": 2040,
+   "frames": 52,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/52. Lamp/MVI_5383.MOV"
+  },
+  {
+   "word": "laptop",
+   "file": "laptop.json",
+   "duration": 2360,
+   "frames": 60,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/56. Laptop/MVI_5399.MOV"
+  },
+  {
+   "word": "lawyer",
+   "file": "lawyer.json",
+   "duration": 2120,
+   "frames": 54,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/86. Lawyer/MVI_5321.MOV"
+  },
+  {
+   "word": "letter",
+   "file": "letter.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/41. Letter/MVI_4419.MOV"
+  },
+  {
+   "word": "library",
+   "file": "library.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/29. Library/MVI_3478.MOV"
+  },
+  {
+   "word": "light",
+   "file": "light.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/36. light/MVI_9711.MOV"
+  },
+  {
+   "word": "location",
+   "file": "location.json",
+   "duration": 1640,
+   "frames": 42,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/36. Location/MVI_3505.MOV"
+  },
+  {
+   "word": "lock",
+   "file": "lock.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/43. Lock/MVI_8833.MP4"
+  },
+  {
+   "word": "long",
+   "file": "long.json",
+   "duration": 2080,
+   "frames": 53,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/78. long/MVI_9377.MOV"
+  },
+  {
+   "word": "loose",
+   "file": "loose.json",
+   "duration": 2760,
+   "frames": 70,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/22. loose/MVI_9777.MOV"
+  },
+  {
    "word": "loud",
    "file": "loud.json",
    "duration": 2200,
    "frames": 56,
    "source": "INCLUDE (AI4Bharat), CC BY 4.0",
    "topic": "Adjectives"
+  },
+  {
+   "word": "low",
+   "file": "low.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/24. low/MVI_9658.MOV"
+  },
+  {
+   "word": "male",
+   "file": "male.json",
+   "duration": 2320,
+   "frames": 59,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/19. male/MVI_9637.MOV"
+  },
+  {
+   "word": "man",
+   "file": "man.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/64. Man/MVI_3772.MOV"
+  },
+  {
+   "word": "manager",
+   "file": "manager.json",
+   "duration": 4360,
+   "frames": 110,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/96. Manager/MVI_5365.MOV"
+  },
+  {
+   "word": "market",
+   "file": "market.json",
+   "duration": 1720,
+   "frames": 44,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/32. Market/MVI_3489.MOV"
+  },
+  {
+   "word": "marriage",
+   "file": "marriage.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/6. Marriage/MVI_4274.MOV"
+  },
+  {
+   "word": "me",
+   "file": "me.json",
+   "duration": 2600,
+   "frames": 66,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/40. I/MVI_0001.MOV"
+  },
+  {
+   "word": "mean",
+   "file": "mean.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/10. Mean/MVI_9592.MOV"
+  },
+  {
+   "word": "medicine",
+   "file": "medicine.json",
+   "duration": 2680,
+   "frames": 68,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/3. Medicine/MVI_4259.MOV"
+  },
+  {
+   "word": "minute",
+   "file": "minute.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/80. Minute/MVI_4643.MOV"
+  },
+  {
+   "word": "monday",
+   "file": "monday.json",
+   "duration": 2040,
+   "frames": 52,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/67. Monday/MVI_5446.MOV"
+  },
+  {
+   "word": "money",
+   "file": "money.json",
+   "duration": 1840,
+   "frames": 47,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/4. Money/MVI_4263.MOV"
   },
   {
    "word": "monsoon",
@@ -253,12 +1297,39 @@
    "topic": "Seasons"
   },
   {
+   "word": "month",
+   "file": "month.json",
+   "duration": 1720,
+   "frames": 44,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/77. Month/MVI_5490.MOV"
+  },
+  {
+   "word": "morning",
+   "file": "morning.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/82. Morning/MVI_4654.MOV"
+  },
+  {
    "word": "mother",
    "file": "mother.json",
    "duration": 2633,
    "frames": 80,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "People"
+  },
+  {
+   "word": "mouse",
+   "file": "mouse.json",
+   "duration": 2760,
+   "frames": 70,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Animals",
+   "sourceVideo": "Animals/6. Mouse/MVI_3020.MOV"
   },
   {
    "word": "music",
@@ -277,6 +1348,51 @@
    "topic": "Everyday"
   },
   {
+   "word": "narrow",
+   "file": "narrow.json",
+   "duration": 3040,
+   "frames": 77,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/82. narrow/MVI_5120.MOV"
+  },
+  {
+   "word": "neighbour",
+   "file": "neighbour.json",
+   "duration": 2840,
+   "frames": 72,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/76. Neighbour/MVI_3961.MOV"
+  },
+  {
+   "word": "new",
+   "file": "new.json",
+   "duration": 2240,
+   "frames": 57,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/91. new/MVI_5148.MOV"
+  },
+  {
+   "word": "newspaper",
+   "file": "newspaper.json",
+   "duration": 2760,
+   "frames": 70,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/15. Newspaper/MVI_4311.MOV"
+  },
+  {
+   "word": "nice",
+   "file": "nice.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/9. Nice/MVI_9588.MOV"
+  },
+  {
    "word": "night",
    "file": "night.json",
    "duration": 2733,
@@ -293,6 +1409,195 @@
    "topic": "Body"
   },
   {
+   "word": "office",
+   "file": "office.json",
+   "duration": 3160,
+   "frames": 80,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/25. Office/MVI_3294.MOV"
+  },
+  {
+   "word": "old",
+   "file": "old.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/92. old/MVI_5152.MOV"
+  },
+  {
+   "word": "orange",
+   "file": "orange.json",
+   "duration": 1680,
+   "frames": 43,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/53. Orange/MVI_3737.MOV"
+  },
+  {
+   "word": "page",
+   "file": "page.json",
+   "duration": 3160,
+   "frames": 80,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/38. Page/MVI_4403.MOV"
+  },
+  {
+   "word": "paint",
+   "file": "paint.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/40. Paint/MVI_4412.MOV"
+  },
+  {
+   "word": "pant",
+   "file": "pant.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/43. Pant/MVI_3855.MOV"
+  },
+  {
+   "word": "paper",
+   "file": "paper.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/42. Paper/MVI_4420.MOV"
+  },
+  {
+   "word": "parent",
+   "file": "parent.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/62. Parent/MVI_4943.MOV"
+  },
+  {
+   "word": "park",
+   "file": "park.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/27. Park/MVI_3550.MOV"
+  },
+  {
+   "word": "patient",
+   "file": "patient.json",
+   "duration": 3640,
+   "frames": 92,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/88. Patient/MVI_4477.MOV"
+  },
+  {
+   "word": "peace",
+   "file": "peace.json",
+   "duration": 3840,
+   "frames": 97,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/12. Peace/MVI_8702.MP4"
+  },
+  {
+   "word": "pen",
+   "file": "pen.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/34. Pen/MVI_4387.MOV"
+  },
+  {
+   "word": "pencil",
+   "file": "pencil.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/33. Pencil/MVI_4383.MOV"
+  },
+  {
+   "word": "photograph",
+   "file": "photograph.json",
+   "duration": 2360,
+   "frames": 60,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/35. Photograph/MVI_4394.MOV"
+  },
+  {
+   "word": "pink",
+   "file": "pink.json",
+   "duration": 2080,
+   "frames": 53,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/52. Pink/MVI_3734.MOV"
+  },
+  {
+   "word": "plane",
+   "file": "plane.json",
+   "duration": 3160,
+   "frames": 80,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/10. Plane/MVI_3144.MOV"
+  },
+  {
+   "word": "player",
+   "file": "player.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/82. Player/MVI_3829.MOV"
+  },
+  {
+   "word": "pleased",
+   "file": "pleased.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Greetings",
+   "sourceVideo": "Greetings/56. Pleased/MVI_0009.MOV"
+  },
+  {
+   "word": "pocket",
+   "file": "pocket.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/45. Pocket/MVI_3713.MOV"
+  },
+  {
+   "word": "police",
+   "file": "police.json",
+   "duration": 2040,
+   "frames": 52,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/92. Police/MVI_5346.MOV"
+  },
+  {
+   "word": "poor",
+   "file": "poor.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/12. poor/MVI_9603.MOV"
+  },
+  {
    "word": "power",
    "file": "power.json",
    "duration": 2053,
@@ -301,12 +1606,111 @@
    "topic": "Everyday"
   },
   {
+   "word": "president",
+   "file": "president.json",
+   "duration": 2600,
+   "frames": 66,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/75. President/MVI_3958.MOV"
+  },
+  {
+   "word": "price",
+   "file": "price.json",
+   "duration": 2200,
+   "frames": 56,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/20. Price/MVI_4328.MOV"
+  },
+  {
+   "word": "priest",
+   "file": "priest.json",
+   "duration": 1920,
+   "frames": 49,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/91. Priest/MVI_4772.MOV"
+  },
+  {
+   "word": "queen",
+   "file": "queen.json",
+   "duration": 2240,
+   "frames": 57,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/74. Queen/MVI_3805.MOV"
+  },
+  {
    "word": "quiet",
    "file": "quiet.json",
    "duration": 2680,
    "frames": 68,
    "source": "INCLUDE (AI4Bharat), CC BY 4.0",
    "topic": "Adjectives"
+  },
+  {
+   "word": "race (ethnicity)",
+   "file": "race-ethnicity.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/8. Race (ethnicity)/MVI_4279.MOV"
+  },
+  {
+   "word": "radio",
+   "file": "radio.json",
+   "duration": 2080,
+   "frames": 53,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/60. Radio/MVI_5416.MOV"
+  },
+  {
+   "word": "red",
+   "file": "red.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/47. Red/MVI_3719.MOV"
+  },
+  {
+   "word": "religion",
+   "file": "religion.json",
+   "duration": 4240,
+   "frames": 107,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/1. Religion/MVI_4251.MOV"
+  },
+  {
+   "word": "reporter",
+   "file": "reporter.json",
+   "duration": 2320,
+   "frames": 59,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/97. Reporter/MVI_5366.MOV"
+  },
+  {
+   "word": "restaurant",
+   "file": "restaurant.json",
+   "duration": 2760,
+   "frames": 70,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/22. Restaurant/MVI_3280.MOV"
+  },
+  {
+   "word": "rich",
+   "file": "rich.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/11. rich/MVI_9733.MOV"
   },
   {
    "word": "ring",
@@ -325,12 +1729,156 @@
    "topic": "Adjectives"
   },
   {
+   "word": "saturday",
+   "file": "saturday.json",
+   "duration": 2240,
+   "frames": 57,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/72. Saturday/MVI_5466.MOV"
+  },
+  {
+   "word": "school",
+   "file": "school.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/24. School/MVI_3458.MOV"
+  },
+  {
+   "word": "science",
+   "file": "science.json",
+   "duration": 2680,
+   "frames": 68,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/22. Science/MVI_8745.MP4"
+  },
+  {
+   "word": "screen",
+   "file": "screen.json",
+   "duration": 2480,
+   "frames": 63,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/57. Screen/MVI_5403.MOV"
+  },
+  {
+   "word": "season",
+   "file": "season.json",
+   "duration": 4240,
+   "frames": 107,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Seasons",
+   "sourceVideo": "Seasons/65. Season/MVI_5441.MOV"
+  },
+  {
+   "word": "second",
+   "file": "second.json",
+   "duration": 2840,
+   "frames": 72,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/81. Second/MVI_9185.MP4"
+  },
+  {
+   "word": "secretary",
+   "file": "secretary.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/90. Secretary/MVI_5341.MOV"
+  },
+  {
+   "word": "shallow",
+   "file": "shallow.json",
+   "duration": 3800,
+   "frames": 96,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/28. shallow/MVI_9801.MOV"
+  },
+  {
+   "word": "she",
+   "file": "she.json",
+   "duration": 2920,
+   "frames": 74,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/43. she/MVI_0009.MOV"
+  },
+  {
+   "word": "shirt",
+   "file": "shirt.json",
+   "duration": 4160,
+   "frames": 105,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/41. Shirt/MVI_3849.MOV"
+  },
+  {
+   "word": "shoes",
+   "file": "shoes.json",
+   "duration": 3280,
+   "frames": 83,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/44. Shoes/MVI_4887.MOV"
+  },
+  {
+   "word": "short",
+   "file": "short.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/79. short/MVI_5110.MOV"
+  },
+  {
+   "word": "sick",
+   "file": "sick.json",
+   "duration": 2760,
+   "frames": 70,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/98. sick/MVI_5170.MOV"
+  },
+  {
+   "word": "sign",
+   "file": "sign.json",
+   "duration": 1960,
+   "frames": 50,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/21. Sign/MVI_4332.MOV"
+  },
+  {
+   "word": "sister",
+   "file": "sister.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/67. Sister/MVI_3782.MOV"
+  },
+  {
    "word": "sit",
    "file": "sit.json",
    "duration": 1300,
    "frames": 40,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Actions"
+  },
+  {
+   "word": "skirt",
+   "file": "skirt.json",
+   "duration": 2560,
+   "frames": 65,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/40. Skirt/MVI_4874.MOV"
   },
   {
    "word": "sleep",
@@ -341,12 +1889,84 @@
    "topic": "Actions"
   },
   {
+   "word": "slow",
+   "file": "slow.json",
+   "duration": 2360,
+   "frames": 60,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/85. slow/MVI_9402.MOV"
+  },
+  {
+   "word": "small little",
+   "file": "small-little.json",
+   "duration": 3280,
+   "frames": 83,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/84. small little/MVI_5126.MOV"
+  },
+  {
+   "word": "soap",
+   "file": "soap.json",
+   "duration": 2120,
+   "frames": 54,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/36. Soap/MVI_4398.MOV"
+  },
+  {
+   "word": "soft",
+   "file": "soft.json",
+   "duration": 2400,
+   "frames": 61,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/25. soft/MVI_9791.MOV"
+  },
+  {
+   "word": "soldier",
+   "file": "soldier.json",
+   "duration": 1640,
+   "frames": 42,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/93. Soldier/MVI_5353.MOV"
+  },
+  {
+   "word": "son",
+   "file": "son.json",
+   "duration": 2960,
+   "frames": 75,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/58. Son/MVI_3902.MOV"
+  },
+  {
    "word": "sorry",
    "file": "sorry.json",
    "duration": 2033,
    "frames": 62,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Greetings"
+  },
+  {
+   "word": "sport",
+   "file": "sport.json",
+   "duration": 2880,
+   "frames": 73,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/17. Sport/MVI_8722.MP4"
+  },
+  {
+   "word": "spring",
+   "file": "spring.json",
+   "duration": 3280,
+   "frames": 83,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Seasons",
+   "sourceVideo": "Seasons/62. Spring/MVI_5428.MOV"
   },
   {
    "word": "stand",
@@ -365,6 +1985,33 @@
    "topic": "Actions"
   },
   {
+   "word": "store or shop",
+   "file": "store-or-shop.json",
+   "duration": 1680,
+   "frames": 43,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/28. Store or Shop/MVI_3473.MOV"
+  },
+  {
+   "word": "street or road",
+   "file": "street-or-road.json",
+   "duration": 2360,
+   "frames": 60,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/20. Street or Road/MVI_3271.MOV"
+  },
+  {
+   "word": "strong",
+   "file": "strong.json",
+   "duration": 2360,
+   "frames": 60,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/31. strong/MVI_9692.MOV"
+  },
+  {
    "word": "student",
    "file": "student.json",
    "duration": 4067,
@@ -381,12 +2028,84 @@
    "topic": "Actions"
   },
   {
+   "word": "suit",
+   "file": "suit.json",
+   "duration": 2800,
+   "frames": 71,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/39. Suit/MVI_3843.MOV"
+  },
+  {
+   "word": "summer",
+   "file": "summer.json",
+   "duration": 3080,
+   "frames": 78,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Seasons",
+   "sourceVideo": "Seasons/61. Summer/MVI_4565.MOV"
+  },
+  {
+   "word": "sunday",
+   "file": "sunday.json",
+   "duration": 2000,
+   "frames": 51,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/66. Sunday/MVI_5442.MOV"
+  },
+  {
+   "word": "t-shirt",
+   "file": "t-shirt.json",
+   "duration": 3640,
+   "frames": 92,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Clothes",
+   "sourceVideo": "Clothes/42. T-Shirt/MVI_3852.MOV"
+  },
+  {
+   "word": "table",
+   "file": "table.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/24. Table/MVI_4344.MOV"
+  },
+  {
+   "word": "tall",
+   "file": "tall.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/80. tall/MVI_5114.MOV"
+  },
+  {
    "word": "teacher",
    "file": "teacher.json",
    "duration": 2333,
    "frames": 71,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "People"
+  },
+  {
+   "word": "team",
+   "file": "team.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/7. Team/MVI_8681.MP4"
+  },
+  {
+   "word": "technology",
+   "file": "technology.json",
+   "duration": 2840,
+   "frames": 72,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/9. Technology/MVI_8689.MP4"
   },
   {
    "word": "teeth",
@@ -397,12 +2116,93 @@
    "topic": "Body"
   },
   {
+   "word": "telephone",
+   "file": "telephone.json",
+   "duration": 1600,
+   "frames": 41,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/44. Telephone/MVI_4428.MOV"
+  },
+  {
+   "word": "television",
+   "file": "television.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Electronics",
+   "sourceVideo": "Electronics/59. Television/MVI_4560.MOV"
+  },
+  {
+   "word": "temple",
+   "file": "temple.json",
+   "duration": 3000,
+   "frames": 76,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/31. Temple/MVI_3566.MOV"
+  },
+  {
    "word": "thank you",
    "file": "thank-you.json",
    "duration": 1867,
    "frames": 57,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Greetings"
+  },
+  {
+   "word": "they",
+   "file": "they.json",
+   "duration": 3000,
+   "frames": 76,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/47. they/MVI_0025.MOV"
+  },
+  {
+   "word": "thick",
+   "file": "thick.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/13. thick/MVI_9605.MOV"
+  },
+  {
+   "word": "thin",
+   "file": "thin.json",
+   "duration": 2440,
+   "frames": 62,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/14. thin/MVI_9609.MOV"
+  },
+  {
+   "word": "thursday",
+   "file": "thursday.json",
+   "duration": 2080,
+   "frames": 53,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/70. Thursday/MVI_5458.MOV"
+  },
+  {
+   "word": "tight",
+   "file": "tight.json",
+   "duration": 3200,
+   "frames": 81,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/21. tight/MVI_9646.MOV"
+  },
+  {
+   "word": "time",
+   "file": "time.json",
+   "duration": 2280,
+   "frames": 58,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/86. Time/MVI_4667.MOV"
   },
   {
    "word": "today",
@@ -421,6 +2221,69 @@
    "topic": "Days and time"
   },
   {
+   "word": "tool",
+   "file": "tool.json",
+   "duration": 2520,
+   "frames": 64,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/50. Tool/MVI_4453.MOV"
+  },
+  {
+   "word": "train",
+   "file": "train.json",
+   "duration": 3200,
+   "frames": 81,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/9. Train/MVI_3141.MOV"
+  },
+  {
+   "word": "train station",
+   "file": "train-station.json",
+   "duration": 3320,
+   "frames": 84,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/21. Train Station/Extra/MVI_3279.MOV"
+  },
+  {
+   "word": "train ticket",
+   "file": "train-ticket.json",
+   "duration": 4400,
+   "frames": 111,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/16. train ticket/MVI_3164.MOV"
+  },
+  {
+   "word": "transportation",
+   "file": "transportation.json",
+   "duration": 3400,
+   "frames": 86,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/17. Transportation/MVI_3227.MOV"
+  },
+  {
+   "word": "truck",
+   "file": "truck.json",
+   "duration": 3320,
+   "frames": 84,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Means of transportation",
+   "sourceVideo": "Means_of_Transportation/12. Truck/MVI_3243.MOV"
+  },
+  {
+   "word": "tuesday",
+   "file": "tuesday.json",
+   "duration": 2760,
+   "frames": 70,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/68. Tuesday/MVI_4598.MOV"
+  },
+  {
    "word": "ugly",
    "file": "ugly.json",
    "duration": 3040,
@@ -437,12 +2300,147 @@
    "topic": "Everyday"
   },
   {
+   "word": "university",
+   "file": "university.json",
+   "duration": 1600,
+   "frames": 41,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Places",
+   "sourceVideo": "Places/26. University/Extra/MVI_3626.MOV"
+  },
+  {
+   "word": "waiter",
+   "file": "waiter.json",
+   "duration": 3920,
+   "frames": 99,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Jobs",
+   "sourceVideo": "Jobs/89. Waiter/MVI_4481.MOV"
+  },
+  {
+   "word": "war",
+   "file": "war.json",
+   "duration": 2160,
+   "frames": 55,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Society",
+   "sourceVideo": "Society/11. War/MVI_4294.MOV"
+  },
+  {
+   "word": "warm",
+   "file": "warm.json",
+   "duration": 2640,
+   "frames": 67,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/89. warm/MVI_5141.MOV"
+  },
+  {
+   "word": "we",
+   "file": "we.json",
+   "duration": 3280,
+   "frames": 83,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/45. we/MVI_0017.MOV"
+  },
+  {
+   "word": "weak",
+   "file": "weak.json",
+   "duration": 2360,
+   "frames": 60,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/32. weak/MVI_9696.MOV"
+  },
+  {
+   "word": "wednesday",
+   "file": "wednesday.json",
+   "duration": 1960,
+   "frames": 49,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/69. Wednesday/MVI_4599.MOV"
+  },
+  {
+   "word": "week",
+   "file": "week.json",
+   "duration": 1640,
+   "frames": 42,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/76. Week/MVI_5486.MOV"
+  },
+  {
    "word": "welcome",
    "file": "welcome.json",
    "duration": 1967,
    "frames": 60,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Greetings"
+  },
+  {
+   "word": "wet",
+   "file": "wet.json",
+   "duration": 2880,
+   "frames": 73,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/96. wet/MVI_5246.MOV"
+  },
+  {
+   "word": "white",
+   "file": "white.json",
+   "duration": 2000,
+   "frames": 51,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/55. White/MVI_3743.MOV"
+  },
+  {
+   "word": "wide",
+   "file": "wide.json",
+   "duration": 2400,
+   "frames": 61,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/81. wide/MVI_5117.MOV"
+  },
+  {
+   "word": "wife",
+   "file": "wife.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/72. Wife/MVI_4964.MOV"
+  },
+  {
+   "word": "window",
+   "file": "window.json",
+   "duration": 3200,
+   "frames": 81,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Home",
+   "sourceVideo": "Home/28. Window/MVI_4365.MOV"
+  },
+  {
+   "word": "winter",
+   "file": "winter.json",
+   "duration": 2400,
+   "frames": 61,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Seasons",
+   "sourceVideo": "Seasons/63. Winter/MVI_5432.MOV"
+  },
+  {
+   "word": "woman",
+   "file": "woman.json",
+   "duration": 2080,
+   "frames": 53,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "People",
+   "sourceVideo": "People/65. Woman/MVI_3775.MOV"
   },
   {
    "word": "work",
@@ -461,6 +2459,24 @@
    "topic": "Actions"
   },
   {
+   "word": "year",
+   "file": "year.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Days and time",
+   "sourceVideo": "Days_and_Time/78. Year/MVI_5491.MOV"
+  },
+  {
+   "word": "yellow",
+   "file": "yellow.json",
+   "duration": 2120,
+   "frames": 54,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Colours",
+   "sourceVideo": "Colours/50. Yellow/MVI_3728.MOV"
+  },
+  {
    "word": "yesterday",
    "file": "yesterday.json",
    "duration": 1967,
@@ -469,12 +2485,39 @@
    "topic": "Days and time"
   },
   {
+   "word": "you",
+   "file": "you.json",
+   "duration": 1800,
+   "frames": 46,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/41. you/MVI_0015.MOV"
+  },
+  {
+   "word": "you all",
+   "file": "you-all.json",
+   "duration": 2960,
+   "frames": 75,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Pronouns",
+   "sourceVideo": "Pronouns/46. you (plural)/MVI_0021.MOV"
+  },
+  {
    "word": "you are perfect",
    "file": "you-are-perfect.json",
    "duration": 2000,
    "frames": 61,
    "source": "Amrita SLR dataset, CC BY 4.0",
    "topic": "Greetings"
+  },
+  {
+   "word": "young",
+   "file": "young.json",
+   "duration": 2600,
+   "frames": 66,
+   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
+   "topic": "Adjectives",
+   "sourceVideo": "Adjectives/93. young/MVI_5155.MOV"
   }
  ]
 }

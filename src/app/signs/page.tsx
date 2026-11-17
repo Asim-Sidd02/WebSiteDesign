@@ -19,7 +19,7 @@ export default function SignsPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-16 sm:pt-20">
+      <main id="main" className="pt-16 sm:pt-20">
         <SignDictionary />
       </main>
       <Footer />

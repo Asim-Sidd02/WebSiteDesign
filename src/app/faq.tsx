@@ -1,4 +1,5 @@
 "use client";
+import Reveal from "@/components/reveal";
 
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,6 +22,10 @@ const FAQS = [
     a: "SignSense is being designed to support meeting participation with an ISL assistant that can share live text from signing.",
   },
   {
+    q: "Does SignSense replace an interpreter?",
+    a: "No. SignSense is for everyday conversations. For medical, legal, educational or other important situations, please use a qualified ISL interpreter.",
+  },
+  {
     q: "Which sign language does SignSense support?",
     a: "SignSense is focused solely on Indian Sign Language (ISL). It is not a general-purpose translator for other sign languages.",
   },
@@ -32,21 +37,21 @@ export function Faq() {
   return (
     <section id="faq" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-36">
       <div className="grid gap-10 sm:gap-16 lg:grid-cols-[1fr_1.4fr]">
-        <div>
-          <p className="label">Questions</p>
-          <h2 className="display mt-5 text-[2.6rem] sm:mt-6 sm:text-7xl">
-            Good <span className="italic text-brand-500">questions.</span>
+        <Reveal>
+          <p className="label">FAQ</p>
+          <h2 className="display mt-5 text-4xl sm:text-5xl">
+            Questions, answered plainly.
           </h2>
-          <p className="mt-6 max-w-sm text-ink/60">
+          <p className="mt-6 max-w-sm text-lg leading-8 text-ink/70">
             Something else on your mind?{" "}
             <a href="mailto:hello@signsense.app" className="text-ink underline underline-offset-4 hover:text-brand-500">
               Write to us
             </a>
             .
           </p>
-        </div>
+        </Reveal>
 
-        <div className="border-b border-ink/15">
+        <Reveal delay={120} className="border-b border-ink/15">
           {FAQS.map(({ q, a }, i) => {
             const isOpen = open === i;
             return (
@@ -56,11 +61,12 @@ export function Faq() {
                   aria-expanded={isOpen}
                   className="flex w-full items-center justify-between gap-5 py-5 text-left sm:gap-6 sm:py-7"
                 >
-                  <span className="text-lg font-medium leading-snug tracking-tight sm:text-2xl">{q}</span>
+                  <span className="font-serif font-semibold tracking-tight text-xl leading-snug sm:text-2xl">{q}</span>
                   <motion.span
                     animate={{ rotate: isOpen ? 45 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-brand-500/20 text-xl font-light text-brand-500"
+                    aria-hidden="true"
+                    className="grid h-8 w-8 shrink-0 place-items-center text-2xl font-light text-ink/60"
                   >
                     +
                   </motion.span>
@@ -74,14 +80,14 @@ export function Faq() {
                       transition={{ duration: 0.4, ease: [0.2, 0.7, 0.2, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="max-w-xl pb-6 text-[15px] leading-relaxed text-ink/60 sm:pb-8 sm:text-base">{a}</p>
+                      <p className="max-w-xl pb-7 text-base leading-8 text-ink/70 sm:text-lg">{a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             );
           })}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

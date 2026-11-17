@@ -1,57 +1,81 @@
-"use client";
+import Image from "next/image";
+import Reveal from "@/components/reveal";
 
-import { motion } from "framer-motion";
+// Each feature carries an honest status, so nobody plans around something that isn't ready yet.
+function Status({ live, children }: { live?: boolean; children: React.ReactNode }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${live ? "bg-[#e3f6ec] text-[#13693f]" : "bg-ink/[0.06] text-ink/60"}`}>
+      <span className={`h-1.5 w-1.5 rounded-full ${live ? "bg-[#1fa463]" : "bg-ink/35"}`} />
+      {children}
+    </span>
+  );
+}
 
-const FEATURES = [
-  {
-    title: "Indian Sign Language to text",
-    body: "Camera-based ISL recognition is designed to turn signing into readable text and audio for the people around you.",
-  },
-  {
-    title: "Text and speech to ISL",
-    body: "Typed text and spoken audio can be converted into Indian Sign Language, presented by a 3D avatar. ISL output can also be shared as text or audio.",
-  },
-  {
-    title: "An assistant for meetings",
-    body: "A meeting bot is planned to join online calls, recognize ISL signing and share live text so participants can follow along.",
-  },
-];
+const card = "relative h-full overflow-hidden rounded-[28px] p-7 sm:p-9";
 
 export function AboutEvent() {
   return (
-    <section id="features" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-36">
-      <div className="grid gap-10 sm:gap-16 lg:grid-cols-[1fr_1.4fr]">
-        <div className="lg:sticky lg:top-32 lg:self-start">
-          <p className="label">The platform</p>
-          <h2 className="display mt-5 text-[2.6rem] sm:mt-6 sm:text-7xl">
-            Designed around
-            <br />
-            <span className="text-brand-500">Indian Sign Language.</span>
-          </h2>
-        </div>
+    <section id="features" aria-labelledby="features-heading" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+      <Reveal className="mx-auto max-w-2xl text-center">
+        <p className="label">What you can do</p>
+        <h2 id="features-heading" className="display mt-4 text-4xl sm:text-6xl">
+          Some of it works today.
+        </h2>
+        <p className="lead mt-5">The rest is being built. Every feature is labelled, so you always know what to expect.</p>
+      </Reveal>
 
-        <ul>
-          {FEATURES.map((f, i) => (
-            <motion.li
-              key={f.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.8, ease: [0.2, 0.7, 0.2, 1] }}
-              className="group grid grid-cols-[auto_1fr] gap-4 border-t border-ink/15 py-7 last:border-b sm:gap-10 sm:py-10"
-            >
-              <span className="pt-1 font-mono text-xs text-ink/40 transition-colors sm:pt-0 sm:text-sm group-hover:text-brand-500">
-                0{i + 1}
-              </span>
-              <div>
-                <h3 className="text-xl font-medium tracking-tight transition-transform duration-500 group-hover:translate-x-2 sm:text-3xl">
-                  {f.title}
-                </h3>
-                <p className="mt-3 max-w-lg leading-relaxed text-ink/60">{f.body}</p>
-              </div>
-            </motion.li>
-          ))}
-        </ul>
+      <div className="mt-14 grid gap-5 lg:grid-cols-6">
+        <Reveal className="lg:col-span-4">
+          <a href="/demo" className={`${card} group flex flex-col bg-ink text-white sm:min-h-[380px]`}>
+            <div aria-hidden="true" className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-brand-500/40 blur-3xl" />
+            <span className="relative"><Status live>Available now</Status></span>
+            <h3 className="display relative mt-6 max-w-md text-3xl sm:text-5xl">Speak or type. The avatar signs it.</h3>
+            <p className="relative mt-4 max-w-md text-lg leading-8 text-white/70">
+              Type or say a phrase and watch it signed in ISL word order. Replay it, or slow it to half speed.
+            </p>
+            <span className="relative mt-auto inline-flex items-center gap-2 pt-8 font-bold">
+              Open the demo <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+            </span>
+          </a>
+        </Reveal>
+
+        <Reveal delay={80} className="lg:col-span-2">
+          <a href="/signs" className={`${card} group flex flex-col bg-brand-50 ring-1 ring-brand-500/10`}>
+            <span><Status live>Available now</Status></span>
+            <span aria-hidden="true" className="mt-6 font-serif text-7xl font-semibold tracking-tight text-brand-500">284</span>
+            <h3 className="mt-2 font-serif text-2xl font-semibold tracking-tight">Sign dictionary</h3>
+            <p className="mt-2 text-base leading-7 text-ink/70">Search a word and watch it signed. Every word has a link you can share.</p>
+            <span className="mt-auto inline-flex items-center gap-2 pt-6 font-bold text-brand-600">
+              Browse signs <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+            </span>
+          </a>
+        </Reveal>
+
+        <Reveal delay={60} className="lg:col-span-3">
+          <div className={`${card} bg-white ring-1 ring-ink/10`}>
+            <Status>In development</Status>
+            <h3 className="mt-6 font-serif text-2xl font-semibold tracking-tight sm:text-3xl">ISL to text and speech</h3>
+            <p className="mt-3 max-w-md text-base leading-7 text-ink/70">
+              Sign to your camera. Your words appear as text and are spoken aloud for the people around you.
+            </p>
+            <div aria-hidden="true" className="mt-7 space-y-2 text-[15px]">
+              <div className="ml-auto w-fit rounded-2xl rounded-br-md bg-brand-500 px-4 py-2.5 text-white">Where is the station?</div>
+              <div className="w-fit rounded-2xl rounded-bl-md bg-ink/[0.06] px-4 py-2.5">Two streets ahead, on your left.</div>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={120} className="lg:col-span-3">
+          <div className={`${card} flex flex-col bg-white ring-1 ring-ink/10`}>
+            <span><Status>Planned</Status></span>
+            <h3 className="mt-6 font-serif text-2xl font-semibold tracking-tight sm:text-3xl">Meeting assistant</h3>
+            <p className="mt-3 max-w-md text-base leading-7 text-ink/70">Joins online calls and turns your signing into live text everyone can read.</p>
+            <div className="relative mt-7 aspect-[16/7] overflow-hidden rounded-2xl">
+              <Image src="/image/isl-meeting-photo.png" alt="" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
+              <span className="absolute bottom-3 left-3 rounded-lg bg-ink/80 px-3 py-1.5 text-sm text-white backdrop-blur">Live text: &ldquo;I agree with the plan.&rdquo;</span>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
