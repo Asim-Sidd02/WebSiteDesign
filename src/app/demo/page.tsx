@@ -12,7 +12,7 @@ export default function DemoPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-16 sm:pt-20">
+      <main id="main" className="pt-16 sm:pt-20">
         <SpeechDemo />
       </main>
       <Footer />

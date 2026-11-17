@@ -55,20 +55,22 @@ export function Navbar() {
     <motion.header
       animate={{ y: hidden ? "-100%" : "0%" }}
       transition={{ duration: 0.35, ease: [0.2, 0.7, 0.2, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        open ? "border-b border-ink/10 bg-paper" : solid ? "border-b border-ink/10 bg-paper/85 backdrop-blur-md" : "bg-transparent"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-[padding] duration-300 ${open ? "bg-paper" : "px-3 pt-3 sm:px-5 sm:pt-4"}`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:px-8 sm:py-4">
+      <nav
+        className={`mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-3 py-2 transition-all duration-300 sm:px-4 ${
+          solid || open ? "bg-white/80 shadow-[0_8px_30px_-12px_rgba(20,18,43,0.25)] ring-1 ring-ink/[0.08] backdrop-blur-xl" : ""
+        }`}
+      >
         <a href="/" className="flex items-center gap-3">
-          <Image src="/image/signsense-mark.png" alt="" width={50} height={50} className="h-10 w-10 object-contain sm:h-12 sm:w-12" />
-          <span className="text-[15px] font-semibold tracking-tight sm:text-lg">SignSense</span>
+          <Image src="/image/signsense-mark.png" alt="" width={50} height={50} className="h-10 w-10 object-contain sm:h-11 sm:w-11" />
+          <span className="font-serif text-xl font-semibold tracking-tight">SignSense</span>
         </a>
 
-        <ul className="hidden items-center gap-8 lg:flex">
+        <ul className="hidden items-center gap-1 lg:flex">
           {NAV.map((n) => (
             <li key={n.id}>
-              <button onClick={() => go(n.id, n.href)} className="link-underline whitespace-nowrap text-[15px] opacity-75 hover:opacity-100 lg:text-base">
+              <button onClick={() => go(n.id, n.href)} className="whitespace-nowrap rounded-full px-4 py-2 text-[15px] font-bold text-ink/70 transition hover:bg-ink/[0.05] hover:text-ink">
                 {n.name}
               </button>
             </li>
@@ -78,14 +80,14 @@ export function Navbar() {
         <div className="flex items-center gap-2.5">
         <a
           href="/demo"
-          className="inline-flex h-11 items-center rounded-full bg-ink px-4 text-[13px] font-semibold text-white transition-colors hover:bg-brand-500 hover:text-white sm:h-auto sm:px-5 sm:py-3 sm:text-[15px]"
+          className="inline-flex h-11 items-center rounded-xl bg-ink px-5 text-sm font-bold text-white transition-colors hover:bg-brand-600 sm:text-[15px]"
         >
-          Free demo
+          Try free demo
         </a>
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-ink/10 bg-white/70 text-ink transition hover:border-ink/25 lg:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-ink/15 text-ink transition hover:border-ink/25 lg:hidden"
           aria-label={open ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={open}
           aria-controls="mobile-navigation"
@@ -127,21 +129,20 @@ export function Navbar() {
                     onClick={() => go(n.id, n.href)}
                     className="group flex w-full items-center gap-4 border-b border-ink/10 py-5 text-left"
                   >
-                    <span className="font-mono text-xs text-ink/35">0{i + 1}</span>
-                    <span className="flex-1 text-2xl font-semibold tracking-[-0.035em]">{n.name}</span>
+                                        <span className="flex-1 font-serif font-semibold tracking-tight text-3xl">{n.name}</span>
                     <span aria-hidden="true" className="text-ink/30 transition group-hover:translate-x-1 group-hover:text-brand-500">→</span>
                   </button>
                 </motion.li>
               ))}
             </ul>
             <div className="mt-auto pt-10">
-              <a href="/demo" className="flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-4 text-sm font-semibold text-white">
+              <a href="/demo" className="btn-primary w-full">
                 Try the free demo <span aria-hidden="true">→</span>
               </a>
-              <a href="mailto:hello@signsense.app" className="mt-3 flex items-center justify-center rounded-xl border border-ink/15 px-5 py-4 text-sm font-semibold">
+              <a href="mailto:hello@signsense.app" className="btn-secondary mt-3 w-full">
                 Contact our team
               </a>
-              <p className="mt-6 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink/40">Indian Sign Language · both ways</p>
+              <p className="mt-6 text-center text-sm text-ink/50">Made for Indian Sign Language</p>
             </div>
           </motion.div>
         )}

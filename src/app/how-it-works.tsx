@@ -1,54 +1,31 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Reveal from "@/components/reveal";
 
 const STEPS = [
-  {
-    n: "01",
-    title: "Sign in ISL",
-    body: "Use your camera to capture Indian Sign Language. SignSense is designed to interpret the signing and present it as readable text.",
-  },
-  {
-    n: "02",
-    title: "Speak or type back",
-    body: "A hearing participant can type or speak. SignSense turns that message into ISL output through a 3D signing avatar.",
-  },
-  {
-    n: "03",
-    title: "Keep everyone included",
-    body: "For online meetings, an ISL assistant can join the conversation and help convert signing into live text for other participants.",
-  },
+  { title: "You sign", body: "Sign in front of your camera, the way you normally would. Your words appear as text, and can be spoken aloud." },
+  { title: "They reply", body: "The other person speaks or types. The avatar signs their reply in ISL." },
+  { title: "Go at your pace", body: "Replay any sign, or slow it to half speed. Nothing moves on until you're ready." },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="how" className="relative overflow-hidden bg-ink text-white">
-      <div className="pointer-events-none absolute -left-40 top-0 h-[30rem] w-[30rem] rounded-full bg-brand-500/20 blur-[140px]" />
-      <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-36">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <h2 className="display text-5xl sm:text-7xl">
-            How it <span className="text-[#8c8cff]">works</span>
-          </h2>
-          <p className="max-w-sm text-white/60">
-            One ISL-first experience for conversations, audio and online meetings.
-          </p>
+    <section id="how" aria-labelledby="how-heading" className="bg-ink text-white">
+      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+        <div className="rule border-white/20 text-saffron-400">
+          <span>How it works</span>
         </div>
-
-        <div className="mt-10 grid gap-px sm:mt-20 overflow-hidden rounded-2xl bg-white/10 md:grid-cols-3">
-          {STEPS.map((s, i) => (
-            <motion.div
-              key={s.n}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease: [0.2, 0.7, 0.2, 1] }}
-              className="group bg-ink p-7 transition-colors duration-500 hover:bg-brand-800 sm:p-10"
-            >
-              <span className="font-mono text-sm text-white/40">{s.n}</span>
-              <h3 className="display mt-6 text-3xl sm:mt-16 sm:text-4xl">{s.title}</h3>
-              <p className="mt-4 leading-relaxed text-white/60">{s.body}</p>
-            </motion.div>
-          ))}
+        <div className="mt-8 grid gap-y-12 lg:grid-cols-12 lg:gap-x-8">
+          <h2 id="how-heading" className="display text-4xl sm:text-5xl lg:col-span-4">
+            Three steps, in both directions.
+          </h2>
+          <ol className="grid gap-10 sm:grid-cols-3 sm:gap-8 lg:col-span-8">
+            {STEPS.map((s, i) => (
+              <Reveal as="li" key={s.title} delay={i * 80}>
+                <span className="font-serif font-semibold tracking-tight text-5xl text-saffron-400">{i + 1}</span>
+                <h3 className="mt-4 border-t border-white/25 pt-4 text-xl font-bold">{s.title}</h3>
+                <p className="mt-2 text-base leading-7 text-white/70">{s.body}</p>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

@@ -162,3 +162,5 @@ html.framed body { padding-bottom: 0; background: #fff; }
   .framed .avatar-tools .range { flex: 1 1 100%; }
   .framed .avatar-tools .range input { flex: 1; width: auto; }
 }
+.transparent .avatar-stage, .transparent .avatar-stage canvas { background: transparent !important; box-shadow: none; }
+.transparent .avatar-stage .caption { display: none !important; }

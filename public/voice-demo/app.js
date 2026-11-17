@@ -1141,6 +1141,8 @@ window.addEventListener("message", event => {
   if (event.origin !== location.origin || event.source !== parent) return;
   const { type, word, text, speed } = event.data ?? {};
   if (type === "signsense-stop") return stopPlayback();
+  // The parent may have missed the one-off "ready" message (e.g. it attached its listener late), so it can ask again.
+  if (type === "signsense-ping") return state.vrm && notifyParent({ type: "ready", count: state.library.size });
   if (type !== "signsense-play") return;
   if (Number.isFinite(speed)) {
     el.speed.value = String(Math.min(2, Math.max(0.25, speed)));

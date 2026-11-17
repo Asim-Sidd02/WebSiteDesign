@@ -96,6 +96,15 @@ export default function SignDictionary() {
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  // The avatar announces "ready" only once, which can happen before this listener exists. Keep asking until it answers.
+  useEffect(() => {
+    if (ready) return;
+    const ping = () => post({ type: "signsense-ping" });
+    ping();
+    const id = window.setInterval(ping, 1000);
+    return () => window.clearInterval(id);
+  }, [ready, post]);
+
   // Play whatever was chosen while the avatar was still loading.
   useEffect(() => {
     if (ready && pending.current) {
@@ -206,7 +215,7 @@ export default function SignDictionary() {
           <div>
             <p className="label">Indian Sign Language dictionary</p>
             <h1 className="display mt-4 max-w-3xl text-[2.6rem] sm:mt-5 sm:text-7xl">
-              Every sign, <span className="italic text-brand-500">on demand.</span>
+              Every sign, on demand.
             </h1>
             <p className="mt-4 max-w-2xl text-[15px] leading-7 text-ink/60 sm:mt-6 sm:text-base">
               Search the SignSense vocabulary and watch the 3D avatar sign each word. Every motion comes from Deaf signers recorded for open
