@@ -33,6 +33,16 @@ const HOLD_FRAMES = 8;
 const LIVE_TAU = 0.06;
 const PLAY_TAU = 0.035;
 const FACE_TAU = 0.12;
+// Fingers and wrists get gentler easing than the arms: tracking noise is largest there, and
+// small, fast finger flicks read as glitches rather than motion.
+const HAND_TAU = 0.055;
+const FINGER_TAU = 0.075;
+// Anatomical limits (radians) per finger segment: [min hinge, max hinge] for the middle/end joints,
+// and a total swing cap for the knuckle. Keeps noisy tracking from bending fingers backwards or sideways.
+const FINGER_LIMITS = {
+  thumb: [{ swing: 1.0 }, { swing: 0.9 }, { swing: 1.2 }],
+  finger: [{ swing: 1.65 }, { min: -0.05, max: 1.9 }, { min: -0.05, max: 1.45 }]
+};
 const VIS_MIN = 0.35;
 // Motion clean-up applied to every sign before playback.
 const ARM_RAMP = 6;          // frames used to ease in/out of occluded (untracked) arm sections
@@ -66,7 +76,7 @@ el.exitFullscreenBtn = $("exitFullscreenBtn");
 const octx = el.overlay.getContext("2d");
 
 const state = {
-  models: null, stream: null, lastVT: -1, lastTs: 0, liveFrame: null, miss: { left: 0, right: 0 }, filters: {},
+  models: null, stream: null, lastVT: -1, lastTs: 0, liveFrame: null, miss: { left: 0, right: 0 }, filters: {}, liveHand: {}, loneSide: null,
   recording: false, rec: [], recStart: 0, recWord: "", recorder: null, chunks: [],
   playing: false, timeline: null, playT: 0, lastNow: 0, activeSeg: -1, library: new Map(), vrm: null, rest: null, view: null,
   expr: null
@@ -162,6 +172,24 @@ const despikeHands = rows => rows.map((row, i) => {
   return dp.angleTo(dn) < 0.45 && d.angleTo(dp) > 0.9 && d.angleTo(dn) > 0.9 ? null : row;
 });
 
+// Drop brief, isolated hand detections. In one-handed signs the resting hand is often "seen" for a
+// few frames (usually the other hand mislabelled, or noise); following those makes the idle hand
+// whip round and back. A hand tracked for too little of the sign is ignored entirely.
+const MIN_HAND_RUN = 6;        // frames a detection must persist to count
+const MIN_HAND_SHARE = 0.12;   // fraction of the sign a hand must be tracked for to be used at all
+const HAND_RUN_GAP = 3;       // detections this close together count as one continuous run
+const dropBriefHands = rows => {
+  const out = rows.map(() => null);
+  const idx = rows.map((r, i) => (r ? i : -1)).filter(i => i >= 0);
+  const groups = [];
+  idx.forEach(i => (groups.length && i - groups.at(-1)[1] - 1 <= HAND_RUN_GAP ? (groups.at(-1)[1] = i) : groups.push([i, i])));
+  groups.forEach(([a, b]) => {
+    const seen = rows.slice(a, b + 1).filter(Boolean).length;
+    if (seen >= MIN_HAND_RUN) for (let k = a; k <= b; k++) out[k] = rows[k];
+  });
+  return out.filter(Boolean).length >= rows.length * MIN_HAND_SHARE ? out : rows.map(() => null);
+};
+
 const prepared = new WeakMap();
 const prepareSign = sign => {
   if (prepared.has(sign)) return prepared.get(sign);
@@ -178,10 +206,10 @@ const prepareSign = sign => {
     return [side, smoothRows(filled ? filled.rows : rows.map(() => idle), 1.2)];
   }));
   const hands = Object.fromEntries(Object.keys(SIDES).map(side => {
-    const rows = despikeHands(src.map(f => (f[side] ? f[side].flat() : null)));
+    const rows = dropBriefHands(despikeHands(src.map(f => (f[side] ? f[side].flat() : null))));
     const filled = fillRows(rows, (i, anchor, val) => val, HAND_GAP_MAX);
     return [side, filled && {
-      rows: smoothRows(filled.rows, 1.0),
+      rows: smoothRows(filled.rows, 1.7),
       w: smoothRows(filled.weight.map(v => [v]), 2).map(r => clamp01(r[0]))
     }];
   }));
@@ -380,6 +408,7 @@ const captureRest = () => {
       handF,
       handS,
       fingers,
+      curlAxis,
       relaxed: RELAXED_CURL.map(angles => angles.map(a => new THREE.Quaternion().setFromAxisAngle(curlAxis, a))),
       shoulderPos: worldPos(`${s}UpperArm`),
       lenUpper: worldPos(`${s}UpperArm`).distanceTo(worldPos(`${s}LowerArm`)),
@@ -475,6 +504,15 @@ const relative = (parent, child) => parent.clone().invert().multiply(child);
 const twistAbout = (q, axis) => {
   const p = axis.clone().multiplyScalar(axis.dot(new THREE.Vector3(q.x, q.y, q.z)));
   return new THREE.Quaternion(p.x, p.y, p.z, q.w).normalize();
+};
+// Make a finger joint anatomically possible: strip twist about the bone, then either keep only
+// the bend about the knuckle line (hinge joints) or cap the total swing (knuckles).
+const limitFinger = (q, boneDir, curlAxis, lim) => {
+  const c = q.w < 0 ? new THREE.Quaternion(-q.x, -q.y, -q.z, -q.w) : q.clone();
+  const swing = c.multiply(twistAbout(c, boneDir).invert());
+  if (lim.swing !== undefined) return clampAngle(swing, lim.swing);
+  const angle = 2 * Math.atan2(curlAxis.dot(new THREE.Vector3(swing.x, swing.y, swing.z)), swing.w);
+  return new THREE.Quaternion().setFromAxisAngle(curlAxis, THREE.MathUtils.clamp(angle, lim.min, lim.max));
 };
 
 /* ---------- Body collision ----------
@@ -628,7 +666,8 @@ const solveArm = (out, side, frame, chestQ) => {
       let local = rest.relaxed[fi][si];
       if (tracked && finger.dirs[si]) {
         const segQ = swingTo(parent, finger.dirs[si], V(hand[idx[si + 1]]).sub(V(hand[idx[si]])));
-        local = local.clone().slerp(relative(parent, segQ), hw);
+        const limits = FINGER_LIMITS[fi === 0 ? "thumb" : "finger"][si];
+        local = local.clone().slerp(limitFinger(relative(parent, segQ), finger.dirs[si], rest.curlAxis, limits), hw);
       }
       out[name] = local;
       parent = parent.clone().multiply(local);
@@ -659,13 +698,20 @@ const solvePose = frame => {
   return out;
 };
 
-const applyPose = (frame, alpha) => {
+const FINGER_BONE = /(Thumb|Index|Middle|Ring|Little)/;
+const applyPose = (frame, dt, tau) => {
   const rel = solvePose(frame);
   const S = state.rest.sceneQ;
   const Si = S.clone().invert();
+  const ease = t => 1 - Math.exp(-dt / Math.max(tau, t));
+  const aBody = ease(tau);
+  const aHand = ease(HAND_TAU);
+  const aFinger = ease(FINGER_TAU);
   Object.entries(rel).forEach(([name, q]) => {
     const n = node(name);
-    n && n.quaternion.slerp(Si.clone().multiply(q).multiply(S), alpha);
+    if (!n) return;
+    const a = FINGER_BONE.test(name) ? aFinger : /Hand$/.test(name) ? aHand : aBody;
+    n.quaternion.slerp(Si.clone().multiply(q).multiply(S), a);
   });
 };
 
@@ -711,7 +757,7 @@ const applyFace = (face, dt) => {
 };
 
 const applyFrame = (frame, dt, tau) => {
-  state.rest && applyPose(frame, 1 - Math.exp(-dt / tau));
+  state.rest && applyPose(frame, dt, tau);
   applyFace(frame.face ?? IDLE.face, dt);
 };
 
@@ -752,13 +798,32 @@ const hold = (key, val) => {
   return val ?? (state.miss[key] < HOLD_FRAMES ? state.liveFrame?.[key] ?? null : null);
 };
 
+// Decide which detected hand is the user's right/left by its distance to each pose wrist.
+// With a single hand near the body's midline that guess can flip frame to frame, which used to
+// throw the landmarks onto the avatar's other hand and spin it. Keep the previous side unless the
+// evidence clearly points the other way.
+const SIDE_MARGIN = 0.004;   // squared normalised distance needed to switch a lone hand's side
 const splitHands = (hands2d, pose2d) => {
   const scored = hands2d
     .map((h, i) => ({ i, s: dist2(h[0], pose2d[16]) - dist2(h[0], pose2d[15]) }))
     .sort((a, b) => a.s - b.s);
-  return scored.length > 1
-    ? { userRight: scored[0].i, userLeft: scored[1].i }
-    : { userRight: scored[0]?.s < 0 ? scored[0].i : -1, userLeft: scored[0]?.s >= 0 ? scored[0].i : -1 };
+  if (scored.length > 1) return (state.loneSide = null), { userRight: scored[0].i, userLeft: scored[1].i };
+  if (!scored.length) return (state.loneSide = null), { userRight: -1, userLeft: -1 };
+  const { i, s } = scored[0];
+  const side = state.loneSide && Math.abs(s) < SIDE_MARGIN ? state.loneSide : s < 0 ? "right" : "left";
+  state.loneSide = side;
+  return side === "right" ? { userRight: i, userLeft: -1 } : { userRight: -1, userLeft: i };
+};
+
+// Live hands fade in/out instead of snapping, and must be seen for a few frames before they count.
+const HAND_ON_FRAMES = 3;
+const HAND_FADE = 0.2;       // weight change per camera frame (about 5 frames to fully blend)
+const liveHandWeight = (key, present) => {
+  const st = (state.liveHand[key] = state.liveHand[key] ?? { seen: 0, w: 0 });
+  st.seen = present ? st.seen + 1 : 0;
+  const target = st.seen >= HAND_ON_FRAMES ? 1 : 0;
+  st.w = clamp01(st.w + Math.sign(target - st.w) * Math.min(HAND_FADE, Math.abs(target - st.w)));
+  return st.w;
 };
 
 const headQuat = (fr, t) => {
@@ -790,7 +855,9 @@ const buildFrame = (pr, hr, fr, t) => {
   const right = userLeft >= 0 ? filterLandmarks("handB", world[userLeft], t, 1.6, 1.0).map(mirror) : null;
   const cats = fr.faceBlendshapes?.[0]?.categories ?? [];
   const face = Object.fromEntries(FACE_KEYS.map(k => [k, r4(cats.find(c => c.categoryName === k)?.score ?? 0)]));
-  return { body, left: hold("left", left), right: hold("right", right), head: headQuat(fr, t), face };
+  const L = hold("left", left);
+  const R = hold("right", right);
+  return { body, left: L, right: R, hw: { left: liveHandWeight("left", !!left), right: liveHandWeight("right", !!right) }, head: headQuat(fr, t), face };
 };
 
 const drawOverlay = (pr, hr, fr) => {
