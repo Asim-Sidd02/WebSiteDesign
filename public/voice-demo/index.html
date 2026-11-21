@@ -11,7 +11,6 @@
   const demoMode = new URLSearchParams(location.search);
   demoMode.has("embed") && document.documentElement.classList.add("embed");
   demoMode.has("framed") && document.documentElement.classList.add("framed");
-  // &transparent=1: no stage background, so the avatar stands directly on the host page.
   demoMode.has("transparent") && document.documentElement.classList.add("transparent");
 </script>
 <script type="importmap">

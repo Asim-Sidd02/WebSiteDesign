@@ -27,18 +27,15 @@ const SIDES = {
 const HAND_LINKS = [[0, 1], [1, 2], [2, 3], [3, 4], [0, 5], [5, 6], [6, 7], [7, 8], [5, 9], [9, 10], [10, 11], [11, 12], [9, 13], [13, 14], [14, 15], [15, 16], [13, 17], [0, 17], [17, 18], [18, 19], [19, 20]];
 const POSE_LINKS = [[11, 12], [11, 13], [13, 15], [12, 14], [14, 16], [11, 23], [12, 24], [23, 24], [7, 8]];
 const GAP_MS = 320;
+const JOIN_MS = 240;
 const TEXT_MS = 650;         // caption time for a word that has no sign yet
 const HOLD_FRAMES = 8;
 // Time constants (seconds) for frame-rate independent smoothing toward the solved pose.
 const LIVE_TAU = 0.06;
 const PLAY_TAU = 0.035;
 const FACE_TAU = 0.12;
-// Fingers and wrists get gentler easing than the arms: tracking noise is largest there, and
-// small, fast finger flicks read as glitches rather than motion.
 const HAND_TAU = 0.055;
 const FINGER_TAU = 0.075;
-// Anatomical limits (radians) per finger segment: [min hinge, max hinge] for the middle/end joints,
-// and a total swing cap for the knuckle. Keeps noisy tracking from bending fingers backwards or sideways.
 const FINGER_LIMITS = {
   thumb: [{ swing: 1.0 }, { swing: 0.9 }, { swing: 1.2 }],
   finger: [{ swing: 1.65 }, { min: -0.05, max: 1.9 }, { min: -0.05, max: 1.45 }]
@@ -172,12 +169,9 @@ const despikeHands = rows => rows.map((row, i) => {
   return dp.angleTo(dn) < 0.45 && d.angleTo(dp) > 0.9 && d.angleTo(dn) > 0.9 ? null : row;
 });
 
-// Drop brief, isolated hand detections. In one-handed signs the resting hand is often "seen" for a
-// few frames (usually the other hand mislabelled, or noise); following those makes the idle hand
-// whip round and back. A hand tracked for too little of the sign is ignored entirely.
-const MIN_HAND_RUN = 6;        // frames a detection must persist to count
-const MIN_HAND_SHARE = 0.12;   // fraction of the sign a hand must be tracked for to be used at all
-const HAND_RUN_GAP = 3;       // detections this close together count as one continuous run
+const MIN_HAND_RUN = 6;
+const MIN_HAND_SHARE = 0.12;
+const HAND_RUN_GAP = 3;
 const dropBriefHands = rows => {
   const out = rows.map(() => null);
   const idx = rows.map((r, i) => (r ? i : -1)).filter(i => i >= 0);
@@ -505,8 +499,6 @@ const twistAbout = (q, axis) => {
   const p = axis.clone().multiplyScalar(axis.dot(new THREE.Vector3(q.x, q.y, q.z)));
   return new THREE.Quaternion(p.x, p.y, p.z, q.w).normalize();
 };
-// Make a finger joint anatomically possible: strip twist about the bone, then either keep only
-// the bend about the knuckle line (hinge joints) or cap the total swing (knuckles).
 const limitFinger = (q, boneDir, curlAxis, lim) => {
   const c = q.w < 0 ? new THREE.Quaternion(-q.x, -q.y, -q.z, -q.w) : q.clone();
   const swing = c.multiply(twistAbout(c, boneDir).invert());
@@ -798,11 +790,7 @@ const hold = (key, val) => {
   return val ?? (state.miss[key] < HOLD_FRAMES ? state.liveFrame?.[key] ?? null : null);
 };
 
-// Decide which detected hand is the user's right/left by its distance to each pose wrist.
-// With a single hand near the body's midline that guess can flip frame to frame, which used to
-// throw the landmarks onto the avatar's other hand and spin it. Keep the previous side unless the
-// evidence clearly points the other way.
-const SIDE_MARGIN = 0.004;   // squared normalised distance needed to switch a lone hand's side
+const SIDE_MARGIN = 0.004;
 const splitHands = (hands2d, pose2d) => {
   const scored = hands2d
     .map((h, i) => ({ i, s: dist2(h[0], pose2d[16]) - dist2(h[0], pose2d[15]) }))
@@ -815,9 +803,8 @@ const splitHands = (hands2d, pose2d) => {
   return side === "right" ? { userRight: i, userLeft: -1 } : { userRight: -1, userLeft: i };
 };
 
-// Live hands fade in/out instead of snapping, and must be seen for a few frames before they count.
 const HAND_ON_FRAMES = 3;
-const HAND_FADE = 0.2;       // weight change per camera frame (about 5 frames to fully blend)
+const HAND_FADE = 0.2;
 const liveHandWeight = (key, present) => {
   const st = (state.liveHand[key] = state.liveHand[key] ?? { seen: 0, w: 0 });
   st.seen = present ? st.seen + 1 : 0;
@@ -973,16 +960,22 @@ const buildTimeline = items => {
   items.forEach((item, si) => {
     if (item.text) {
       // Word without a sign: hold a neutral pose while its caption is shown, keeping sentence order.
-      frames.push({ ...IDLE, t: offset, seg: si }, { ...IDLE, t: offset + TEXT_MS, seg: si });
-      segments.push({ start: offset, end: offset + TEXT_MS, label: item.label, text: true, expr: null });
-      offset += TEXT_MS + GAP_MS;
+      const hold = Math.min(1200, TEXT_MS + item.label.length * 35);
+      frames.push({ ...IDLE, t: offset, seg: si }, { ...IDLE, t: offset + hold, seg: si });
+      segments.push({ start: offset, end: offset + hold, label: item.label, text: true, expr: null });
+      offset += hold + GAP_MS;
       return;
     }
-    const src = prepareSign(item.sign);
-    const dur = src.at(-1).t;
-    src.forEach(f => frames.push({ ...f, t: offset + f.t, seg: si }));
+    const full = prepareSign(item.sign);
+    const joinPrev = !!items[si - 1]?.sign;
+    const joinNext = !!items[si + 1]?.sign;
+    const cut = Math.min(TRIM_MARGIN + 2, Math.floor((full.length - 2) / 4));
+    const src = full.slice(joinPrev ? cut : 0, joinNext ? full.length - cut : full.length);
+    const t0 = src[0].t;
+    const dur = src.at(-1).t - t0;
+    src.forEach(f => frames.push({ ...f, t: offset + f.t - t0, seg: si }));
     segments.push({ start: offset, end: offset + dur, label: item.label, expr: SIGN_EXPRESSIONS[item.sign.word] ?? null });
-    offset += dur + GAP_MS;
+    offset += dur + (joinNext ? JOIN_MS : GAP_MS);
   });
   frames.push({ ...IDLE, t: offset, seg: -2 });
   return { frames, segments, duration: offset };
@@ -1208,7 +1201,6 @@ window.addEventListener("message", event => {
   if (event.origin !== location.origin || event.source !== parent) return;
   const { type, word, text, speed } = event.data ?? {};
   if (type === "signsense-stop") return stopPlayback();
-  // The parent may have missed the one-off "ready" message (e.g. it attached its listener late), so it can ask again.
   if (type === "signsense-ping") return state.vrm && notifyParent({ type: "ready", count: state.library.size });
   if (type !== "signsense-play") return;
   if (Number.isFinite(speed)) {

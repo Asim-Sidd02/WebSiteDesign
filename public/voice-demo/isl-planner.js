@@ -43,7 +43,36 @@ const SYNONYMS = {
   kitten: ["cat"], kitty: ["cat"], puppy: ["dog"],
   assist: ["help"], nap: ["sleep"], halt: ["stop"], gray: ["grey"],
   // "I" and "me" share one ISL sign (point to self); it is stored as "me" so it never collides with the letter I.
-  i: ["me"], myself: ["me"], my: ["my", "me"], mine: ["my", "me"], your: ["your", "you"], yours: ["your", "you"]
+  i: ["me"], myself: ["me"], my: ["my", "me"], mine: ["my", "me"], your: ["your", "you"], yours: ["your", "you"],
+  yourself: ["you"], him: ["he"], his: ["he"], himself: ["he"], her: ["she"], hers: ["she"], herself: ["she"],
+  us: ["we"], our: ["we"], ours: ["we"], ourselves: ["we"], them: ["they"], their: ["they"], theirs: ["they"], its: ["it"],
+  okay: ["alright"], ok: ["alright"], fine: ["alright"], great: ["good", "nice"], well: ["good"], wonderful: ["nice"],
+  ill: ["sick"], unwell: ["sick"], tablet: ["medicine"], tablets: ["medicine"], pill: ["medicine"], pills: ["medicine"],
+  medicines: ["medicine"], clinic: ["hospital"], doc: ["doctor"], physician: ["doctor"],
+  home: ["house"], flat: ["flat", "house"], apartment: ["house"], phone: ["cell phone", "telephone"], mobile: ["cell phone"],
+  cellphone: ["cell phone"], tv: ["television"], kid: ["child"], kids: ["child"], infant: ["baby"],
+  shop: ["store or shop"], store: ["store or shop"], road: ["street or road"], street: ["street or road"],
+  big: ["big large"], large: ["big large"], huge: ["big large"], small: ["small little"], little: ["small little"], tiny: ["small little"],
+  station: ["train station"], ticket: ["train ticket"], cash: ["money"], rupees: ["money"], rupee: ["money"],
+  cost: ["price"], costly: ["expensive"], quick: ["fast"], quickly: ["fast"], slowly: ["slow"],
+  breakfast: ["eat"], lunch: ["eat"], dinner: ["eat"], meal: ["eat"], food: ["eat"],
+  job: ["job", "work"], office: ["office"], boss: ["manager"], cop: ["police"], teacher: ["teacher"], sir: ["teacher"],
+  husband: ["husband"], wife: ["wife"], marriage: ["marriage"], wedding: ["marriage"], married: ["marriage"],
+  hello: ["hello"], morning: ["morning"], tonight: ["night"], goodnight: ["good night"],
+  rest: ["sleep"], sleepy: ["sleep"], tired: ["weak"], happy: ["happy"], pleased: ["pleased"], sorry: ["sorry"],
+  photo: ["photograph"], picture: ["photograph"], pic: ["photograph"], clothes: ["clothing"], shoe: ["shoes"],
+  trousers: ["pant"], pants: ["pant"], jeans: ["pant"], tshirt: ["t-shirt"], lady: ["woman"], gentleman: ["man"],
+  guy: ["man"], ladies: ["woman"], boys: ["boy"], girls: ["girl"], grandma: ["grandmother"], granny: ["grandmother"],
+  nani: ["grandmother"], dadi: ["grandmother"], grandpa: ["grandfather"], nana: ["grandfather"], dada: ["grandfather"],
+  parents: ["parent"], neighbor: ["neighbour"], neighbours: ["neighbour"], neighbors: ["neighbour"],
+  color: ["colour"], colors: ["colour"], colours: ["colour"], mandir: ["temple"], bazaar: ["market"], bazar: ["market"],
+  laptop: ["laptop", "computer"], pc: ["computer"], hrs: ["hour"], min: ["minute"], mins: ["minute"], sec: ["second"],
+  study: ["study"], learn: ["study"], learning: ["study"], learnt: ["study"], learned: ["study"], read: ["study"],
+  college: ["university"], school: ["school"], bike: ["bicycle"], cycle: ["bicycle"], aeroplane: ["plane"], airplane: ["plane"],
+  flight: ["plane"], lorry: ["truck"], rain: ["monsoon"], rainy: ["monsoon"], rains: ["monsoon"],
+  chilly: ["cold"], freezing: ["cold"], hot: ["hot"], warm: ["warm"], heat: ["hot"], strong: ["strong"], loud: ["loud"],
+  calm: ["quiet", "peace"], peaceful: ["peace"], rich: ["rich"], poor: ["poor"], wealthy: ["rich"], new: ["new"], old: ["old"],
+  young: ["young"], dirty: ["dirty"], clean: ["clean"], wash: ["clean"], washed: ["clean"]
 };
 
 const IRREGULAR = {
@@ -60,8 +89,13 @@ const DROP = new Set(["a", "an", "the", "is", "am", "are", "was", "were", "be", 
   "to", "of", "will", "shall", "would", "very", "so", "really", "just", "quite"]);
 const AUX_HAVE = new Set(["have", "has", "had"]);
 const NEGATION = new Set(["not", "no", "never", "nothing", "nobody", "none"]);
-const TIME = new Set(["today", "tomorrow", "yesterday", "tonight", "now", "later", "soon"]);
+const TIME = new Set(["today", "tomorrow", "yesterday", "tonight", "now", "later", "soon", "morning", "afternoon", "evening", "night", "week", "month", "year", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "every"]);
 const WH = new Set(["what", "where", "who", "when", "why", "how", "which"]);
+const DROP_EXTRA = new Set(["and", "but", "or", "then", "also", "too", "at", "in", "on", "into", "for", "with", "from", "by",
+  "about", "this", "that", "these", "those", "some", "any", "there", "here", "it", "can", "could", "should", "may", "might",
+  "must", "please", "kindly", "um", "uh", "oh", "yeah", "going", "gonna", "let"]);
+const VERBS = new Set(["eat", "drink", "sleep", "sit", "stand", "write", "study", "work", "help", "stop", "paint", "exercise",
+  "attack", "dream", "fall", "lock"]);
 
 const normalize = text => text.toLocaleLowerCase().normalize("NFC").replace(/[‘’ʼ]/g, "'");
 
@@ -109,8 +143,8 @@ const planClause = (raw, has, isQuestion, notes) => {
     const w = tokens[i++];
     const word = resolveWord(w, has);
     if (word) { items.push({ kind: "sign", word, label: w === word ? word : `${w} → ${word}` }); continue; }
-    if (DROP.has(w) || (AUX_HAVE.has(w) && isParticiple(tokens[i]))) continue;
-    if (NEGATION.has(w)) notes.add("negation");
+    if (DROP.has(w) || (DROP_EXTRA.has(w) && !has(w)) || (AUX_HAVE.has(w) && isParticiple(tokens[i]))) continue;
+    if (NEGATION.has(w)) { notes.add("negation"); items.push({ kind: "text", word: w, label: w, neg: true }); continue; }
     const letters = /^[a-z0-9]+$/.test(w) ? [...w] : [];
     if (letters.length && letters.every(has)) {
       letters.forEach((ch, k) => items.push({ kind: "spell", word: ch, label: ch.toUpperCase(), group: w, first: k === 0 }));
@@ -121,7 +155,13 @@ const planClause = (raw, has, isQuestion, notes) => {
   // ISL order: time expressions first, question words last.
   const isTime = it => TIME.has(it.word);
   const isWh = it => isQuestion && WH.has(it.word);
-  return [...items.filter(isTime), ...items.filter(it => !isTime(it) && !isWh(it)), ...items.filter(it => !isTime(it) && isWh(it))];
+  const isVerb = it => it.kind === "sign" && VERBS.has(it.word);
+  const isNeg = it => !!it.neg;
+  const rest = items.filter(it => !isTime(it) && !isWh(it) && !isNeg(it));
+  const hasObject = rest.some(it => !isVerb(it) && it.kind === "sign") && rest.findIndex(isVerb) >= 0 && rest.findIndex(isVerb) < rest.length - 1;
+  const core = hasObject ? [...rest.filter(it => !isVerb(it)), ...rest.filter(isVerb)] : rest;
+  const dedup = core.filter((it, k) => !(k > 0 && it.kind === "sign" && core[k - 1].kind === "sign" && core[k - 1].word === it.word));
+  return [...items.filter(isTime), ...dedup, ...items.filter(isNeg), ...items.filter(it => !isTime(it) && isWh(it))];
 };
 
 export const planSentence = (text, has) => {
