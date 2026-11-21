@@ -48,7 +48,7 @@ function Hand() {
           cx={x}
           cy={y}
           r={i % 4 === 0 ? 3.6 : 2.8}
-          fill={i % 4 === 0 && i > 0 ? "#ffffff" : "#2F2FE4"}
+          fill={i % 4 === 0 && i > 0 ? "#ffffff" : "#0e8577"}
           stroke="#ffffff"
           strokeWidth="1"
           animate={{ opacity: [0.7, 1, 0.7] }}

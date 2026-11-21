@@ -18,7 +18,7 @@ export function Footer() {
             Try the free demo today, or write to us. We especially want to hear from Deaf signers, families and interpreters.
           </p>
           <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
-            <a href="/demo" className="btn bg-white text-ink hover:bg-saffron-400">
+            <a href="/demo" className="btn bg-white text-ink hover:bg-lotus-400">
               Try the free demo
             </a>
             <a href="mailto:hello@signsense.app" className="btn border border-white/40 text-white hover:border-white/70">

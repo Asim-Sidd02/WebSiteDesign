@@ -8,12 +8,13 @@ import AboutEvent from "./about-event";
 import EventContent from "./event-content";
 import Principles from "./principles";
 import Faq from "./faq";
+import BackToTop from "@/components/back-to-top";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <main id="main">
+      <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
         <Story />
         <HowItWorks />
@@ -23,6 +24,7 @@ export default function Home() {
         <Faq />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

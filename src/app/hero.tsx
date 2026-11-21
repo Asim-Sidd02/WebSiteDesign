@@ -8,10 +8,10 @@ const FACTS = [
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#eeedfb_0%,#faf7f2_85%)]">
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#e4f3ef_0%,#fbf8f1_85%)]">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(20,18,43,0.07)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(12,31,34,0.07)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)]"
       />
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-20 pt-32 sm:px-8 sm:pt-40 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-28">
         <div>
@@ -25,7 +25,7 @@ function Hero() {
           <h1 className="display mt-7 text-[3.1rem] sm:text-7xl lg:text-[5.25rem]">
             Sign freely.
             <br />
-            <span className="bg-gradient-to-r from-brand-500 to-[#7b5cff] bg-clip-text text-transparent">Be understood.</span>
+            <span className="bg-gradient-to-r from-brand-500 to-[#14b8a6] bg-clip-text text-transparent">Be understood.</span>
           </h1>
           <p className="lead mt-6 max-w-xl">
             SignSense turns your Indian Sign Language into text and speech, and turns the other person&rsquo;s words into signs, shown by a 3D avatar.

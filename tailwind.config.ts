@@ -9,19 +9,22 @@ const config: Config = withMT({
   theme: {
     extend: {
       colors: {
-        paper: "#faf7f2",
-        sand: "#f1ebe1",
-        ink: "#14122b",
-        saffron: { 400: "#f4b24a", 500: "#e8913a", 600: "#c26f1f" },
+        // Peacock & brass: calm, trustworthy teal with a restrained champagne-brass accent.
+        // (Token kept as "lotus" so class names stay stable.)
+        paper: "#fbf8f1",
+        sand: "#f2ebdd",
+        ink: "#0c1f22",
+        lotus: { 400: "#d8bc8a", 500: "#b8925a", 600: "#7f6235" },
         brand: {
-          50: "#eeeefd",
-          100: "#dedcfb",
-          500: "#2F2FE4",
-          600: "#2424c4",
-          700: "#162E93",
-          800: "#1A1953",
-          950: "#080616",
+          50: "#e7f5f3",
+          100: "#c6e9e4",
+          500: "#0e8577",
+          600: "#0a6c62",
+          700: "#0a5750",
+          800: "#0b3a37",
+          950: "#051615",
         },
+        coral: { 400: "#ff8a6b", 500: "#f2674a" },
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

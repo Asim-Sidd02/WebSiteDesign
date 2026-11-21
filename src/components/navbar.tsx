@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from "framer-motion";
+import { scrollToTarget } from "./scroll-to";
 
 const NAV: { name: string; id: string; href?: string }[] = [
   { name: "How it works", id: "how" },
@@ -12,10 +13,31 @@ const NAV: { name: string; id: string; href?: string }[] = [
 ];
 
 export function Navbar() {
-  const { scrollY } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 });
   const [hidden, setHidden] = React.useState(false);
   const [solid, setSolid] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [active, setActive] = React.useState<string | null>(null);
+
+  // Scrollspy: highlight the section currently in the middle of the screen.
+  React.useEffect(() => {
+    const els = NAV.filter((n) => !n.href).map((n) => document.getElementById(n.id)).filter(Boolean) as HTMLElement[];
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    els.forEach((el) => io.observe(el));
+    const onTop = () => window.scrollY < 300 && setActive(null);
+    window.addEventListener("scroll", onTop, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", onTop);
+    };
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -48,7 +70,8 @@ export function Navbar() {
       window.location.assign(`/#${id}`);
       return;
     }
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    // Let the mobile menu close (and body scroll unlock) before scrolling.
+    window.setTimeout(() => scrollToTarget(id), open ? 60 : 0);
   };
 
   return (
@@ -58,8 +81,8 @@ export function Navbar() {
       className={`fixed inset-x-0 top-0 z-50 transition-[padding] duration-300 ${open ? "bg-paper" : "px-3 pt-3 sm:px-5 sm:pt-4"}`}
     >
       <nav
-        className={`mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-3 py-2 transition-all duration-300 sm:px-4 ${
-          solid || open ? "bg-white/80 shadow-[0_8px_30px_-12px_rgba(20,18,43,0.25)] ring-1 ring-ink/[0.08] backdrop-blur-xl" : ""
+        className={`relative mx-auto flex max-w-7xl items-center justify-between overflow-hidden rounded-2xl px-3 py-2 transition-all duration-300 sm:px-4 ${
+          solid || open ? "bg-white/80 shadow-[0_8px_30px_-12px_rgba(12,31,34,0.25)] ring-1 ring-ink/[0.08] backdrop-blur-xl" : ""
         }`}
       >
         <a href="/" className="flex items-center gap-3">
@@ -68,13 +91,23 @@ export function Navbar() {
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
-          {NAV.map((n) => (
-            <li key={n.id}>
-              <button onClick={() => go(n.id, n.href)} className="whitespace-nowrap rounded-full px-4 py-2 text-[15px] font-bold text-ink/70 transition hover:bg-ink/[0.05] hover:text-ink">
-                {n.name}
-              </button>
-            </li>
-          ))}
+          {NAV.map((n) => {
+            const on = active === n.id;
+            return (
+              <li key={n.id}>
+                <button
+                  onClick={() => go(n.id, n.href)}
+                  aria-current={on ? "location" : undefined}
+                  className={`relative whitespace-nowrap rounded-full px-4 py-2 text-[15px] font-bold transition-colors ${on ? "text-ink" : "text-ink/60 hover:text-ink"}`}
+                >
+                  {on && (
+                    <motion.span layoutId="nav-active" className="absolute inset-0 rounded-full bg-ink/[0.07]" transition={{ type: "spring", stiffness: 420, damping: 36 }} />
+                  )}
+                  <span className="relative">{n.name}</span>
+                </button>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="flex items-center gap-2.5">
@@ -105,6 +138,11 @@ export function Navbar() {
           </svg>
         </button>
         </div>
+
+        {/* Reading progress, shown once the bar is solid */}
+        {solid && !open && (
+          <motion.span aria-hidden="true" style={{ scaleX: progress }} className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-brand-500/70" />
+        )}
       </nav>
 
       <AnimatePresence>
@@ -127,7 +165,8 @@ export function Navbar() {
                 >
                   <button
                     onClick={() => go(n.id, n.href)}
-                    className="group flex w-full items-center gap-4 border-b border-ink/10 py-5 text-left"
+                    aria-current={active === n.id ? "location" : undefined}
+                    className={`group flex w-full items-center gap-4 border-b border-ink/10 py-5 text-left ${active === n.id ? "text-brand-600" : ""}`}
                   >
                                         <span className="flex-1 font-serif font-semibold tracking-tight text-3xl">{n.name}</span>
                     <span aria-hidden="true" className="text-ink/30 transition group-hover:translate-x-1 group-hover:text-brand-500">→</span>

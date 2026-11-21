@@ -59,7 +59,7 @@ export default function HeroAvatar() {
     <div className="relative mx-auto w-full max-w-[560px]">
       {/* No frame: the avatar stands on the page itself, lit by a soft glow and faded at the bottom edge. */}
       <div className="relative aspect-[1/1.02]">
-        <div aria-hidden="true" className="absolute left-1/2 top-[8%] h-[78%] w-[78%] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(123,92,255,0.28),rgba(47,47,228,0.10)_60%,transparent)]" />
+        <div aria-hidden="true" className="absolute left-1/2 top-[8%] h-[78%] w-[78%] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(20,184,166,0.28),rgba(14,133,119,0.10)_60%,transparent)]" />
         <iframe
           ref={frameRef}
           src="/voice-demo/index.html?embed=1&transparent=1"
@@ -68,7 +68,7 @@ export default function HeroAvatar() {
           // The camera frames her from the thighs up, so fade the lower edge into the page instead of a hard cut.
           style={{ colorScheme: "normal", maskImage: "linear-gradient(to bottom, black 78%, transparent 98%)", WebkitMaskImage: "linear-gradient(to bottom, black 78%, transparent 98%)" }}
         />
-        <span className="pointer-events-none absolute left-0 top-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-ink/70 shadow-[0_8px_24px_-10px_rgba(20,18,43,0.3)] ring-1 ring-ink/5 backdrop-blur">
+        <span className="pointer-events-none absolute left-0 top-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-ink/70 shadow-[0_8px_24px_-10px_rgba(12,31,34,0.3)] ring-1 ring-ink/5 backdrop-blur">
           <span className={`h-2 w-2 rounded-full ${playing ? "bg-brand-500" : ready ? "bg-[#1fa463]" : "bg-ink/30"}`} />
           {playing ? "Signing" : ready ? "Live avatar" : "Loading avatar…"}
         </span>
@@ -76,7 +76,7 @@ export default function HeroAvatar() {
         {current && (
           <span
             aria-live="polite"
-            className="pointer-events-none absolute right-0 top-[14%] rounded-2xl rounded-bl-md bg-ink px-4 py-2.5 font-serif text-lg font-semibold tracking-tight text-white shadow-[0_12px_30px_-12px_rgba(20,18,43,0.5)] sm:text-xl"
+            className="pointer-events-none absolute right-0 top-[14%] rounded-2xl rounded-bl-md bg-ink px-4 py-2.5 font-serif text-lg font-semibold tracking-tight text-white shadow-[0_12px_30px_-12px_rgba(12,31,34,0.5)] sm:text-xl"
           >
             &ldquo;{current.charAt(0).toUpperCase() + current.slice(1)}&rdquo;
           </span>
