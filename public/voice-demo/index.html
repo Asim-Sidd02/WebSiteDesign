@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#fbfbf8">
 <title>SignSense Free ISL Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script>
   // ?embed=1: avatar only (sign dictionary). ?framed=1: full demo inside the website's own card.
@@ -61,40 +64,79 @@
         </div>
       </div>
       <div class="demo-controls">
-        <label for="textInput">Speak or type a short phrase</label>
-        <input id="textInput" placeholder="For example: hello, thank you" autocomplete="off">
-        <div class="row voice-row">
-          <label class="language-label" for="speechLang">Speech language</label>
-          <select id="speechLang">
-            <option value="en-IN">English (India)</option>
-            <option value="en-US">English (United States)</option>
-          </select>
+        <label class="field-label" for="textInput">What should the avatar sign?</label>
+        <div class="composer">
+          <input id="textInput" placeholder="Type a phrase, e.g. good morning" autocomplete="off" enterkeyhint="go">
+          <button id="playBtn" class="send-btn" aria-label="Sign typed text">
+            <span>Sign it</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
         </div>
-        <div class="row action-row">
-          <button id="listenBtn" class="primary">Start speaking</button>
-          <button id="stopListenBtn" disabled>Stop listening</button>
+
+        <div class="quick" role="group" aria-label="Try a phrase">
+          <span class="quick-label">Try</span>
+          <button type="button" class="quick-chip" data-phrase="hello">Hello</button>
+          <button type="button" class="quick-chip" data-phrase="good morning">Good morning</button>
+          <button type="button" class="quick-chip" data-phrase="thank you">Thank you</button>
+          <button type="button" class="quick-chip" data-phrase="how are you">How are you?</button>
+          <button type="button" class="quick-chip" data-phrase="please help me">Please help me</button>
         </div>
-        <div class="row action-row">
-          <button id="playBtn" class="secondary">Sign typed text</button>
-          <button id="haltBtn">Stop avatar</button>
+
+        <div class="voice-card">
+          <div class="voice-head">
+            <span class="voice-title">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0m-7 7v5m-4 0h8"/></svg>
+              Or say it out loud
+            </span>
+            <label class="sr-only" for="speechLang">Speech language</label>
+            <select id="speechLang">
+              <option value="en-IN">English (India)</option>
+              <option value="en-US">English (US)</option>
+            </select>
+          </div>
+          <div class="voice-actions">
+            <button id="listenBtn" class="primary">Start speaking</button>
+            <button id="stopListenBtn" disabled>Stop</button>
+          </div>
         </div>
-        <div id="sequence" class="sequence" aria-live="polite"></div>
-        <div class="demo-note">
-          <span class="note-icon" aria-hidden="true">i</span>
-          <p>Try “hello”, “good morning”, “thank you”, “help”, “sorry”, “today” or “tomorrow”. The avatar signs <span data-sign-count>the included</span> vocabulary items in ISL word order; words without a sign yet appear as captions. It is not a full sentence translator. On-device speech recognition is used when supported; otherwise speech may be processed by your browser’s online service.</p>
+
+        <div class="now-card">
+          <div class="now-head">
+            <span class="now-title">Signing now</span>
+            <button id="haltBtn" class="ghost-btn">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+              Stop avatar
+            </button>
+          </div>
+          <div id="sequence" class="sequence" aria-live="polite"></div>
         </div>
+
+        <p class="demo-note">
+          Signs <span data-sign-count>the included</span> words in ISL word order. Words without a sign yet show as captions. Speech may be processed by your browser’s online service.
+        </p>
       </div>
     </div>
     <div class="avatar-tools">
-      <label class="range">Avatar speed <input type="range" id="speed" min="0.25" max="2" step="0.05" value="1"><span id="speedVal">1.00×</span></label>
-      <label class="check"><input type="checkbox" id="loopChk"> Loop signs</label>
-      <button id="resetViewBtn" class="text-button">Reset avatar view</button>
+      <label class="range">Speed <input type="range" id="speed" min="0.25" max="2" step="0.05" value="1"><span id="speedVal">1.00×</span></label>
+      <label class="switch"><input type="checkbox" id="loopChk"><span class="switch-track" aria-hidden="true"></span> Loop signs</label>
+      <button id="resetViewBtn" class="text-button">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+        Reset view
+      </button>
       <input type="file" id="modelInput" accept=".vrm" hidden>
     </div>
   </section>
 
 </main>
 <script type="module" src="app.js"></script>
+<script>
+  // Quick phrases: fill the box and sign it in one tap.
+  document.querySelectorAll(".quick-chip").forEach(chip => chip.addEventListener("click", () => {
+    const input = document.getElementById("textInput");
+    input.value = chip.dataset.phrase;
+    document.getElementById("playBtn").click();
+  }));
+</script>
 <script>
   const reportDemoHeight = () => {
     if (!document.fullscreenElement && !document.documentElement.classList.contains("embed")) parent.postMessage({ type: "signsense-demo-height", height: document.documentElement.scrollHeight }, location.origin);
