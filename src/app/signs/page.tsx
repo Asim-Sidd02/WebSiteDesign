@@ -5,7 +5,7 @@ import SignDictionary from "@/components/sign-dictionary";
 export const metadata: Metadata = {
   title: "Indian Sign Language Dictionary | SignSense",
   description:
-    "Search Indian Sign Language (ISL) words and watch a 3D avatar sign each one. Motions prepared from the INCLUDE and Amrita SLR open ISL datasets.",
+    "Search Indian Sign Language (ISL) words and watch a 3D avatar sign each one. Free, with no sign-up.",
   alternates: { canonical: "/signs" },
   openGraph: {
     title: "Indian Sign Language Dictionary | SignSense",

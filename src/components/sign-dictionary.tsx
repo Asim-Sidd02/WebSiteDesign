@@ -4,13 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Entry = { word: string; label?: string; duration: number; source: string; topic: string };
 
-const SOURCES: { match: RegExp; name: string; href: string }[] = [
-  { match: /^INCLUDE/i, name: "INCLUDE · AI4Bharat", href: "https://zenodo.org/records/4010759" },
-  { match: /^Amrita/i, name: "Amrita SLR", href: "https://doi.org/10.17632/dtg9s785v8.1" },
-  { match: /^ISL-CSLTR/i, name: "ISL-CSLTR", href: "https://doi.org/10.17632/kcmpdxky7p.1" },
-  { match: /^ISLVT/i, name: "ISLVT", href: "https://doi.org/10.17632/98mzk82wbb.1" },
-];
-const sourceOf = (entry: Entry) => SOURCES.find((s) => s.match.test(entry.source)) ?? { name: entry.source.split(",")[0], href: "/voice-demo/SOURCES.md" };
 const display = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
 const norm = (s: string) => s.toLowerCase().trim().replace(/\s+/g, " ");
 const seconds = (ms: number) => `${(ms / 1000).toFixed(1)} s`;
@@ -168,7 +161,6 @@ export default function SignDictionary() {
   }, [results]);
 
   const current = signs?.find((s) => s.word === selected) ?? null;
-  const source = current ? sourceOf(current) : null;
 
   const copyLink = async () => {
     if (!current) return;
@@ -221,15 +213,15 @@ export default function SignDictionary() {
               Every sign, on demand.
             </h1>
             <p className="mt-4 max-w-2xl text-[15px] leading-7 text-ink/60 sm:mt-6 sm:text-base">
-              Search the SignSense vocabulary and watch the 3D avatar sign each word. Every motion comes from Deaf signers recorded for open
-              research datasets. Each word has its own link, so you can share it.
+              Search the SignSense vocabulary and watch the 3D avatar sign each word. Every motion is based on real Deaf signers. Each word has
+              its own link, so you can share it.
             </p>
           </div>
           <dl className="grid grid-cols-3 divide-x divide-ink/10 rounded-2xl border border-ink/10 bg-white text-center md:divide-x-0 md:border-0 md:bg-transparent md:text-right md:gap-8">
             {[
               [signs ? String(signs.length) : "–", "signs"],
               [signs ? String(topics.length) : "–", "topics"],
-              ["2", "datasets"],
+              ["Free", "no sign-up"],
             ].map(([value, label]) => (
               <div key={label} className="px-3 py-4 md:p-0">
                 <dt className="label">{label}</dt>
@@ -267,20 +259,9 @@ export default function SignDictionary() {
                     <>
                       <p className="label">{current.topic}</p>
                       <h2 className="mt-2 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">{current.label ?? display(current.word)}</h2>
-                      <dl className="mt-4 grid grid-cols-2 gap-4 border-y border-ink/10 py-4 text-sm sm:mt-5">
-                        <div>
-                          <dt className="text-ink/45">Duration</dt>
-                          <dd className="mt-1 font-medium">{seconds(current.duration)}</dd>
-                        </div>
-                        <div>
-                          <dt className="text-ink/45">Recorded for</dt>
-                          <dd className="mt-1 font-medium">
-                            <a href={source!.href} target="_blank" rel="noreferrer" className="underline decoration-ink/20 underline-offset-4 hover:decoration-brand-500">
-                              {source!.name}
-                            </a>
-                          </dd>
-                        </div>
-                      </dl>
+                      <p className="mt-4 border-y border-ink/10 py-4 text-sm text-ink/55 sm:mt-5">
+                        Takes about <span className="font-medium text-ink">{seconds(current.duration)}</span> to sign
+                      </p>
                       <div className="mt-5 grid grid-cols-3 gap-2">
                         <button
                           onClick={() => play(current.word)}
@@ -318,8 +299,8 @@ export default function SignDictionary() {
                 </div>
               </div>
               <p className="mt-4 px-1 text-xs leading-5 text-ink/45 sm:px-0">
-                These are prototype motions retargeted from video, not yet reviewed by Deaf ISL experts. ISL varies by region; some signs may differ
-                where you live. <a href="/voice-demo/SOURCES.md" className="underline underline-offset-2 hover:text-ink">Sources and licences</a>.
+                ISL varies by region, so some signs may look different where you live.{" "}
+                <a href="/voice-demo/SOURCES.md" className="underline underline-offset-2 hover:text-ink">Credits</a>
               </p>
             </div>
           </aside>

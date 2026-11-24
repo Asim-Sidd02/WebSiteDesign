@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const FAQS = [
   {
     q: "What can I try in the free demo?",
-    a: "The included ISL vocabulary loads automatically, including short phrases such as “good morning” and “thank you”; you can browse every sign in the Sign dictionary. The demo arranges known signs in ISL word order and shows words without a sign as captions. It does not yet translate unrestricted ISL sentences. You can record or import additional clips in the demo setup.",
+    a: "The included ISL vocabulary loads automatically, including short phrases such as “good morning” and “thank you”; you can browse every sign in the Sign dictionary. The demo arranges known signs in ISL word order and shows words without a sign as captions. It does not yet translate unrestricted ISL sentences.",
   },
   {
     q: "How does a two-way conversation work?",
