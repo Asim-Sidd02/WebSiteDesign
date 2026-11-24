@@ -1223,110 +1223,238 @@ loadAvatar(DEFAULT_AVATAR).catch(e => {
   if (state.vrm) {
     notifyParent({ type: "ready", count: state.library.size });
     if (el.camBtn) el.camBtn.disabled = false;
-    setStatus(SpeechRecognition ? "Avatar ready. Speak or type a phrase." : "Avatar ready. Speech recognition is unavailable; type a phrase.", "ok");
+    setStatus(speechSupported() ? "Avatar ready. Speak or type a phrase." : "Avatar ready. Voice input is not supported in this browser; type a phrase.", "ok");
   }
 });
 
+/* ---------- Speech input ----------
+ * Two engines, picked per browser:
+ *  - "native":  the Web Speech API (Chrome, Edge, Safari). Fast, but some browsers ship the API
+ *               and then block its cloud service (Brave, some Chromium forks), and Firefox has none.
+ *  - "whisper": records a short clip and transcribes it in the browser with Whisper tiny (English),
+ *               via transformers.js. Works everywhere MediaRecorder works; audio never leaves the device.
+ * If the native engine fails with a service error, we switch to "whisper" for the rest of the visit.
+ */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const listenBtn = $("listenBtn");
 const stopListenBtn = $("stopListenBtn");
 const speechLang = $("speechLang");
+const canRecord = !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder);
+const blocksCloudSpeech = !!navigator.brave; // Brave exposes the API but never connects to the service
+let engine = SpeechRecognition && !blocksCloudSpeech ? "native" : canRecord ? "whisper" : "none";
 let recognition = null;
 let isListening = false;
 let checkedLocalLanguage = "";
 let localSpeechAvailable = false;
+
+const speechSupported = () => engine !== "none";
 const updateMicrophoneControls = listening => {
   isListening = listening;
-  listenBtn.disabled = listening || !recognition;
+  listenBtn.disabled = listening || !speechSupported();
   stopListenBtn.disabled = !listening;
-  fullscreenMicBtn.disabled = !recognition;
+  fullscreenMicBtn.disabled = !speechSupported();
   fullscreenMicBtn.classList.toggle("listening", listening);
   fullscreenMicBtn.setAttribute("aria-pressed", String(listening));
   fullscreenMicBtn.querySelector("span").textContent = listening ? "Stop microphone" : "Turn on microphone";
 };
-const startListening = async () => {
-  if (!recognition || isListening) return;
-  recognition.lang = speechLang.value;
+const useTranscript = text => {
+  // Whisper marks silence and noise as "[BLANK_AUDIO]" or "(music)"; drop those.
+  const clean = String(text ?? "").replace(/\[[^\]]*\]|\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+  if (!clean) return setStatus("No speech was detected. Try again, a little closer to the microphone.", "err");
+  el.textInput.value = clean;
+  translate();
+};
+
+/* ---- native engine ---- */
+const NATIVE_SERVICE_ERRORS = new Set(["network", "service-not-allowed", "language-not-supported"]);
+const createRecognition = () => {
+  const r = new SpeechRecognition();
+  // One phrase per press: continuous mode repeats or never finalises results in Safari.
+  r.continuous = false;
+  r.interimResults = true;
+  r.maxAlternatives = 1;
+  let gotResult = false;
+  let failed = false;
+  r.onstart = () => {
+    gotResult = false;
+    failed = false;
+    updateMicrophoneControls(true);
+    setStatus("Listening… speak a short phrase.");
+  };
+  r.onresult = event => {
+    let finalText = "", interim = "";
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const part = event.results[i][0]?.transcript ?? "";
+      event.results[i].isFinal ? (finalText += part) : (interim += part);
+    }
+    if (interim) setStatus(`Hearing: “${interim.trim()}”`);
+    if (finalText.trim()) { gotResult = true; useTranscript(finalText); }
+  };
+  r.onerror = event => {
+    failed = true;
+    if (NATIVE_SERVICE_ERRORS.has(event.error) && canRecord) {
+      // The browser has the API but its speech service is unavailable: switch engines for this visit.
+      engine = "whisper";
+      setStatus("This browser’s speech service isn’t available, so SignSense will listen in the browser instead. Press Start speaking again.", "err");
+      return;
+    }
+    const messages = {
+      "not-allowed": "Microphone access was blocked. Allow the microphone in your browser’s site settings and try again.",
+      "no-speech": "No speech was detected. Try again, a little closer to the microphone.",
+      "audio-capture": "No microphone was found. Check that one is connected and not in use by another app.",
+      "aborted": "Listening stopped."
+    };
+    setStatus(messages[event.error] ?? `Speech recognition error: ${event.error}.`, "err");
+  };
+  r.onend = () => {
+    updateMicrophoneControls(false);
+    if (!gotResult && !failed) setStatus("Didn’t catch that. Press Start speaking and try again.");
+  };
+  return r;
+};
+
+const startNative = async () => {
+  recognition ??= createRecognition();
   const language = speechLang.value;
+  recognition.lang = language;
   if (checkedLocalLanguage !== language) {
     checkedLocalLanguage = language;
     localSpeechAvailable = false;
     if (typeof SpeechRecognition.available === "function" && "processLocally" in recognition) {
       try {
-        setStatus("Checking on-device speech recognition…");
         let localLanguage = language;
-        let availability = await SpeechRecognition.available({ langs: [localLanguage], processLocally: true, quality: "command" });
+        let availability = await SpeechRecognition.available({ langs: [localLanguage], processLocally: true });
         if (availability === "unavailable" && language === "en-IN") {
           localLanguage = "en-US";
-          availability = await SpeechRecognition.available({ langs: [localLanguage], processLocally: true, quality: "command" });
-          if (availability !== "unavailable") {
-            speechLang.value = localLanguage;
-            setStatus("Using on-device English (US); English (India) is not available in this browser.");
-          }
+          availability = await SpeechRecognition.available({ langs: [localLanguage], processLocally: true });
         }
-        if (availability === "downloadable" || availability === "downloading") {
-          setStatus("Preparing on-device speech recognition…");
-          localSpeechAvailable = await SpeechRecognition.install({ langs: [localLanguage], quality: "command" });
-        } else {
-          localSpeechAvailable = availability === "available";
-        }
+        localSpeechAvailable = availability === "available";
         if (localSpeechAvailable) recognition.lang = localLanguage;
       } catch (error) {
-        console.info("On-device speech recognition is unavailable; trying the browser speech service.", error);
+        console.info("On-device speech recognition is unavailable; using the browser speech service.", error);
       }
     }
   }
+  if ("processLocally" in recognition) recognition.processLocally = localSpeechAvailable;
+  recognition.start();
+};
+
+/* ---- whisper engine (in the browser) ---- */
+const WHISPER_URL = "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2";
+let whisperPipe = null;
+let recordStop = null;
+const loadWhisper = () => (whisperPipe ??= import(WHISPER_URL).then(({ pipeline, env }) => {
+  env.allowLocalModels = false;
+  return pipeline("automatic-speech-recognition", "Xenova/whisper-tiny.en", {
+    progress_callback: p => {
+      if (p.status === "progress" && String(p.file).endsWith(".onnx") && !isListening) {
+        setStatus(`Preparing speech recognition (first time only)… ${Math.round(p.progress)}%`);
+      }
+    }
+  });
+}).catch(error => { whisperPipe = null; throw error; }));
+
+// Decode whatever format the browser recorded and resample to 16 kHz mono, which Whisper expects.
+const toWhisperAudio = async blob => {
+  const data = await blob.arrayBuffer();
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const decoded = await new Promise((resolve, reject) => ctx.decodeAudioData(data, resolve, reject));
+  ctx.close?.();
+  const offline = new OfflineAudioContext(1, Math.max(1, Math.ceil(decoded.duration * 16000)), 16000);
+  const source = offline.createBufferSource();
+  source.buffer = decoded;
+  source.connect(offline.destination);
+  source.start();
+  return (await offline.startRendering()).getChannelData(0);
+};
+
+const startWhisper = async () => {
+  // Start downloading the model while the person speaks; the browser caches it after the first visit.
+  const modelReady = loadWhisper();
+  modelReady.catch(() => {});
+  let stream;
   try {
-    if ("processLocally" in recognition) recognition.processLocally = localSpeechAvailable;
-    recognition.start();
+    stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } });
   } catch (error) {
-    setStatus(`Could not start speech recognition: ${error.message}`, "err");
+    const blocked = error.name === "NotAllowedError" || error.name === "SecurityError";
+    setStatus(blocked
+      ? "Microphone access was blocked. Allow the microphone in your browser’s site settings and try again."
+      : `Could not open the microphone: ${error.message}`, "err");
+    return;
+  }
+  const chunks = [];
+  const recorder = new MediaRecorder(stream);
+  recorder.ondataavailable = e => e.data.size && chunks.push(e.data);
+
+  // Stop automatically after a short pause once speech has started, or after 10 seconds.
+  const actx = new (window.AudioContext || window.webkitAudioContext)();
+  const analyser = actx.createAnalyser();
+  analyser.fftSize = 1024;
+  actx.createMediaStreamSource(stream).connect(analyser);
+  const samples = new Float32Array(analyser.fftSize);
+  const startedAt = performance.now();
+  let heard = false, quietSince = 0, raf = 0;
+  const watch = now => {
+    analyser.getFloatTimeDomainData(samples);
+    let sum = 0;
+    for (const v of samples) sum += v * v;
+    const level = Math.sqrt(sum / samples.length);
+    if (level > 0.02) { heard = true; quietSince = 0; } else if (heard && !quietSince) quietSince = now;
+    if ((heard && quietSince && now - quietSince > 1200) || now - startedAt > 10000) return recordStop?.();
+    raf = requestAnimationFrame(watch);
+  };
+
+  recordStop = () => {
+    recordStop = null;
+    cancelAnimationFrame(raf);
+    if (recorder.state === "recording") recorder.stop();
+  };
+  recorder.onstop = async () => {
+    stream.getTracks().forEach(t => t.stop());
+    actx.close?.();
+    updateMicrophoneControls(false);
+    if (!heard) return setStatus("No speech was detected. Try again, a little closer to the microphone.", "err");
+    try {
+      setStatus("Understanding what you said…");
+      const [transcriber, audio] = await Promise.all([modelReady, toWhisperAudio(new Blob(chunks, { type: recorder.mimeType }))]);
+      const { text } = await transcriber(audio);
+      useTranscript(text);
+    } catch (error) {
+      console.error(error);
+      setStatus("Voice input couldn’t run in this browser. Please type your phrase instead.", "err");
+    }
+  };
+  recorder.start();
+  raf = requestAnimationFrame(watch);
+  updateMicrophoneControls(true);
+  setStatus("Listening… speak a short phrase. It stops by itself when you pause.");
+};
+
+/* ---- shared controls ---- */
+const startListening = async () => {
+  if (isListening || !speechSupported()) return;
+  try {
+    if (engine === "native") await startNative();
+    else await startWhisper();
+  } catch (error) {
+    if (engine === "native" && canRecord) {
+      engine = "whisper";
+      return startWhisper();
+    }
+    setStatus(`Could not start voice input: ${error.message}`, "err");
   }
 };
 const stopListening = () => {
-  if (recognition && isListening) recognition.stop();
+  if (!isListening) return;
+  if (engine === "native") recognition?.stop();
+  else recordStop?.();
 };
 
-if (SpeechRecognition) {
-  recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
-  recognition.onstart = () => {
-    updateMicrophoneControls(true);
-    setStatus("Listening… speak a short phrase.");
-  };
-  recognition.onresult = event => {
-    let finalTranscript = "";
-    let interimTranscript = "";
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const part = event.results[i][0]?.transcript ?? "";
-      event.results[i].isFinal ? finalTranscript += part : interimTranscript += part;
-    }
-    if (interimTranscript) setStatus(`Hearing: “${interimTranscript.trim()}”`);
-    if (finalTranscript.trim()) {
-      el.textInput.value = finalTranscript.trim();
-      translate();
-    }
-  };
-  recognition.onerror = event => {
-    const messages = {
-      "not-allowed": "Microphone access was blocked. Allow microphone access and try again.",
-      "no-speech": "No speech was detected. Try speaking a little closer to the microphone.",
-      "network": "The browser speech service could not connect. Check your internet connection, try a browser with on-device speech support, or type a phrase instead.",
-      "language-not-supported": "On-device speech recognition does not support this language in your browser. Choose another speech language or type a phrase."
-    };
-    setStatus(messages[event.error] ?? `Speech recognition error: ${event.error}.`, "err");
-  };
-  recognition.onend = () => {
-    updateMicrophoneControls(false);
-  };
-  listenBtn.addEventListener("click", startListening);
-  stopListenBtn.addEventListener("click", stopListening);
-  fullscreenMicBtn.addEventListener("click", () => isListening ? stopListening() : startListening());
-} else {
-  listenBtn.disabled = true;
-  stopListenBtn.disabled = true;
-  fullscreenMicBtn.disabled = true;
-  fullscreenMicBtn.title = "Speech recognition is not supported in this browser.";
+listenBtn.addEventListener("click", startListening);
+stopListenBtn.addEventListener("click", stopListening);
+fullscreenMicBtn.addEventListener("click", () => (isListening ? stopListening() : startListening()));
+updateMicrophoneControls(false);
+if (!speechSupported()) {
+  fullscreenMicBtn.title = "Voice input is not supported in this browser.";
+  listenBtn.title = "Voice input is not supported in this browser. Type a phrase instead.";
 }
