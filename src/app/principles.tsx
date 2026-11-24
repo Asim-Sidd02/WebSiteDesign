@@ -11,7 +11,6 @@ const PRINCIPLES = [
   ["Support, not replacement", "SignSense is for everyday conversation. For medical, legal or other important matters, use a qualified interpreter."],
 ];
 
-const WORDS = ["Hello", "Thank you", "Family", "Friend", "Good morning", "Help", "Water", "Welcome", "Please", "Sorry"];
 
 export default function Principles() {
   const [open, setOpen] = React.useState(0);
@@ -69,17 +68,6 @@ export default function Principles() {
               );
             })}
           </ul>
-        </div>
-      </div>
-
-      <div aria-hidden="true" className="marquee-wrap border-y border-ink/10 bg-paper py-6">
-        <div className="animate-marquee flex w-max gap-10 whitespace-nowrap">
-          {[...WORDS, ...WORDS].map((w, i) => (
-            <span key={i} className="flex items-center gap-10 font-serif text-3xl font-semibold tracking-tight text-ink/80 sm:text-5xl">
-              {w}
-              <span className="text-2xl text-lotus-500">&#10022;</span>
-            </span>
-          ))}
         </div>
       </div>
     </section>

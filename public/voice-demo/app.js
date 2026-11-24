@@ -70,7 +70,8 @@ const el = {
 el.fullscreenBtn = $("fullscreenBtn");
 el.fullscreenMicBtn = $("fullscreenMicBtn");
 el.exitFullscreenBtn = $("exitFullscreenBtn");
-const octx = el.overlay.getContext("2d");
+// The recording panel and sign-library list were removed from the public demo; these stay null.
+const octx = el.overlay?.getContext("2d");
 
 const state = {
   models: null, stream: null, lastVT: -1, lastTs: 0, liveFrame: null, miss: { left: 0, right: 0 }, filters: {}, liveHand: {}, loneSide: null,
@@ -314,6 +315,7 @@ const ensureFrames = signs => Promise.all(signs.filter(s => !s.frames && s.file)
 }));
 
 const renderLibrary = () => {
+  if (!el.library) return;
   const items = [...state.library.values()].sort((a, b) => (a.word.length === 1) - (b.word.length === 1) || a.word.localeCompare(b.word));
   el.library.innerHTML = items.length
     ? items.map(s => `<li>
@@ -339,7 +341,7 @@ const libraryActions = {
     setStatus(`Deleted "${word}"`);
   }
 };
-el.library.addEventListener("click", e => libraryActions[e.target.dataset.action]?.(e.target.dataset.word));
+el.library?.addEventListener("click", e => libraryActions[e.target.dataset.action]?.(e.target.dataset.word));
 
 const renderer = new THREE.WebGLRenderer({ canvas: el.avatar, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -997,7 +999,7 @@ const highlightSegment = idx => {
 
 const playItems = async items => {
   const signs = [...new Set(items.filter(i => i.sign).map(i => i.sign))];
-  if (!signs.length) return setStatus("Nothing to play. Record signs first.", "err");
+  if (!signs.length) return setStatus("Nothing to play. Try a word such as hello or thank you.", "err");
   try {
     signs.some(s => !s.frames) && setStatus("Loading signs…");
     await ensureFrames(signs);
@@ -1005,7 +1007,7 @@ const playItems = async items => {
     return setStatus(error.message, "err");
   }
   const valid = items.filter(i => i.text || i.sign?.frames?.length > 1);
-  valid.some(i => i.sign) ? beginPlayback(valid) : setStatus("Nothing to play. Record signs first.", "err");
+  valid.some(i => i.sign) ? beginPlayback(valid) : setStatus("Nothing to play. Try a word such as hello or thank you.", "err");
 };
 
 const beginPlayback = items => {
@@ -1142,7 +1144,7 @@ const loop = now => {
   life.time += dt;
   const ready = state.models && state.stream && el.video.readyState >= 2 && el.video.currentTime !== state.lastVT;
   ready && detect(now);
-  const frame = state.playing ? playbackFrame(now) : (el.liveChk.checked && state.liveFrame) || IDLE;
+  const frame = state.playing ? playbackFrame(now) : (el.liveChk?.checked && state.liveFrame) || IDLE;
   state.vrm && applyFrame(frame, dt, state.playing ? PLAY_TAU : LIVE_TAU);
   state.vrm?.update(dt);
   controls.update();
@@ -1150,12 +1152,12 @@ const loop = now => {
   requestAnimationFrame(loop);
 };
 
-el.camBtn.addEventListener("click", () => startCamera().catch(e => setStatus(`Camera error: ${e.message}`, "err")));
-el.recBtn.addEventListener("click", () => startRecording().catch(e => setStatus(`Record error: ${e.message}`, "err")));
-el.stopBtn.addEventListener("click", stopRecording);
+el.camBtn?.addEventListener("click", () => startCamera().catch(e => setStatus(`Camera error: ${e.message}`, "err")));
+el.recBtn?.addEventListener("click", () => startRecording().catch(e => setStatus(`Record error: ${e.message}`, "err")));
+el.stopBtn?.addEventListener("click", stopRecording);
 el.playBtn.addEventListener("click", translate);
 el.textInput.addEventListener("keydown", e => e.key === "Enter" && translate());
-el.wordInput.addEventListener("keydown", e => e.key === "Enter" && !el.recBtn.disabled && startRecording());
+el.wordInput?.addEventListener("keydown", e => e.key === "Enter" && !el.recBtn.disabled && startRecording());
 el.haltBtn.addEventListener("click", stopPlayback);
 el.resetViewBtn.addEventListener("click", resetView);
 const avatarStage = el.avatar.closest(".avatar-stage");
@@ -1179,8 +1181,8 @@ document.addEventListener("fullscreenchange", () => {
 });
 exitFullscreenBtn.addEventListener("click", () => document.fullscreenElement && document.exitFullscreen());
 el.speed.addEventListener("input", () => { el.speedVal.textContent = `${Number(el.speed.value).toFixed(2)}×`; });
-el.exportBtn.addEventListener("click", exportLibrary);
-el.importInput.addEventListener("change", e => {
+el.exportBtn?.addEventListener("click", exportLibrary);
+el.importInput?.addEventListener("change", e => {
   const file = e.target.files[0];
   file && importLibrary(file).catch(err => setStatus(`Import failed: ${err.message}`, "err"));
   e.target.value = "";
@@ -1220,7 +1222,7 @@ loadAvatar(DEFAULT_AVATAR).catch(e => {
 }).then(() => {
   if (state.vrm) {
     notifyParent({ type: "ready", count: state.library.size });
-    el.camBtn.disabled = false;
+    if (el.camBtn) el.camBtn.disabled = false;
     setStatus(SpeechRecognition ? "Avatar ready. Speak or type a phrase." : "Avatar ready. Speech recognition is unavailable; type a phrase.", "ok");
   }
 });

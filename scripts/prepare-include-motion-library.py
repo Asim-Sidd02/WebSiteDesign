@@ -43,7 +43,9 @@ INCLUDE_SOURCE = {
     "changes": "Selected recordings were converted to pose and hand landmark motion tracks with MediaPipe and retargeted to the SignSense VRM avatar. Source videos are not redistributed here.",
 }
 # INCLUDE label -> library word. "I" is stored as "me" (same ISL sign, and it must not collide with the letter I).
-LABEL_FIX = {"i": "me", "you (plural)": "you all", "you(plural)": "you all", "alright": "alright"}
+LABEL_FIX = {"i": "me", "you (plural)": "you all", "you(plural)": "you all", "alright": "alright",
+             # "Ex. Monsoon" is an extra-recordings folder for Monsoon, not a separate word.
+             "ex. monsoon": "monsoon"}
 
 
 # Topics for the base (Amrita + SignSense) signs, using INCLUDE's category names where they fit.

@@ -1,7 +1,8 @@
 import HeroAvatar from "@/components/hero-avatar";
+import { SIGN_COUNT } from "@/components/sign-stats";
 
 const FACTS = [
-  ["284", "signs ready to watch"],
+  [String(SIGN_COUNT), "signs ready to watch"],
   ["2", "open ISL datasets"],
   ["0", "sign-ups needed"],
 ];
@@ -20,7 +21,7 @@ function Hero() {
             className="inline-flex items-center gap-2 rounded-full bg-white/80 py-1.5 pl-1.5 pr-4 text-sm font-bold text-ink/70 shadow-sm ring-1 ring-ink/10 backdrop-blur transition hover:ring-brand-500/40"
           >
             <span className="rounded-full bg-brand-500 px-2.5 py-0.5 text-xs text-white">New</span>
-            284 signs in the ISL dictionary <span aria-hidden="true">→</span>
+            {SIGN_COUNT} signs in the ISL dictionary <span aria-hidden="true">→</span>
           </a>
           <h1 className="display mt-7 text-[3.1rem] sm:text-7xl lg:text-[5.25rem]">
             Sign freely.

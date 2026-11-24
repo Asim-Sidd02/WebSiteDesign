@@ -4,6 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import Reveal from "@/components/reveal";
 import SpotlightCard from "@/components/spotlight-card";
+import { SIGN_COUNT } from "@/components/sign-stats";
 
 // Each feature carries an honest status, so nobody plans around something that isn't ready yet.
 function Status({ live, dark, children }: { live?: boolean; dark?: boolean; children: React.ReactNode }) {
@@ -129,7 +130,7 @@ export function AboutEvent() {
           <SpotlightCard href="/signs" className={`${card} flex flex-col bg-brand-50 ring-1 ring-brand-500/10`}>
             <span><Status live>Available now</Status></span>
             <span aria-hidden="true" className="mt-6 font-serif text-8xl font-semibold tracking-tight text-brand-500">
-              <Counter to={284} />
+              <Counter to={SIGN_COUNT} />
             </span>
             <h3 className="mt-2 font-serif text-2xl font-semibold tracking-tight">Sign dictionary</h3>
             <p className="mt-2 text-base leading-7 text-ink/70">Search a word and watch it signed. Every word has a link you can share.</p>

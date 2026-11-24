@@ -64,9 +64,6 @@ section[id]:focus { outline: none; }
 .spotlight:hover::before { opacity: 1; }
 :where(.spotlight > *) { position: relative; z-index: 1; }
 
-@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.animate-marquee { animation: marquee 38s linear infinite; }
-.marquee-wrap:hover .animate-marquee { animation-play-state: paused; }
 
 @keyframes scan { 0%, 100% { top: 8%; } 50% { top: 88%; } }
 .animate-scan { animation: scan 3.2s ease-in-out infinite; }

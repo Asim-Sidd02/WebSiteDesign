@@ -128,18 +128,27 @@ const rewritePhrases = tokens => {
 
 const isParticiple = w => !!w && (/(ed|en|wn|ne)$/.test(w) || w in IRREGULAR);
 
+// Longest multi-word library entry we try to match: whole signed sentences (ISL-CSLTR, ISLVT)
+// are stored under their normalised text, so they can be matched as one item.
+const MAX_PHRASE = 16;
+
+// "it" with no referent ("it is raining", "what time is it") is an English placeholder; ISL does not sign it.
+const isDummyIt = (tokens, i) =>
+  tokens[i] === "it" && (["is", "was", "will"].includes(tokens[i + 1]) || ["is", "was"].includes(tokens[i - 1]));
+
 const planClause = (raw, has, isQuestion, notes) => {
   const tokens = rewritePhrases(raw);
   const items = [];
   for (let i = 0; i < tokens.length;) {
     // Longest library phrase first (exact tokens, then base forms for the last word).
     let matched = null;
-    for (let n = Math.min(4, tokens.length - i); n >= 2 && !matched; n--) {
+    for (let n = Math.min(MAX_PHRASE, tokens.length - i); n >= 2 && !matched; n--) {
       const words = tokens.slice(i, i + n);
       const key = words.join(" ");
       if (has(key)) matched = { word: key, n };
     }
     if (matched) { items.push({ kind: "sign", word: matched.word, label: matched.word }); i += matched.n; continue; }
+    if (isDummyIt(tokens, i)) { i++; continue; }
     const w = tokens[i++];
     const word = resolveWord(w, has);
     if (word) { items.push({ kind: "sign", word, label: w === word ? word : `${w} → ${word}` }); continue; }
@@ -164,8 +173,20 @@ const planClause = (raw, has, isQuestion, notes) => {
   return [...items.filter(isTime), ...dedup, ...items.filter(isNeg), ...items.filter(it => !isTime(it) && isWh(it))];
 };
 
+/** The key a whole sentence is stored under: lower case, contractions expanded, punctuation removed. */
+export const sentenceKey = text => {
+  let s = normalize(text);
+  CONTRACTIONS.forEach(([re, rep]) => { s = s.replace(re, rep); });
+  return s.replace(/[^\p{L}\p{N}\s]/gu, " ").split(/\s+/).filter(Boolean).join(" ");
+};
+
 export const planSentence = (text, has) => {
   const notes = new Set();
+  // A whole sentence recorded by a signer beats anything stitched together word by word.
+  const whole = sentenceKey(text);
+  if (whole.includes(" ") && has(whole)) {
+    return { items: [{ kind: "sign", word: whole, label: text.trim(), sentence: true }], unsigned: [], notes: ["sentence"] };
+  }
   let s = normalize(text);
   CONTRACTIONS.forEach(([re, rep]) => { s = s.replace(re, rep); });
   const clauses = s.split(/(?<=[.?!;,])/).map(c => ({

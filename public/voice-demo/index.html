@@ -93,44 +93,6 @@
     </div>
   </section>
 
-  <details id="recordingSetup" class="setup-details">
-    <summary>Set up or import ISL sign clips</summary>
-    <p class="setup-intro"><span data-sign-count>The included</span> sample motions are available automatically, prepared from the Amrita SLR and INCLUDE ISL datasets plus SignSense clips (see SOURCES.md). You can record or import more sign clips. The avatar file alone does not contain sign vocabulary.</p>
-    <section class="panel setup-panel">
-      <h2>Record an ISL sign</h2>
-      <div class="stage">
-        <video id="video" playsinline muted></video>
-        <canvas id="overlay"></canvas>
-        <div id="countdown" class="countdown"></div>
-        <div id="recBadge" class="rec-badge">● REC</div>
-        <div id="trackInfo" class="track-info"></div>
-      </div>
-      <div class="row">
-        <button id="camBtn" disabled>Start camera</button>
-        <input id="wordInput" placeholder="Sign name (e.g. hello, thank you)">
-      </div>
-      <div class="row">
-        <button id="recBtn" class="primary" disabled>Record sign</button>
-        <button id="stopBtn" class="danger" disabled>Stop &amp; save</button>
-        <label class="check"><input type="checkbox" id="liveChk" checked> Mirror signing</label>
-      </div>
-      <p class="hint">Record signs with the signer’s consent, face and hands in frame, and good light. For public demos, use an ISL-reviewed vocabulary.</p>
-    </section>
-
-    <section class="panel setup-panel">
-      <div class="lib-head">
-        <h2>Demo sign library</h2>
-        <div class="row">
-          <button id="exportBtn">Export library</button>
-          <label class="file-btn">Import library<input type="file" id="importInput" accept="application/json"></label>
-        </div>
-      </div>
-      <div class="lib-body">
-        <ul id="library" class="library"></ul>
-        <video id="preview" class="preview" controls playsinline></video>
-      </div>
-    </section>
-  </details>
 </main>
 <script type="module" src="app.js"></script>
 <script>

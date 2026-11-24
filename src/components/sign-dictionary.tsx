@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-type Entry = { word: string; duration: number; source: string; topic: string };
+type Entry = { word: string; label?: string; duration: number; source: string; topic: string };
 
 const SOURCES: { match: RegExp; name: string; href: string }[] = [
   { match: /^INCLUDE/i, name: "INCLUDE · AI4Bharat", href: "https://zenodo.org/records/4010759" },
   { match: /^Amrita/i, name: "Amrita SLR", href: "https://doi.org/10.17632/dtg9s785v8.1" },
+  { match: /^ISL-CSLTR/i, name: "ISL-CSLTR", href: "https://doi.org/10.17632/kcmpdxky7p.1" },
+  { match: /^ISLVT/i, name: "ISLVT", href: "https://doi.org/10.17632/98mzk82wbb.1" },
 ];
 const sourceOf = (entry: Entry) => SOURCES.find((s) => s.match.test(entry.source)) ?? { name: entry.source.split(",")[0], href: "/voice-demo/SOURCES.md" };
 const display = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
@@ -53,6 +55,7 @@ export default function SignDictionary() {
       .then((index) => {
         const list: Entry[] = (index.signs ?? []).map((e: Entry) => ({
           word: e.word,
+          label: e.label,
           duration: e.duration,
           source: e.source ?? "",
           topic: e.word.length === 1 ? "Alphabet" : e.topic || "Everyday",
@@ -197,7 +200,7 @@ export default function SignDictionary() {
           }`}
         >
           <span className="min-w-0">
-            <span className="block truncate text-[15px] font-medium tracking-tight">{display(s.word)}</span>
+            <span className="block truncate text-[15px] font-medium tracking-tight">{s.label ?? display(s.word)}</span>
             <span className={`mt-0.5 block text-xs ${active ? "text-white/55" : "text-ink/45"}`}>{s.topic}</span>
           </span>
           <span className={`shrink-0 font-mono text-[11px] ${active ? "text-white/70" : "text-ink/35 group-hover:text-brand-500"}`}>
@@ -263,7 +266,7 @@ export default function SignDictionary() {
                   {current ? (
                     <>
                       <p className="label">{current.topic}</p>
-                      <h2 className="mt-2 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">{display(current.word)}</h2>
+                      <h2 className="mt-2 text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">{current.label ?? display(current.word)}</h2>
                       <dl className="mt-4 grid grid-cols-2 gap-4 border-y border-ink/10 py-4 text-sm sm:mt-5">
                         <div>
                           <dt className="text-ink/45">Duration</dt>

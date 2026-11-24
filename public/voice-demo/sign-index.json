@@ -635,15 +635,6 @@
    "topic": "Days and time"
   },
   {
-   "word": "ex. monsoon",
-   "file": "ex-monsoon.json",
-   "duration": 2280,
-   "frames": 58,
-   "source": "INCLUDE (AI4Bharat), CC BY 4.0",
-   "topic": "Seasons",
-   "sourceVideo": "Seasons/Ex. Monsoon/MVI_4671.MOV"
-  },
-  {
    "word": "exercise",
    "file": "exercise.json",
    "duration": 2360,

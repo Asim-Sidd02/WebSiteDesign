@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import Reveal from "@/components/reveal";
+import { SIGN_COUNT } from "@/components/sign-stats";
 
 const STEPS = [
   { title: "You sign", tag: "Camera", ms: 7000, body: "Sign in front of your camera, the way you normally would. Your words appear as text, and can be spoken aloud." },
@@ -258,7 +259,7 @@ export default function HowItWorks() {
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lotus-400">Try it yourself</p>
               <p className="mt-1 text-lg font-bold">Type any phrase and watch it signed</p>
-              <p className="mt-1 text-sm text-white/55">284 signs &middot; no sign-up &middot; works in your browser</p>
+              <p className="mt-1 text-sm text-white/55">{SIGN_COUNT} signs &middot; no sign-up &middot; works in your browser</p>
             </div>
             <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-lotus-400 text-lg font-bold text-ink transition-transform group-hover:translate-x-1">
               &rarr;
